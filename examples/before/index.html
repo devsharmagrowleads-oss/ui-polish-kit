@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Vite + React</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="logo">⚡ InvoiceFlow</div>
+    <div class="nav">
+      <div class="nav-item" onclick="go('dashboard')">🏠 Dashboard</div>
+      <div class="nav-item" onclick="go('invoices')">📄 Invoices</div>
+      <div class="nav-item" onclick="go('clients')">👥 Clients</div>
+      <div class="nav-item" onclick="go('settings')">⚙️ Settings</div>
+    </div>
+    <button class="icon-btn" title="Notifications"><i class="fa fa-bell"></i></button>
+  </div>
+
+  <div class="hero">
+    <h1 class="gradient-text">Supercharge your invoicing workflow</h1>
+    <p>The all-in-one platform to unlock the power of seamless billing. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <button class="cta" onclick="alert('Welcome!')">🚀 Get Started</button>
+  </div>
+
+  <div class="features">
+    <div class="card glass">
+      <div class="emoji">⚡</div>
+      <h1>Feature One</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do.</p>
+    </div>
+    <div class="card glass">
+      <div class="emoji">🔒</div>
+      <h1>Feature Two</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do.</p>
+    </div>
+    <div class="card glass">
+      <div class="emoji">📈</div>
+      <h1>Feature Three</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do.</p>
+    </div>
+  </div>
+
+  <div class="form-wrap glass">
+    <h4>New Invoice</h4>
+    <img src="https://placehold.co/600x120">
+    <form>
+      <input type="text" placeholder="Invoice number" tabindex="2">
+      <input type="email" placeholder="Client email" tabindex="1">
+      <select>
+        <option>Select client</option>
+        <option>John Doe</option>
+        <option>Acme Inc</option>
+      </select>
+      <input type="date">
+      <input type="time">
+      <input type="number" placeholder="Amount" style="padding: 7px 13px; color: #333">
+      <select>
+        <option>USD</option>
+        <option>EUR</option>
+      </select>
+      <div class="row">
+        Late fee <input type="range" min="0" max="20">
+        Accent <input type="color" value="#8b5cf6">
+      </div>
+      <input type="file">
+      <div class="row">
+        <input type="checkbox"> Send reminders automatically
+      </div>
+      <div class="row">
+        <input type="radio" name="terms"> Net 15
+        <input type="radio" name="terms"> Net 30
+      </div>
+      <div class="actions">
+        <button type="button" class="danger" onclick="if (confirm('Are you sure?')) { alert('Deleted!') }">Delete</button>
+        <button type="button" class="cta" onclick="save()">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal glass" id="modal">Something went wrong.</div>
+  <script src="script.js"></script>
+</body>
+</html>

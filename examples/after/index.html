@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>New invoice · Ledgerly</title>
+  <meta name="description" content="Create an invoice, set the due date and late fee, and let Ledgerly send the reminders.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ledgerly: invoices that chase themselves">
+  <meta property="og:description" content="Automated reminders and payment matching for freelancers and small studios.">
+  <meta property="og:image" content="https://ledgerly.example/og.png">
+  <meta property="og:image:alt" content="Ledgerly: invoices that chase themselves">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/app.css">
+
+  <!-- Apply the saved or system theme before first paint, so there is no flash of the wrong theme. -->
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
+      var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle('dark', dark);
+    })();
+  </script>
+</head>
+<body>
+  <svg width="0" height="0" class="visually-hidden" aria-hidden="true" focusable="false">
+    <symbol id="i-logo" viewBox="0 0 24 24"><path d="M5 3h10l4 4v14H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-theme" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M12 7a5 5 0 0 1 0 10"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4zM22 2 11 13"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html">
+        <svg class="icon brand-mark" aria-hidden="true"><use href="#i-logo"/></svg>
+        Ledgerly
+      </a>
+      <nav class="nav" id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="index.html" aria-current="page">Invoices</a></li>
+          <li><a href="index.html">Clients</a></li>
+          <li><a href="index.html">Settings</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="button button-ghost button-icon" id="theme-toggle" aria-label="Switch between light and dark theme" data-tooltip="Switch theme">
+          <svg class="icon" aria-hidden="true"><use href="#i-theme"/></svg>
+        </button>
+        <button type="button" class="button button-ghost button-icon" aria-label="Notifications: 2 unread" data-tooltip="Notifications">
+          <svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg>
+        </button>
+        <button type="button" class="button button-ghost button-icon menu-button" id="menu-button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">
+          <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page" id="main">
+    <div class="container">
+      <div class="page-header">
+        <a class="back-link" href="index.html">
+          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-left"/></svg>
+          All invoices
+        </a>
+        <h1>New invoice</h1>
+        <p>Reminders go out 3, 7 and 14 days after the due date. You can change the schedule for each client.</p>
+      </div>
+
+      <div class="layout">
+        <form class="form" id="invoice-form" novalidate>
+          <fieldset class="form-section">
+            <legend>Client</legend>
+            <div class="form-row">
+              <div class="field">
+                <label class="label" for="client">Bill to</label>
+                <div class="select-wrap">
+                  <select class="control select" id="client" name="client">
+                    <option value="northwind">Northwind Studio</option>
+                    <option value="fernandes">Fernandes &amp; Filhos Lda.</option>
+                    <option value="kestrel">Kestrel Architecture</option>
+                    <option value="oyelaran">Oyelaran Consulting</option>
+                  </select>
+                  <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="email">Send to</label>
+                <input class="control" id="email" name="email" type="email" autocomplete="email" autocapitalize="off" spellcheck="false" value="dana@northwind.co" aria-describedby="email-error" required>
+                <p class="error" id="email-error" hidden>
+                  <svg class="icon icon-sm" aria-hidden="true"><use href="#i-alert"/></svg>
+                  <span>Enter an email address such as name@company.com.</span>
+                </p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Invoice</legend>
+            <div class="form-row">
+              <div class="field">
+                <label class="label" for="number">Invoice number</label>
+                <input class="control mono tabular" id="number" name="number" type="text" autocomplete="off" value="INV-2042" required>
+              </div>
+              <div class="field">
+                <label class="label" for="due-trigger">Due date</label>
+                <div class="datepicker" data-datepicker>
+                  <button type="button" class="control datepicker-trigger" id="due-trigger" aria-haspopup="dialog" aria-expanded="false">
+                    <svg class="icon icon-sm" aria-hidden="true"><use href="#i-calendar"/></svg>
+                    <span data-datepicker-label>Pick a date</span>
+                  </button>
+                  <input type="hidden" name="due" data-datepicker-value>
+                  <div class="popover" role="dialog" aria-label="Choose due date" hidden></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row form-row-amount">
+              <div class="field">
+                <label class="label" for="amount">Amount</label>
+                <div class="adorned">
+                  <span class="adornment" aria-hidden="true">£</span>
+                  <input class="control tabular" id="amount" name="amount" type="text" inputmode="decimal" autocomplete="off" value="4,200.00" aria-describedby="amount-error" required>
+                </div>
+                <p class="error" id="amount-error" hidden>
+                  <svg class="icon icon-sm" aria-hidden="true"><use href="#i-alert"/></svg>
+                  <span>Enter an amount greater than zero, for example 1,250.00.</span>
+                </p>
+              </div>
+              <div class="field">
+                <label class="label" for="currency">Currency</label>
+                <div class="select-wrap">
+                  <select class="control select" id="currency" name="currency">
+                    <option value="GBP">GBP</option>
+                    <option value="EUR">EUR</option>
+                    <option value="USD">USD</option>
+                  </select>
+                  <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="late-fee">Late fee after 30 days</label>
+              <div class="slider-row">
+                <input class="slider" id="late-fee" name="late_fee" type="range" min="0" max="10" step="0.5" value="2.5" aria-describedby="late-fee-hint">
+                <output class="tabular" id="late-fee-output" for="late-fee">2.5%</output>
+              </div>
+              <p class="hint" id="late-fee-hint">Charged once on the outstanding amount. Set to 0% for no fee.</p>
+            </div>
+
+            <fieldset class="field">
+              <legend class="label">Label <span class="optional">(optional)</span></legend>
+              <div class="swatches">
+                <input class="visually-hidden" type="radio" name="label" id="label-teal" value="teal" checked>
+                <label class="swatch swatch-teal" for="label-teal"><span class="swatch-dot"></span>Retainer</label>
+                <input class="visually-hidden" type="radio" name="label" id="label-amber" value="amber">
+                <label class="swatch swatch-amber" for="label-amber"><span class="swatch-dot"></span>Project</label>
+                <input class="visually-hidden" type="radio" name="label" id="label-rose" value="rose">
+                <label class="swatch swatch-rose" for="label-rose"><span class="swatch-dot"></span>Expenses</label>
+                <input class="visually-hidden" type="radio" name="label" id="label-slate" value="slate">
+                <label class="swatch swatch-slate" for="label-slate"><span class="swatch-dot"></span>Other</label>
+              </div>
+            </fieldset>
+
+            <div class="field">
+              <span class="label" id="attachment-label">Timesheet or receipt <span class="optional">(optional)</span></span>
+              <input class="visually-hidden" type="file" id="attachment" name="attachment" accept="application/pdf,image/png,image/jpeg" aria-labelledby="attachment-label">
+              <label class="dropzone" for="attachment" id="dropzone">
+                <svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>
+                <strong id="dropzone-title">Drop a file here or browse</strong>
+                <span id="dropzone-hint">PDF, PNG or JPG, up to 5 MB</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Reminders</legend>
+            <div class="check-row">
+              <input class="checkbox" type="checkbox" id="reminders" name="reminders" checked>
+              <label class="label" for="reminders">Send reminders automatically</label>
+            </div>
+            <div class="field">
+              <label class="label" for="send-time">Send at</label>
+              <div class="select-wrap">
+                <select class="control select" id="send-time" name="send_time">
+                  <option value="08:00">08:00</option>
+                  <option value="09:00" selected>09:00</option>
+                  <option value="12:00">12:00</option>
+                  <option value="16:00">16:00</option>
+                </select>
+                <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+              </div>
+              <p class="hint">In the client's time zone (Europe/London).</p>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button type="button" class="button button-ghost button-danger" id="discard">Discard draft</button>
+            <span class="spacer"></span>
+            <button type="button" class="button button-outline" id="save-draft">Save draft</button>
+            <button type="submit" class="button button-primary" id="send">
+              <span class="spinner" aria-hidden="true"></span>
+              <svg class="icon icon-sm" aria-hidden="true"><use href="#i-send"/></svg>
+              Send invoice
+            </button>
+          </div>
+        </form>
+
+        <aside class="card summary" aria-labelledby="summary-title">
+          <h2 id="summary-title">Summary</h2>
+          <span class="status">Draft</span>
+          <dl class="summary-list tabular">
+            <div><dt>Amount</dt><dd id="sum-amount">£4,200.00</dd></div>
+            <div><dt>Late fee if unpaid after 30 days</dt><dd id="sum-fee">£105.00</dd></div>
+            <div class="summary-total"><dt>Due</dt><dd id="sum-total">£4,200.00</dd></div>
+          </dl>
+          <p class="summary-note" id="sum-note">Choose a due date to schedule the reminders.</p>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <dialog class="dialog" id="discard-dialog" aria-labelledby="discard-title" aria-describedby="discard-text">
+    <h2 id="discard-title">Discard this draft?</h2>
+    <p id="discard-text">Invoice INV-2042 has not been sent. Discarding removes it and cannot be undone.</p>
+    <form method="dialog" class="dialog-actions">
+      <button class="button button-ghost" value="cancel">Keep editing</button>
+      <button class="button button-danger-solid" value="confirm">Discard draft</button>
+    </form>
+  </dialog>
+
+  <div class="toast-region" id="toasts" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

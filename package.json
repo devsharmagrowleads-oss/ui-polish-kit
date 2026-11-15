@@ -1,0 +1,42 @@
+{
+  "name": "ui-polish-kit",
+  "version": "0.1.0",
+  "description": "Rules, recipes, and an audit that stop AI coding agents from shipping generic, unfinished UI.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "ui-polish": "cli.mjs"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:check": "node scripts/build.mjs --check",
+    "audit": "node audit/cli.mjs",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "ui",
+    "ux",
+    "design-system",
+    "ai-agents",
+    "claude-code",
+    "cursor",
+    "codex",
+    "agents-md",
+    "tailwind",
+    "shadcn"
+  ],
+  "files": [
+    "cli.mjs",
+    "audit",
+    "rules",
+    "recipes",
+    "scripts",
+    "skills",
+    "templates",
+    "dist",
+    ".claude-plugin"
+  ]
+}

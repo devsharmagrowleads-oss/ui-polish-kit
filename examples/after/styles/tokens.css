@@ -1,0 +1,127 @@
+/*
+ * Design tokens for the "after" example (Ledgerly, an invoicing tool).
+ * Values come from ../design.md. Every colour, shadow, radius, z-index and
+ * duration used by app.css is defined here and nowhere else.
+ */
+:root {
+  color-scheme: light;
+
+  /* Neutrals are tinted toward the brand hue (195) rather than pure grey. */
+  --background: oklch(0.985 0.004 195);
+  --foreground: oklch(0.21 0.015 195);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.21 0.015 195);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.21 0.015 195);
+  --primary: oklch(0.43 0.085 195);
+  --primary-hover: oklch(0.38 0.085 195);
+  --primary-foreground: oklch(0.985 0.005 195);
+  --secondary: oklch(0.955 0.008 195);
+  --secondary-foreground: oklch(0.26 0.02 195);
+  --muted: oklch(0.965 0.006 195);
+  --muted-foreground: oklch(0.45 0.015 195);
+  --accent: oklch(0.945 0.02 195);
+  --accent-foreground: oklch(0.26 0.03 195);
+  --destructive: oklch(0.5 0.19 27);
+  --destructive-foreground: oklch(0.985 0.005 27);
+  --destructive-soft: oklch(0.96 0.03 27);
+  --success: oklch(0.47 0.12 155);
+  --success-soft: oklch(0.96 0.04 155);
+  --border: oklch(0.91 0.008 195);
+  --input: oklch(0.64 0.012 195);
+  --ring: oklch(0.55 0.1 195);
+  --overlay: oklch(0.2 0.015 195 / 0.5);
+
+  /* Invoice label colours offered in the swatch picker. */
+  --label-teal: oklch(0.55 0.09 195);
+  --label-amber: oklch(0.75 0.14 75);
+  --label-rose: oklch(0.62 0.17 15);
+  --label-slate: oklch(0.5 0.03 250);
+
+  --shadow-xs: 0 1px 2px oklch(0.2 0.015 195 / 0.06);
+  --shadow-md: 0 2px 4px oklch(0.2 0.015 195 / 0.06), 0 6px 12px oklch(0.2 0.015 195 / 0.08);
+  --shadow-lg: 0 4px 8px oklch(0.2 0.015 195 / 0.06), 0 16px 32px oklch(0.2 0.015 195 / 0.12);
+
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-gutter: clamp(1rem, 4vw, 2rem);
+
+  --control-height: 2.75rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-full: 999px;
+
+  --container: 68rem;
+
+  --z-sticky: 10;
+  --z-modal: 40;
+  --z-popover: 50;
+  --z-toast: 60;
+  --z-tooltip: 70;
+
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 48rem) {
+  :root { --control-height: 2.5rem; }
+}
+
+/* Dark values are designed, not inverted: lighter surfaces show elevation,
+   brand and status colours are lighter so they keep their contrast. */
+.dark {
+  color-scheme: dark;
+
+  --background: oklch(0.17 0.01 195);
+  --foreground: oklch(0.95 0.006 195);
+  --card: oklch(0.205 0.012 195);
+  --card-foreground: oklch(0.95 0.006 195);
+  --popover: oklch(0.24 0.012 195);
+  --popover-foreground: oklch(0.95 0.006 195);
+  --primary: oklch(0.78 0.1 190);
+  --primary-hover: oklch(0.84 0.1 190);
+  --primary-foreground: oklch(0.18 0.03 195);
+  --secondary: oklch(0.27 0.012 195);
+  --secondary-foreground: oklch(0.95 0.006 195);
+  --muted: oklch(0.25 0.01 195);
+  --muted-foreground: oklch(0.74 0.012 195);
+  --accent: oklch(0.3 0.025 195);
+  --accent-foreground: oklch(0.95 0.006 195);
+  --destructive: oklch(0.74 0.15 25);
+  --destructive-foreground: oklch(0.18 0.03 25);
+  --destructive-soft: oklch(0.28 0.05 25);
+  --success: oklch(0.78 0.14 155);
+  --success-soft: oklch(0.27 0.04 155);
+  --border: oklch(0.31 0.01 195);
+  --input: oklch(0.5 0.012 195);
+  --ring: oklch(0.72 0.1 190);
+  --overlay: oklch(0.1 0.01 195 / 0.7);
+
+  --label-teal: oklch(0.7 0.09 195);
+  --label-amber: oklch(0.8 0.13 75);
+  --label-rose: oklch(0.72 0.14 15);
+  --label-slate: oklch(0.68 0.03 250);
+
+  --shadow-xs: 0 1px 2px oklch(0 0 0 / 0.4);
+  --shadow-md: 0 2px 4px oklch(0 0 0 / 0.4), 0 6px 12px oklch(0 0 0 / 0.35);
+  --shadow-lg: 0 4px 8px oklch(0 0 0 / 0.45), 0 16px 32px oklch(0 0 0 / 0.45);
+}

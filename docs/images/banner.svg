@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 430" width="1280" height="430" role="img" aria-labelledby="t d">
+  <title id="t">ui-polish-kit</title>
+  <desc id="d">Rules, recipes and an audit that stop AI coding agents from shipping generic, unfinished UI.</desc>
+  <rect width="1280" height="430" fill="#0a1214"/>
+  <rect x="80" y="76" width="1120" height="1" fill="#2a3a3d"/>
+  <g transform="translate(80 36)">
+    <rect width="24" height="24" rx="6" fill="none" stroke="#5fd0c5" stroke-width="2"/>
+    <path d="M7 12.5 l3.5 3.5 l6.5 -8" fill="none" stroke="#5fd0c5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="36" y="18" font-family="ui-monospace, SFMono-Regular, 'Cascadia Mono', Menlo, Consolas, monospace" font-size="18" font-weight="600" fill="#eef4f4">ui-polish-kit</text>
+  </g>
+  <text x="1200" y="54" text-anchor="end" font-family="ui-monospace, SFMono-Regular, 'Cascadia Mono', Menlo, Consolas, monospace" font-size="13" letter-spacing="1.5" fill="#7d8f91">RULES · RECIPES · AUDIT</text>
+  <text font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="64" font-weight="700" fill="#eef4f4" letter-spacing="-1.5">
+    <tspan x="78" y="166">Your agent builds the UI.</tspan>
+    <tspan x="78" y="240" fill="#5fd0c5">This makes it look finished.</tspan>
+  </text>
+  <text x="80" y="284" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="19" fill="#9fb0b2">131 rules across 16 topics, for Claude Code, Codex, Cursor, Windsurf, Copilot and Gemini CLI.</text>
+  <g transform="translate(80 318)"><rect width="148" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="74" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">Native controls</text></g>
+  <g transform="translate(238 318)"><rect width="131" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="66" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">Design tokens</text></g>
+  <g transform="translate(379 318)"><rect width="107" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="54" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">Typography</text></g>
+  <g transform="translate(496 318)"><rect width="83" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="41" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">Spacing</text></g>
+  <g transform="translate(589 318)"><rect width="164" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="82" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">AI-slop blocklist</text></g>
+  <g transform="translate(762 318)"><rect width="75" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="37" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">States</text></g>
+  <g transform="translate(847 318)"><rect width="67" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="33" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">Forms</text></g>
+  <g transform="translate(923 318)"><rect width="107" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="54" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">Responsive</text></g>
+  <g transform="translate(1040 318)"><rect width="99" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="49" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">Dark mode</text></g>
+  <g transform="translate(80 362)"><rect width="131" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="66" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">Accessibility</text></g>
+  <g transform="translate(221 362)"><rect width="75" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="37" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">Motion</text></g>
+  <g transform="translate(306 362)"><rect width="75" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="37" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">Colour</text></g>
+  <g transform="translate(391 362)"><rect width="164" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="82" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">Finishing details</text></g>
+  <g transform="translate(564 362)"><rect width="58" height="32" rx="5" fill="#111c1e" stroke="#2a3a3d"/><text x="29" y="21" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#b9c7c8">Copy</text></g>
+</svg>

@@ -1,0 +1,16 @@
+---
+description: "Motion rules (ui-polish-kit). Adding transitions, animations, hover effects, page or overlay entrances, loading indicators or scroll effects."
+alwaysApply: false
+---
+
+# Motion (MO)
+
+This is the short form. Before writing code in this area, read the full rules with reasons, bad/good examples and checks: `.ui-polish/rules/11-motion.md`.
+
+- **MO-01 Transition specific properties, never `all`** (info). Name the properties: `transition-colors`, `transition-opacity`, `transition-transform`, or `transition-[color,background-color,border-color,box-shadow]`. Animate only `opacity` and `transform` for movement; never animate `width`, `height`, `top`, `left` or `margin` (use transforms, or grid-row tricks for height).
+- **MO-02 Durations are short** (warning). Use the duration tokens: `--duration-fast` 120ms for hover, press, focus, toggles and colour changes; `--duration-base` 180ms for popovers, menus, tooltips and small reveals; `--duration-slow` 280ms for dialogs, drawers and large surfaces. Nothing in the interface transitions for longer than about 400ms. Exits are faster than entrances (about 75%).
+- **MO-03 Respect `prefers-reduced-motion`** (warning). Include a global reduced-motion rule that removes animation and transition durations, and write large movements (slides, zooms, parallax, auto-playing carousels) so they become a simple fade or nothing when the user asks for reduced motion. In JS animation libraries read `useReducedMotion()` or wrap the app in `MotionConfig reducedMotion="user"`.
+- **MO-04 No looping attention-seekers** (info). Do not use infinite animations (`animate-bounce`, pulsing buttons, wiggling icons, shimmering borders, rotating gradients) on static content. Looping is reserved for real progress: a spinner or skeleton shimmer while something loads, and it stops when loading ends. Anything that moves for more than five seconds must be pausable.
+- **MO-05 Easing matches direction** (warning). Things entering or responding to the user use an ease-out curve (fast start, gentle stop): `--ease-out: cubic-bezier(0.16, 1, 0.3, 1)`. Things moving between two on-screen positions use ease-in-out. Things leaving use ease-in or a plain fast fade. Never use `linear` except for continuous rotation and progress bars, and avoid the default `ease` and springy overshoot unless `design.md` calls for a playful tone.
+- **MO-06 Animate only what helps** (warning). Good uses: state changes on controls (colour, 1px press), overlays appearing from their trigger (fade plus 4 to 8px translate or 0.97 scale), items entering or leaving a list, accordion open and close, progress, drag feedback. Do not: fade or slide every section in on scroll, animate page load of static content, stagger a list of twenty items, animate text character by character, add parallax, or count numbers up from zero.
+- **MO-07 Layout stays stable while things move** (warning). Hover and focus effects never change an element's box size (no border-width or font-weight change on hover; reserve the border with a transparent one). Appearing elements (validation messages, banners, loaded content) either have reserved space or push content in one direction with a short height transition. Overlays are positioned outside the flow. Scroll position is preserved across updates.

@@ -1,0 +1,14 @@
+{
+  "name": "ui-polish-kit",
+  "description": "Rules, recipes and an audit that stop coding agents from shipping generic, unfinished UI.",
+  "owner": {
+    "name": "ui-polish-kit contributors"
+  },
+  "plugins": [
+    {
+      "name": "ui-polish-kit",
+      "source": "./",
+      "description": "Rules, recipes, and an audit that stop AI coding agents from shipping generic, unfinished UI."
+    }
+  ]
+}

@@ -1,0 +1,1036 @@
+{
+  "version": "0.1.0",
+  "topics": [
+    {
+      "prefix": "NC",
+      "topic": "native-controls",
+      "title": "Native controls",
+      "file": "01-native-controls.md",
+      "when": "Adding or touching any form control, dropdown, select, date or time picker, file upload, slider, colour input, checkbox, radio, tooltip, confirm/alert dialog, scrollable area or menu."
+    },
+    {
+      "prefix": "TK",
+      "topic": "design-tokens",
+      "title": "Design tokens",
+      "file": "02-design-tokens.md",
+      "when": "Starting a UI, creating the theme or global stylesheet, or about to type a colour, pixel value, radius, shadow, z-index or duration into a component."
+    },
+    {
+      "prefix": "TY",
+      "topic": "typography",
+      "title": "Typography",
+      "file": "03-typography.md",
+      "when": "Choosing or loading fonts, setting up the type scale, styling headings or body text, or laying out numbers and tables."
+    },
+    {
+      "prefix": "SP",
+      "topic": "spacing-layout",
+      "title": "Spacing and layout",
+      "file": "04-spacing-layout.md",
+      "when": "Laying out a page or section, setting padding, margin or gap, building cards, lists, grids, sidebars or page containers."
+    },
+    {
+      "prefix": "SL",
+      "topic": "ai-slop",
+      "title": "AI-slop blocklist",
+      "file": "05-ai-slop.md",
+      "when": "Designing a landing page, hero, feature section, dashboard, card grid or any new visual direction; choosing backgrounds, gradients, shadows, icons or decorative elements."
+    },
+    {
+      "prefix": "ST",
+      "topic": "component-states",
+      "title": "Component states",
+      "file": "06-component-states.md",
+      "when": "Building any interactive element (button, link, input, row, tab, card action) or any view that loads, lists, saves or deletes data."
+    },
+    {
+      "prefix": "FM",
+      "topic": "forms",
+      "title": "Forms",
+      "file": "07-forms.md",
+      "when": "Building or editing any form, input, sign-in or sign-up screen, settings page, search box, filter bar or inline edit."
+    },
+    {
+      "prefix": "RS",
+      "topic": "responsive",
+      "title": "Responsive design",
+      "file": "08-responsive.md",
+      "when": "Building any page layout, navigation, table, grid or overlay; before declaring a page done on desktop; whenever fixed widths or heights are being set."
+    },
+    {
+      "prefix": "DM",
+      "topic": "dark-mode",
+      "title": "Dark mode",
+      "file": "09-dark-mode.md",
+      "when": "Defining colour tokens, adding a theme switch, or styling any surface, border, shadow, image or chart that must work on a dark background."
+    },
+    {
+      "prefix": "AX",
+      "topic": "accessibility",
+      "title": "Accessibility",
+      "file": "10-accessibility.md",
+      "when": "Building any interactive component, choosing text or border colours, adding images or icons, handling focus, writing custom widgets, or reviewing a page before completion."
+    },
+    {
+      "prefix": "MO",
+      "topic": "motion",
+      "title": "Motion",
+      "file": "11-motion.md",
+      "when": "Adding transitions, animations, hover effects, page or overlay entrances, loading indicators or scroll effects."
+    },
+    {
+      "prefix": "CO",
+      "topic": "colour",
+      "title": "Colour",
+      "file": "12-colour.md",
+      "when": "Creating or changing the palette, choosing a primary or accent colour, colouring status, charts, badges or backgrounds."
+    },
+    {
+      "prefix": "FD",
+      "topic": "finishing-details",
+      "title": "Finishing details",
+      "file": "13-finishing-details.md",
+      "when": "Setting up the document head or root layout, adding images, toasts, modals or overlays, creating error pages, or preparing a project for review or launch."
+    },
+    {
+      "prefix": "CP",
+      "topic": "copy",
+      "title": "Copy and microcopy",
+      "file": "14-copy.md",
+      "when": "Writing any text a user will read - headings, button labels, form labels, error messages, empty states, toasts, placeholder data, meta descriptions."
+    },
+    {
+      "prefix": "BR",
+      "topic": "brand-intake",
+      "title": "Brand intake",
+      "file": "15-brand-intake.md",
+      "when": "Starting UI work in a project for the first time, starting a new product, page or redesign, or whenever design.md is missing or does not answer a design question."
+    },
+    {
+      "prefix": "SA",
+      "topic": "self-audit",
+      "title": "Self-audit gate",
+      "file": "16-self-audit.md",
+      "when": "Before reporting any UI task as done, before opening a pull request that touches UI, or when asked to review or audit an interface."
+    }
+  ],
+  "rules": {
+    "NC-01": {
+      "title": "Never ship a browser-default `<select>`",
+      "severity": "error",
+      "check": "static",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "NC-02": {
+      "title": "Date and time inputs use the project's picker, not the browser's",
+      "severity": "error",
+      "check": "static",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "NC-03": {
+      "title": "File inputs are hidden behind a styled trigger or dropzone",
+      "severity": "error",
+      "check": "static",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "NC-04": {
+      "title": "Range sliders are styled",
+      "severity": "warning",
+      "check": "static",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "NC-05": {
+      "title": "Colour inputs use a themed picker",
+      "severity": "warning",
+      "check": "static",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "NC-06": {
+      "title": "Checkboxes, radios and switches use tokens",
+      "severity": "warning",
+      "check": "static",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "NC-07": {
+      "title": "No `alert()`, `confirm()` or `prompt()`",
+      "severity": "error",
+      "check": "static",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "NC-08": {
+      "title": "Tooltips are components, not `title` attributes",
+      "severity": "warning",
+      "check": "static",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "NC-09": {
+      "title": "Scrollbars follow the theme",
+      "severity": "info",
+      "check": "static",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "NC-10": {
+      "title": "Autofill does not repaint inputs",
+      "severity": "info",
+      "check": "static",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "NC-11": {
+      "title": "Dropdowns and selects: anatomy and behaviour",
+      "severity": "error",
+      "check": "visual",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "NC-12": {
+      "title": "Date pickers: anatomy and behaviour",
+      "severity": "error",
+      "check": "visual",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "NC-13": {
+      "title": "Comboboxes and menus",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "native-controls",
+      "file": "01-native-controls.md"
+    },
+    "TK-01": {
+      "title": "No hard-coded colours outside the token file",
+      "severity": "error",
+      "check": "static",
+      "topic": "design-tokens",
+      "file": "02-design-tokens.md"
+    },
+    "TK-02": {
+      "title": "No Tailwind arbitrary values for spacing, type, radius or z-index",
+      "severity": "warning",
+      "check": "static",
+      "topic": "design-tokens",
+      "file": "02-design-tokens.md"
+    },
+    "TK-03": {
+      "title": "Semantic colour utilities, not the raw palette",
+      "severity": "warning",
+      "check": "static",
+      "topic": "design-tokens",
+      "file": "02-design-tokens.md"
+    },
+    "TK-04": {
+      "title": "Spacing values are on the 4px scale",
+      "severity": "warning",
+      "check": "static",
+      "topic": "design-tokens",
+      "file": "02-design-tokens.md"
+    },
+    "TK-05": {
+      "title": "A token file exists and is complete",
+      "severity": "error",
+      "check": "static",
+      "topic": "design-tokens",
+      "file": "02-design-tokens.md"
+    },
+    "TK-06": {
+      "title": "z-index comes from a scale",
+      "severity": "warning",
+      "check": "static",
+      "topic": "design-tokens",
+      "file": "02-design-tokens.md"
+    },
+    "TK-07": {
+      "title": "Name tokens by role, in two layers",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "design-tokens",
+      "file": "02-design-tokens.md"
+    },
+    "TK-08": {
+      "title": "Reuse the token; do not mint near-duplicates",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "design-tokens",
+      "file": "02-design-tokens.md"
+    },
+    "TY-01": {
+      "title": "A real typeface is configured",
+      "severity": "error",
+      "check": "static",
+      "topic": "typography",
+      "file": "03-typography.md"
+    },
+    "TY-02": {
+      "title": "The font is chosen for this product, not by habit",
+      "severity": "warning",
+      "check": "static",
+      "topic": "typography",
+      "file": "03-typography.md"
+    },
+    "TY-03": {
+      "title": "Fonts load without invisible text or layout shift",
+      "severity": "warning",
+      "check": "static",
+      "topic": "typography",
+      "file": "03-typography.md"
+    },
+    "TY-04": {
+      "title": "One `<h1>`, no skipped heading levels",
+      "severity": "warning",
+      "check": "static",
+      "topic": "typography",
+      "file": "03-typography.md"
+    },
+    "TY-05": {
+      "title": "A real type scale with few sizes",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "typography",
+      "file": "03-typography.md"
+    },
+    "TY-06": {
+      "title": "Line height and line length are set for reading",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "typography",
+      "file": "03-typography.md"
+    },
+    "TY-07": {
+      "title": "Numbers are tabular and formatted",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "typography",
+      "file": "03-typography.md"
+    },
+    "TY-08": {
+      "title": "Weight, tracking and case are used sparingly",
+      "severity": "info",
+      "check": "visual",
+      "topic": "typography",
+      "file": "03-typography.md"
+    },
+    "SP-01": {
+      "title": "One spacing scale, used for everything",
+      "severity": "error",
+      "check": "visual",
+      "topic": "spacing-layout",
+      "file": "04-spacing-layout.md"
+    },
+    "SP-02": {
+      "title": "The same component always has the same padding",
+      "severity": "error",
+      "check": "visual",
+      "topic": "spacing-layout",
+      "file": "04-spacing-layout.md"
+    },
+    "SP-03": {
+      "title": "Space shows relationship: inside less than outside",
+      "severity": "error",
+      "check": "visual",
+      "topic": "spacing-layout",
+      "file": "04-spacing-layout.md"
+    },
+    "SP-04": {
+      "title": "Elements share edges",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "spacing-layout",
+      "file": "04-spacing-layout.md"
+    },
+    "SP-05": {
+      "title": "Content has a maximum width and a gutter",
+      "severity": "error",
+      "check": "visual",
+      "topic": "spacing-layout",
+      "file": "04-spacing-layout.md"
+    },
+    "SP-06": {
+      "title": "Layouts follow a grid",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "spacing-layout",
+      "file": "04-spacing-layout.md"
+    },
+    "SP-07": {
+      "title": "Density matches the product",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "spacing-layout",
+      "file": "04-spacing-layout.md"
+    },
+    "SL-01": {
+      "title": "No purple/indigo-to-blue gradients",
+      "severity": "error",
+      "check": "static",
+      "topic": "ai-slop",
+      "file": "05-ai-slop.md"
+    },
+    "SL-02": {
+      "title": "No gradient text",
+      "severity": "warning",
+      "check": "static",
+      "topic": "ai-slop",
+      "file": "05-ai-slop.md"
+    },
+    "SL-03": {
+      "title": "No emoji as icons",
+      "severity": "warning",
+      "check": "static",
+      "topic": "ai-slop",
+      "file": "05-ai-slop.md"
+    },
+    "SL-04": {
+      "title": "One icon set",
+      "severity": "warning",
+      "check": "static",
+      "topic": "ai-slop",
+      "file": "05-ai-slop.md"
+    },
+    "SL-05": {
+      "title": "Glass is an exception, not a surface style",
+      "severity": "warning",
+      "check": "static",
+      "topic": "ai-slop",
+      "file": "05-ai-slop.md"
+    },
+    "SL-06": {
+      "title": "No glows or coloured shadows",
+      "severity": "warning",
+      "check": "static",
+      "topic": "ai-slop",
+      "file": "05-ai-slop.md"
+    },
+    "SL-07": {
+      "title": "No generic hero copy",
+      "severity": "warning",
+      "check": "static",
+      "topic": "ai-slop",
+      "file": "05-ai-slop.md"
+    },
+    "SL-08": {
+      "title": "Not three identical feature cards",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "ai-slop",
+      "file": "05-ai-slop.md"
+    },
+    "SL-09": {
+      "title": "Radius is restrained and consistent",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "ai-slop",
+      "file": "05-ai-slop.md"
+    },
+    "SL-10": {
+      "title": "Not everything is centred",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "ai-slop",
+      "file": "05-ai-slop.md"
+    },
+    "SL-11": {
+      "title": "No stock dashboard filler",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "ai-slop",
+      "file": "05-ai-slop.md"
+    },
+    "SL-12": {
+      "title": "No decorative noise",
+      "severity": "info",
+      "check": "visual",
+      "topic": "ai-slop",
+      "file": "05-ai-slop.md"
+    },
+    "ST-01": {
+      "title": "Every interactive element has hover, focus-visible, active and disabled",
+      "severity": "error",
+      "check": "visual",
+      "topic": "component-states",
+      "file": "06-component-states.md"
+    },
+    "ST-02": {
+      "title": "Loading states keep the layout",
+      "severity": "error",
+      "check": "visual",
+      "topic": "component-states",
+      "file": "06-component-states.md"
+    },
+    "ST-03": {
+      "title": "Empty states explain and offer the next action",
+      "severity": "error",
+      "check": "visual",
+      "topic": "component-states",
+      "file": "06-component-states.md"
+    },
+    "ST-04": {
+      "title": "Errors are shown where they happen, with a way forward",
+      "severity": "error",
+      "check": "visual",
+      "topic": "component-states",
+      "file": "06-component-states.md"
+    },
+    "ST-05": {
+      "title": "Success is confirmed",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "component-states",
+      "file": "06-component-states.md"
+    },
+    "ST-06": {
+      "title": "Optimistic updates for cheap, reversible actions",
+      "severity": "info",
+      "check": "visual",
+      "topic": "component-states",
+      "file": "06-component-states.md"
+    },
+    "ST-07": {
+      "title": "Selected, current and pressed are visible and exposed",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "component-states",
+      "file": "06-component-states.md"
+    },
+    "FM-01": {
+      "title": "Every input has a visible label",
+      "severity": "warning",
+      "check": "static",
+      "topic": "forms",
+      "file": "07-forms.md"
+    },
+    "FM-02": {
+      "title": "Inputs declare type, autocomplete and input mode",
+      "severity": "info",
+      "check": "static",
+      "topic": "forms",
+      "file": "07-forms.md"
+    },
+    "FM-03": {
+      "title": "Validate at the right time",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "forms",
+      "file": "07-forms.md"
+    },
+    "FM-04": {
+      "title": "Error messages sit under the field and say how to fix it",
+      "severity": "error",
+      "check": "visual",
+      "topic": "forms",
+      "file": "07-forms.md"
+    },
+    "FM-05": {
+      "title": "Field width matches the expected answer",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "forms",
+      "file": "07-forms.md"
+    },
+    "FM-06": {
+      "title": "Mark optional fields; ask for less",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "forms",
+      "file": "07-forms.md"
+    },
+    "FM-07": {
+      "title": "Password and number fields behave",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "forms",
+      "file": "07-forms.md"
+    },
+    "FM-08": {
+      "title": "Submitting shows progress and cannot repeat",
+      "severity": "error",
+      "check": "visual",
+      "topic": "forms",
+      "file": "07-forms.md"
+    },
+    "FM-09": {
+      "title": "Group, order and help",
+      "severity": "info",
+      "check": "visual",
+      "topic": "forms",
+      "file": "07-forms.md"
+    },
+    "RS-01": {
+      "title": "The viewport meta tag is present",
+      "severity": "error",
+      "check": "static",
+      "topic": "responsive",
+      "file": "08-responsive.md"
+    },
+    "RS-02": {
+      "title": "No fixed widths wider than a phone",
+      "severity": "warning",
+      "check": "static",
+      "topic": "responsive",
+      "file": "08-responsive.md"
+    },
+    "RS-03": {
+      "title": "No horizontal scrolling at 320px",
+      "severity": "warning",
+      "check": "static",
+      "topic": "responsive",
+      "file": "08-responsive.md"
+    },
+    "RS-04": {
+      "title": "The mobile layout is designed, not shrunk",
+      "severity": "error",
+      "check": "visual",
+      "topic": "responsive",
+      "file": "08-responsive.md"
+    },
+    "RS-05": {
+      "title": "Touch targets are at least 44px",
+      "severity": "error",
+      "check": "visual",
+      "topic": "responsive",
+      "file": "08-responsive.md"
+    },
+    "RS-06": {
+      "title": "Tables have a small-screen form",
+      "severity": "error",
+      "check": "visual",
+      "topic": "responsive",
+      "file": "08-responsive.md"
+    },
+    "RS-07": {
+      "title": "Navigation has a small-screen form",
+      "severity": "error",
+      "check": "visual",
+      "topic": "responsive",
+      "file": "08-responsive.md"
+    },
+    "RS-08": {
+      "title": "Fluid media, viewport units and safe areas",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "responsive",
+      "file": "08-responsive.md"
+    },
+    "DM-01": {
+      "title": "Dark values are defined for the tokens",
+      "severity": "warning",
+      "check": "static",
+      "topic": "dark-mode",
+      "file": "09-dark-mode.md"
+    },
+    "DM-02": {
+      "title": "No per-element `dark:` colour overrides",
+      "severity": "info",
+      "check": "static",
+      "topic": "dark-mode",
+      "file": "09-dark-mode.md"
+    },
+    "DM-03": {
+      "title": "Never invert",
+      "severity": "error",
+      "check": "static",
+      "topic": "dark-mode",
+      "file": "09-dark-mode.md"
+    },
+    "DM-04": {
+      "title": "`color-scheme` is set",
+      "severity": "info",
+      "check": "static",
+      "topic": "dark-mode",
+      "file": "09-dark-mode.md"
+    },
+    "DM-05": {
+      "title": "The dark palette is designed, not derived",
+      "severity": "error",
+      "check": "visual",
+      "topic": "dark-mode",
+      "file": "09-dark-mode.md"
+    },
+    "DM-06": {
+      "title": "Theme switching is correct",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "dark-mode",
+      "file": "09-dark-mode.md"
+    },
+    "AX-01": {
+      "title": "A visible focus ring on everything focusable",
+      "severity": "error",
+      "check": "static",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
+    "AX-02": {
+      "title": "Never remove an outline without replacing it",
+      "severity": "error",
+      "check": "static",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
+    "AX-03": {
+      "title": "Images have alt text",
+      "severity": "error",
+      "check": "static",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
+    "AX-04": {
+      "title": "Interactive things are real interactive elements",
+      "severity": "error",
+      "check": "static",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
+    "AX-05": {
+      "title": "Zoom is never disabled",
+      "severity": "error",
+      "check": "static",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
+    "AX-06": {
+      "title": "The document declares its language",
+      "severity": "error",
+      "check": "static",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
+    "AX-07": {
+      "title": "Icon-only controls have accessible names",
+      "severity": "warning",
+      "check": "static",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
+    "AX-08": {
+      "title": "No positive `tabindex`",
+      "severity": "warning",
+      "check": "static",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
+    "AX-09": {
+      "title": "Contrast meets AA",
+      "severity": "error",
+      "check": "visual",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
+    "AX-10": {
+      "title": "Everything works from the keyboard",
+      "severity": "error",
+      "check": "visual",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
+    "AX-11": {
+      "title": "Semantic structure before ARIA",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
+    "AX-12": {
+      "title": "Not colour alone; announce changes",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
+    "MO-01": {
+      "title": "Transition specific properties, never `all`",
+      "severity": "info",
+      "check": "static",
+      "topic": "motion",
+      "file": "11-motion.md"
+    },
+    "MO-02": {
+      "title": "Durations are short",
+      "severity": "warning",
+      "check": "static",
+      "topic": "motion",
+      "file": "11-motion.md"
+    },
+    "MO-03": {
+      "title": "Respect `prefers-reduced-motion`",
+      "severity": "warning",
+      "check": "static",
+      "topic": "motion",
+      "file": "11-motion.md"
+    },
+    "MO-04": {
+      "title": "No looping attention-seekers",
+      "severity": "info",
+      "check": "static",
+      "topic": "motion",
+      "file": "11-motion.md"
+    },
+    "MO-05": {
+      "title": "Easing matches direction",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "motion",
+      "file": "11-motion.md"
+    },
+    "MO-06": {
+      "title": "Animate only what helps",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "motion",
+      "file": "11-motion.md"
+    },
+    "MO-07": {
+      "title": "Layout stays stable while things move",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "motion",
+      "file": "11-motion.md"
+    },
+    "CO-01": {
+      "title": "Build the palette from the brand colour",
+      "severity": "error",
+      "check": "visual",
+      "topic": "colour",
+      "file": "12-colour.md"
+    },
+    "CO-02": {
+      "title": "A tinted neutral scale does most of the work",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "colour",
+      "file": "12-colour.md"
+    },
+    "CO-03": {
+      "title": "Semantic colours have fixed meanings and full pairs",
+      "severity": "error",
+      "check": "visual",
+      "topic": "colour",
+      "file": "12-colour.md"
+    },
+    "CO-04": {
+      "title": "The accent is rare",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "colour",
+      "file": "12-colour.md"
+    },
+    "CO-05": {
+      "title": "Data colours are a designed set",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "colour",
+      "file": "12-colour.md"
+    },
+    "CO-06": {
+      "title": "Check every pair, in both themes",
+      "severity": "error",
+      "check": "visual",
+      "topic": "colour",
+      "file": "12-colour.md"
+    },
+    "FD-01": {
+      "title": "Favicon and app icons",
+      "severity": "warning",
+      "check": "static",
+      "topic": "finishing-details",
+      "file": "13-finishing-details.md"
+    },
+    "FD-02": {
+      "title": "Title and description on every page",
+      "severity": "error",
+      "check": "static",
+      "topic": "finishing-details",
+      "file": "13-finishing-details.md"
+    },
+    "FD-03": {
+      "title": "Social preview tags and image",
+      "severity": "warning",
+      "check": "static",
+      "topic": "finishing-details",
+      "file": "13-finishing-details.md"
+    },
+    "FD-04": {
+      "title": "Images reserve their space",
+      "severity": "warning",
+      "check": "static",
+      "topic": "finishing-details",
+      "file": "13-finishing-details.md"
+    },
+    "FD-05": {
+      "title": "A designed 404 page",
+      "severity": "info",
+      "check": "static",
+      "topic": "finishing-details",
+      "file": "13-finishing-details.md"
+    },
+    "FD-06": {
+      "title": "Error pages and boundaries",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "finishing-details",
+      "file": "13-finishing-details.md"
+    },
+    "FD-07": {
+      "title": "Toasts are placed, timed and stacked",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "finishing-details",
+      "file": "13-finishing-details.md"
+    },
+    "FD-08": {
+      "title": "Modals and overlays behave",
+      "severity": "error",
+      "check": "visual",
+      "topic": "finishing-details",
+      "file": "13-finishing-details.md"
+    },
+    "FD-09": {
+      "title": "Layers follow the z-index scale",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "finishing-details",
+      "file": "13-finishing-details.md"
+    },
+    "FD-10": {
+      "title": "No layout shift",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "finishing-details",
+      "file": "13-finishing-details.md"
+    },
+    "FD-11": {
+      "title": "Content resilience: long, short, many, none",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "finishing-details",
+      "file": "13-finishing-details.md"
+    },
+    "CP-01": {
+      "title": "No lorem ipsum",
+      "severity": "error",
+      "check": "static",
+      "topic": "copy",
+      "file": "14-copy.md"
+    },
+    "CP-02": {
+      "title": "No filler names, labels or sample data",
+      "severity": "warning",
+      "check": "static",
+      "topic": "copy",
+      "file": "14-copy.md"
+    },
+    "CP-03": {
+      "title": "No vague messages",
+      "severity": "info",
+      "check": "static",
+      "topic": "copy",
+      "file": "14-copy.md"
+    },
+    "CP-04": {
+      "title": "Buttons say what they do",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "copy",
+      "file": "14-copy.md"
+    },
+    "CP-05": {
+      "title": "Errors say what happened and what to do",
+      "severity": "error",
+      "check": "visual",
+      "topic": "copy",
+      "file": "14-copy.md"
+    },
+    "CP-06": {
+      "title": "Empty states teach",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "copy",
+      "file": "14-copy.md"
+    },
+    "CP-07": {
+      "title": "Consistent voice, case and formats",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "copy",
+      "file": "14-copy.md"
+    },
+    "BR-01": {
+      "title": "`design.md` exists before UI work starts",
+      "severity": "warning",
+      "check": "static",
+      "topic": "brand-intake",
+      "file": "15-brand-intake.md"
+    },
+    "BR-02": {
+      "title": "Search the project before asking",
+      "severity": "error",
+      "check": "process",
+      "topic": "brand-intake",
+      "file": "15-brand-intake.md"
+    },
+    "BR-03": {
+      "title": "Ask for what is missing, with options",
+      "severity": "error",
+      "check": "process",
+      "topic": "brand-intake",
+      "file": "15-brand-intake.md"
+    },
+    "BR-04": {
+      "title": "`design.md` is complete and concrete",
+      "severity": "warning",
+      "check": "process",
+      "topic": "brand-intake",
+      "file": "15-brand-intake.md"
+    },
+    "BR-05": {
+      "title": "`design.md` is binding",
+      "severity": "error",
+      "check": "process",
+      "topic": "brand-intake",
+      "file": "15-brand-intake.md"
+    },
+    "SA-01": {
+      "title": "No UI task is done without the audit",
+      "severity": "error",
+      "check": "process",
+      "topic": "self-audit",
+      "file": "16-self-audit.md"
+    },
+    "SA-02": {
+      "title": "The static checker passes",
+      "severity": "error",
+      "check": "process",
+      "topic": "self-audit",
+      "file": "16-self-audit.md"
+    },
+    "SA-03": {
+      "title": "Screenshot it and look",
+      "severity": "error",
+      "check": "process",
+      "topic": "self-audit",
+      "file": "16-self-audit.md"
+    },
+    "SA-04": {
+      "title": "Operate it",
+      "severity": "error",
+      "check": "process",
+      "topic": "self-audit",
+      "file": "16-self-audit.md"
+    },
+    "SA-05": {
+      "title": "Report with the score and the gaps",
+      "severity": "warning",
+      "check": "process",
+      "topic": "self-audit",
+      "file": "16-self-audit.md"
+    }
+  }
+}
