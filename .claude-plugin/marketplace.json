@@ -9,6 +9,14 @@
       "name": "ui-polish-kit",
       "source": "./",
       "description": "Rules, recipes, and an audit that stop AI coding agents from shipping generic, unfinished UI."
+    },
+    {
+      "name": "modern-web-guidance",
+      "source": {
+        "source": "github",
+        "repo": "GoogleChrome/modern-web-guidance"
+      },
+      "description": "Modern web platform best practices from the Chrome, Edge, Firefox and MDN teams (GoogleChrome/modern-web-guidance)."
     }
   ]
 }

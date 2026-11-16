@@ -269,7 +269,16 @@ export function buildOutputs(root = ROOT) {
     name: 'ui-polish-kit',
     description: 'Rules, recipes and an audit that stop coding agents from shipping generic, unfinished UI.',
     owner: { name: 'ui-polish-kit contributors' },
-    plugins: [{ name: 'ui-polish-kit', source: './', description: pkg.description }],
+    plugins: [
+      { name: 'ui-polish-kit', source: './', description: pkg.description },
+      // Companion: which browser feature to use. The core rules call it by npx, so
+      // it works without this; installing it adds its own skill to Claude Code.
+      {
+        name: 'modern-web-guidance',
+        source: { source: 'github', repo: 'GoogleChrome/modern-web-guidance' },
+        description: 'Modern web platform best practices from the Chrome, Edge, Firefox and MDN teams (GoogleChrome/modern-web-guidance).',
+      },
+    ],
   }, null, 2));
 
   validateOutputs(out);

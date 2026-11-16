@@ -122,6 +122,8 @@ export function install({ agents, target, dry = false, log = console.log }) {
     log('  1. Ask your agent to do the brand intake: it writes design.md from .ui-polish/templates/design.md.');
     log('  2. Check an existing UI:  node .ui-polish/audit/cli.mjs .');
     log('  3. Commit .ui-polish/ and the agent files so the whole team (and CI) gets them.');
+    log('  4. The rules look up Modern Web Guidance with npx (needs Node and internet). To also install it');
+    log('     as a skill for your agent: npx modern-web-guidance@latest install');
   }
   return written;
 }

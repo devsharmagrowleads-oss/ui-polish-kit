@@ -150,6 +150,15 @@ To try the Claude Code plugin from a local clone: `claude plugin marketplace add
 
 Manual install, if you prefer copying: copy `rules/` (without `_core.md`), `recipes/`, `audit/` and `templates/` into `<project>/.ui-polish/`, then copy the file for your agent from `dist/`.
 
+### Modern Web Guidance
+
+The core rules work together with [Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance), the guides from the Chrome, Edge, Firefox and MDN teams on modern browser features. Before building a dialog, popover, menu, form validation, animation or performance fix, the agent looks up the matching guide (`npx -y modern-web-guidance@latest search …`) and uses the native browser feature it recommends instead of custom JavaScript or another library. ui-polish-kit then decides how it looks: tokens, states, dark mode. Where a guide suggests a native control the kit restricts (for example a bare `<select>`), the kit's rule wins unless the control can be fully styled.
+
+This works with every agent above and needs nothing extra beyond Node and an internet connection. To also install it as a skill:
+
+- Claude Code: `claude plugin install modern-web-guidance@ui-polish-kit` (from this kit's marketplace)
+- Any agent: `npx modern-web-guidance@latest install`
+
 ### After installing
 
 1. Ask the agent to do the brand intake. It looks for existing colours, fonts and tone in the repo, asks you for what is missing, and writes `design.md`.

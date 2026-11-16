@@ -26,6 +26,10 @@ Kit root: `{{KIT}}` (contains `rules/`, `recipes/`, `audit/`).
 11. **Finished, not demo-ware.** Favicon, real `<title>` and description, social preview image, 404 page, images with dimensions and alt, one icon set, a z-index scale. (FD)
 12. **Real words.** No lorem ipsum or filler names; buttons say what they do; errors say what happened and what to do next. (CP)
 
+## Modern Web Guidance
+
+These rules set the look; Modern Web Guidance picks the browser feature. Before a dialog, popover, menu, form validation, animation or performance fix, run `npx -y modern-web-guidance@latest search "<pattern>"`, then `retrieve "<id>"`, and use the native API and fallback it gives, styled with tokens, instead of custom JS or a library. If it suggests a control an NC rule restricts, NC wins unless tokens fully style it everywhere.
+
 ## Topic files (read on demand)
 
 {{TOPICS}}
