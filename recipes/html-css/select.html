@@ -1,0 +1,23 @@
+<!--
+  Select (NC-01, NC-11). One native <select>, styled two ways by components.css:
+  - Browsers with customizable select (appearance: base-select): the button and
+    the open list are both drawn with the project's tokens, in the top layer.
+  - Other browsers: appearance: none with token border, radius and a chevron,
+    and the operating system's own list (the closed control still matches).
+  It keeps native keyboard support, form submission and mobile behaviour.
+
+  Needs: tokens.css, base.css, components.css.
+-->
+<div class="field">
+  <label for="billing-plan">Billing plan</label>
+  <select id="billing-plan" name="plan" class="select">
+    <!-- Ignored by browsers without customizable select, which show the text. -->
+    <button type="button">
+      <selectedcontent></selectedcontent>
+    </button>
+    <option value="starter">Starter · up to 3 seats</option>
+    <option value="team" selected>Team · up to 25 seats</option>
+    <option value="business">Business · unlimited seats</option>
+  </select>
+  <p class="hint">You can change plans at any time; the difference is prorated.</p>
+</div>

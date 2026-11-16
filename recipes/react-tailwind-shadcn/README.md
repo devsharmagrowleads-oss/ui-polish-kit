@@ -23,7 +23,7 @@ Requires React 19 (components take `ref` as a prop, no `forwardRef`), Tailwind C
 
 | File | What it is |
 | --- | --- |
-| `tokens/tokens.css` | Light and dark semantic tokens (oklch), the Tailwind `@theme` mapping, and a base layer that restyles what browsers leave default: focus ring, autofill, scrollbars, selection, `accent-color`, `color-scheme`, reduced motion. |
+| `tokens/tokens.css` | Light and dark semantic tokens (oklch), chart colours (`--chart-1` … `--chart-6`, utilities `bg-chart-1` etc.), the Tailwind `@theme` mapping, and a base layer that restyles what browsers leave default: focus ring, autofill, scrollbars, selection, `accent-color`, `color-scheme`, reduced motion, and forced-colours (high contrast) fallbacks. |
 | `tokens/tailwind.config.v3.ts` | The same tokens mapped for Tailwind v3, with the class substitutions needed. |
 | `lib/utils.ts` | `cn()` class merger. |
 | `components/button.tsx` | Variants, sizes, `loading` (spinner + `aria-busy`), disabled and active states. |
@@ -43,6 +43,7 @@ Requires React 19 (components take `ref` as a prop, no `forwardRef`), Tailwind C
 | `components/confirm-dialog.tsx` | Replaces `confirm()`: `ConfirmDialog`, plus `ConfirmProvider` / `useConfirm()` for `if (await confirm({...}))`. |
 | `components/toaster.tsx` | Replaces `alert()`: sonner styled with tokens; re-exports `toast`. |
 | `components/skeleton.tsx`, `empty-state.tsx` | Loading and empty states. |
+| `components/data-table.tsx` | Semantic, sortable table: caption, column and row headers, sticky header, end-aligned tabular numbers, `aria-sort` plus an announcement, skeleton rows, error row with retry, empty slot. Sort can be controlled to keep it in the URL. |
 | `components/scroll-area.tsx` | Overlay scrollbars for panels where the native bar would shift layout. |
 
 ## Wire the tokens

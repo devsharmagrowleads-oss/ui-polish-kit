@@ -29,6 +29,10 @@ export const STATIC_RULE_IDS = [
   'FD-01', 'FD-02', 'FD-03', 'FD-04', 'FD-05',
   'CP-01', 'CP-02', 'CP-03',
   'BR-01',
+  'DT-01',
+  'NV-02', 'NV-05',
+  'IC-03',
+  'IN-01',
 ];
 
 export function loadRuleIndex() {

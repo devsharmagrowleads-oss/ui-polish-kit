@@ -1,0 +1,47 @@
+<!--
+  Tooltip (NC-08, AX-07). Replaces title="". A popover="hint" opened by
+  interest (hover, focus, long-press) via interestfor. It stays while hovered
+  and closes with Esc. Where interest invokers are not supported, the script
+  opens and closes it on hover and focus.
+
+  Here the icon-only button is named by aria-label and the tooltip repeats that
+  name, so no aria-describedby is added (it would be read twice).
+  Needs: tokens.css, base.css, components.css.
+-->
+<button type="button" class="button ghost icon-only" aria-label="Archive invoice INV-2041" interestfor="archive-tip">
+  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4"/></svg>
+</button>
+<div id="archive-tip" class="tooltip" popover="hint">Archive invoice INV-2041</div>
+
+<script type="module">
+  if (!("interestForElement" in HTMLButtonElement.prototype)) {
+    for (const trigger of document.querySelectorAll("[interestfor]")) {
+      const tip = document.getElementById(trigger.getAttribute("interestfor"));
+      if (!tip) continue;
+      let hideTimer;
+      const show = () => {
+        clearTimeout(hideTimer);
+        if (tip.matches(":popover-open")) return;
+        tip.showPopover({ source: trigger });
+        if (!CSS.supports("position-area", "block-start")) {
+          const t = trigger.getBoundingClientRect();
+          const m = tip.getBoundingClientRect();
+          Object.assign(tip.style, {
+            position: "fixed", inset: "auto", margin: "0",
+            top: `${Math.max(4, t.top - m.height - 8)}px`,
+            left: `${Math.min(Math.max(4, t.left + t.width / 2 - m.width / 2), innerWidth - m.width - 4)}px`,
+          });
+        }
+      };
+      // A short delay lets the pointer move onto the tooltip without it closing (WCAG 1.4.13).
+      const hide = () => { hideTimer = setTimeout(() => tip.matches(":popover-open") && tip.hidePopover(), 150); };
+      trigger.addEventListener("pointerenter", show);
+      trigger.addEventListener("focus", show);
+      trigger.addEventListener("pointerleave", hide);
+      trigger.addEventListener("blur", hide);
+      tip.addEventListener("pointerenter", () => clearTimeout(hideTimer));
+      tip.addEventListener("pointerleave", hide);
+      trigger.addEventListener("keydown", (e) => { if (e.key === "Escape" && tip.matches(":popover-open")) tip.hidePopover(); });
+    }
+  }
+</script>

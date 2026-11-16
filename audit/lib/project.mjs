@@ -193,6 +193,7 @@ function collectFacts(root, allFiles, files, config) {
     hasTailwindThemeConfig: false,
     designDoc: null,
     designDocText: '',
+    localised: false, // translated or right-to-left: enables IN-01
     allFiles,
   };
 
@@ -337,6 +338,16 @@ function collectFacts(root, allFiles, files, config) {
 
   facts.fonts = facts.fonts.filter((x) => x.family);
   facts.customFonts = facts.fonts.filter((x) => !SYSTEM_FAMILIES.has(x.family.toLowerCase()));
+  // Localised: an i18n library, a locale folder, or right-to-left markup.
+  const I18N_LIBS = /"(i18next|react-i18next|next-intl|next-i18next|react-intl|@formatjs\/[\w-]+|@lingui\/[\w-]+|vue-i18n|@nuxtjs\/i18n|svelte-i18n|@inlang\/[\w-]+|typesafe-i18n|rosetta|polyglot|node-polyglot)"\s*:/;
+  try {
+    const pkg = fs.readFileSync(path.join(root, 'package.json'), 'utf8');
+    if (I18N_LIBS.test(pkg)) facts.localised = true;
+  } catch {
+    // no package.json
+  }
+  if (!facts.localised && allFiles.some((p) => /(^|\/)(locales?|i18n|translations|messages|lang)\/[\w@.-]+\.(json|ya?ml|po|ftl|properties)$/i.test(p))) facts.localised = true;
+  if (!facts.localised && files.some((f) => f.hasMarkup && /\bdir\s*=\s*["']?rtl\b/.test(f.text))) facts.localised = true;
   return facts;
 }
 

@@ -245,3 +245,28 @@ Severity: warning · Check: visual
 ```
 
 **Check.** Visual: view the page in greyscale (DevTools Rendering → emulate vision deficiency → achromatopsia); every status is still readable.
+
+## AX-13 · Works in forced-colours (high-contrast) mode
+Severity: warning · Check: visual
+
+**Rule.** Do not convey a boundary, state or separator only with `box-shadow`, `background-color`, `background-image`, gradients or `border-image`: Windows high-contrast mode removes them. Give controls a real `border` or `outline` (transparent in normal mode is fine), and under `@media (forced-colors: active)` restore anything lost using system colours (`CanvasText`, `ButtonText`, `Highlight`, `LinkText`, `GrayText`). Use `forced-color-adjust: none` only where colour itself is the content (a colour swatch, a chart series key), and then set both text and background.
+
+**Why.** In forced-colours mode the browser replaces author colours with the user's system palette and drops shadows and background images, so a focus ring drawn as a box-shadow, a selected tab shown only by its background, or a toggle drawn with gradients simply disappears.
+
+**Bad.**
+```css
+button:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
+.tab[aria-selected="true"] { background: var(--accent); }
+```
+
+**Good.**
+```css
+button:focus-visible { outline: 2px solid transparent; box-shadow: 0 0 0 3px var(--ring); }
+.tab[aria-selected="true"] { background: var(--accent); }
+@media (forced-colors: active) {
+  button:focus-visible { outline-color: Highlight; }
+  .tab[aria-selected="true"] { border-block-end: 2px solid Highlight; }
+}
+```
+
+**Check.** Visual: turn on Windows Contrast themes, or emulate `forced-colors: active` in DevTools (Rendering panel); focus rings, selected states, checkbox marks and dividers are still visible.

@@ -1,0 +1,60 @@
+<!--
+  Toasts (FD-07, ST-05). Replaces alert(). Each toast is a popover="manual"
+  in one labelled region, so it does not close when the user clicks elsewhere.
+  It is announced with ariaNotify() where available, otherwise through a
+  polite live region that is in the page from the start. Toasts stay until
+  dismissed; the information must also be visible elsewhere (the row's new
+  status), so missing a toast never loses anything.
+
+  Usage: showToast("Invoice INV-2041 sent to accounts@northwind.example", "success")
+  Needs: tokens.css, base.css, components.css.
+-->
+<div class="toast-region" role="region" aria-label="Notifications" id="toasts"></div>
+<p class="visually-hidden" aria-live="polite" id="toast-announcer"></p>
+
+<template id="toast-template">
+  <div class="toast" popover="manual">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>
+    <p></p>
+    <button type="button" class="button ghost icon-only" aria-label="Dismiss notification">
+      <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+</template>
+
+<script type="module">
+  const region = document.getElementById("toasts");
+  const announcer = document.getElementById("toast-announcer");
+  const template = document.getElementById("toast-template");
+
+  function showToast(message, kind = "success") {
+    const toast = template.content.firstElementChild.cloneNode(true);
+    toast.classList.add(kind);
+    toast.querySelector("p").textContent = message;
+    const close = toast.querySelector("button");
+    close.addEventListener("click", () => {
+      // Keep focus somewhere sensible: the next toast, or where the user was.
+      const next = toast.nextElementSibling ?? toast.previousElementSibling;
+      toast.hidePopover();
+      toast.remove();
+      restack();
+      next?.querySelector("button")?.focus();
+    });
+    region.append(toast);
+    toast.showPopover();
+    restack();
+    if ("ariaNotify" in document) document.ariaNotify(message);
+    else announcer.textContent = message;
+  }
+
+  // Newest at the bottom; each older toast sits above the one below it.
+  function restack() {
+    let offset = 16;
+    for (const toast of [...region.children].reverse()) {
+      toast.style.setProperty("--toast-offset", `${offset}px`);
+      offset += toast.offsetHeight + 8;
+    }
+  }
+
+  window.showToast = showToast;
+</script>

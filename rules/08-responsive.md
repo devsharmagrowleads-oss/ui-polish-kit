@@ -171,3 +171,24 @@ Severity: warning · Check: visual
 ```
 
 **Check.** Visual: iPhone-sized viewport with browser chrome visible; focus an input; open a dialog taller than the screen.
+
+## RS-09 · Components respond to their container
+Severity: warning · Check: visual
+
+**Rule.** A component that appears in places of different widths (cards, tables, chart panels, forms in a sidebar and in a page) adapts to its own container with container queries: `container-type: inline-size` on the wrapper and `@container (width < 32rem)` rules for the narrow form. Keep `@media` queries for the page layout and for user preferences. Start from the narrow layout as the default so browsers without container queries still get a usable result.
+
+**Why.** A card that switches layout at the viewport's 768px breakpoint still breaks when it is placed in a 320px sidebar on a wide screen. Container queries make the component correct wherever it is used, without one breakpoint per placement.
+
+**Bad.**
+```css
+@media (min-width: 768px) { .stat-card { flex-direction: row; } } /* wrong in a narrow sidebar */
+```
+
+**Good.**
+```css
+.stat-card-wrap { container-type: inline-size; }
+.stat-card { display: flex; flex-direction: column; gap: 0.75rem; }
+@container (width >= 24rem) { .stat-card { flex-direction: row; align-items: center; } }
+```
+
+**Check.** Visual: place each reusable component in the narrowest and widest slots it is used in (sidebar, modal, full page); each looks designed for that width.

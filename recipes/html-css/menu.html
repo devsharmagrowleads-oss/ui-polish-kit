@@ -1,0 +1,95 @@
+<!--
+  Action menu (NC-13). A popover opened by an invoker button, anchored to it,
+  with arrow-key movement. Native focusgroup gives the menu its roles and
+  arrow keys where supported; the script adds them elsewhere, enters the menu
+  on keyboard open, closes it after a command and restores focus.
+
+  Needs: tokens.css, base.css, components.css.
+-->
+<button type="button" class="button outline" id="row-actions-trigger" aria-haspopup="menu" aria-expanded="false"
+  commandfor="row-actions" command="toggle-popover">
+  More actions
+  <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg>
+</button>
+<!-- Directly after its trigger, so browsers add no implicit aria-details. -->
+<div id="row-actions" class="menu" popover="auto">
+  <div focusgroup="menu nomemory" aria-labelledby="row-actions-trigger">
+    <button type="button" data-action="duplicate">Duplicate invoice</button>
+    <button type="button" data-action="download">Download PDF</button>
+    <a href="/invoices/2041/history">View payment history</a>
+    <hr>
+    <button type="button" class="danger" data-action="delete">Delete invoice…</button>
+  </div>
+</div>
+
+<script type="module">
+  const trigger = document.getElementById("row-actions-trigger");
+  const menu = document.getElementById("row-actions");
+  const group = menu.querySelector("[focusgroup]");
+  const items = () => [...group.querySelectorAll("button, a")].filter((el) => !el.disabled);
+  let openedByKeyboard = false;
+
+  // Invoker commands where missing.
+  if (!("commandForElement" in HTMLButtonElement.prototype)) {
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      menu.matches(":popover-open") ? menu.hidePopover() : menu.showPopover({ source: trigger });
+    });
+  }
+
+  // Roles and arrow keys where native focusgroup is missing.
+  if (!("focusGroup" in HTMLElement.prototype)) {
+    group.setAttribute("role", "menu");
+    items().forEach((item) => item.setAttribute("role", "menuitem"));
+  }
+  group.addEventListener("keydown", (event) => {
+    const list = items();
+    const at = list.indexOf(document.activeElement);
+    const keys = { ArrowDown: at + 1, ArrowUp: at - 1, Home: 0, End: list.length - 1 };
+    if (!(event.key in keys) || ("focusGroup" in HTMLElement.prototype && event.key.startsWith("Arrow"))) return;
+    event.preventDefault();
+    list[(keys[event.key] + list.length) % list.length].focus();
+  });
+
+  // Only keyboard opens move focus into the menu.
+  trigger.addEventListener("keydown", (event) => {
+    if (["Enter", " ", "ArrowDown"].includes(event.key)) openedByKeyboard = true;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      menu.matches(":popover-open") ? items()[0].focus() : trigger.click();
+    }
+  });
+  menu.addEventListener("toggle", (event) => {
+    const open = event.newState === "open";
+    trigger.setAttribute("aria-expanded", String(open));
+    if (open) {
+      placeWithoutAnchorPositioning();
+      if (openedByKeyboard) items()[0].focus();
+    }
+    openedByKeyboard = false;
+  });
+
+  // A command closes the menu and returns focus to the trigger.
+  group.addEventListener("click", (event) => {
+    const item = event.target.closest("button[data-action]");
+    if (!item) return;
+    trigger.focus({ focusVisible: event.detail === 0 });
+    menu.hidePopover();
+    // Run item.dataset.action here.
+  });
+
+  // Without CSS anchor positioning, place the menu under its trigger and keep it on screen.
+  function placeWithoutAnchorPositioning() {
+    if (CSS.supports("position-area", "block-end")) return;
+    const t = trigger.getBoundingClientRect();
+    const m = menu.getBoundingClientRect();
+    const below = t.bottom + 4 + m.height <= innerHeight;
+    Object.assign(menu.style, {
+      position: "fixed",
+      inset: "auto",
+      margin: "0",
+      top: `${below ? t.bottom + 4 : Math.max(4, t.top - 4 - m.height)}px`,
+      left: `${Math.min(Math.max(4, t.left), innerWidth - m.width - 4)}px`,
+    });
+  }
+</script>

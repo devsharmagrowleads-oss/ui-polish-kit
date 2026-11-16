@@ -1,0 +1,15 @@
+---
+trigger: model_decision
+description: "Icons rules (ui-polish-kit). Adding, choosing or sizing an icon; building icon buttons, navigation items, badges, empty states or status messages with icons; importing an icon library or inline SVG."
+---
+
+# Icons (IC)
+
+This is the short form. Before writing code in this area, read the full rules with reasons, bad/good examples and checks: `.ui-polish/rules/20-icons.md`.
+
+- **IC-01 Icon size follows the text beside it** (warning). Use three sizes, defined as tokens or size classes: 16px next to 12–14px text (tables, badges, dense menus), 20px next to 16px body text (buttons, navigation, form fields), 24px for standalone icons. Empty-state and feature icons may go to 32–48px inside a tinted circle, and nowhere else. Stroke width is the set's default (1.5 or 2) everywhere; do not mix.
+- **IC-02 One style, and fill means "on"** (warning). Use the outline style of the one icon set (SL-04) throughout. A filled variant marks a selected or active state only (the current nav item, a starred item, an enabled toggle), so fill always means "on". Do not mix outline and solid icons for unrelated reasons, and do not use multi-colour icons inside the interface.
+- **IC-03 Decorative icons are hidden; meaningful ones have text** (warning). An icon next to a text label is decorative: `aria-hidden="true"` (and `focusable="false"` on inline SVG). An icon that carries meaning on its own (a status icon in a table, a warning sign) has a text alternative: visible text, or `role="img"` with `aria-label`, or a `<title>` inside the SVG. Icons take their colour from `currentColor` and tokens, never a hard-coded fill, and meet 3:1 contrast with their background.
+- **IC-04 Icon plus label by default** (warning). Buttons and navigation items show an icon and a text label. Icon-only is allowed only for actions whose icon is universally known (close ×, search, menu, more ⋯, previous/next, play/pause), in tight toolbars or repeated rows, and then needs `aria-label` (AX-07), a tooltip on hover and focus (NC-08) and a 44px touch target (RS-05). Never use an icon to mean two things in one product, or two icons for the same action.
+- **IC-05 Icons align with their text** (info). Put the icon and its label in an inline flex row with `align-items: center`, a gap of 6–8px (a spacing token), and `flex-shrink: 0` on the icon so long labels never squash it. Next to multi-line text, align the icon with the first line, not the middle of the block. Leading icons go before the label; trailing icons only for direction (chevron, external link), and directional icons mirror in right-to-left layouts (IN-03).
+- **IC-06 Icons are delivered efficiently** (info). Import icons individually (`import { Search } from 'lucide-react'`), never a whole library or an icon font. Repeated inline SVG icons on a plain HTML page use one hidden sprite with `<symbol>` and `<use href="#id">`; CSS-driven icons use a mask with `currentColor`. Do not recolour `<img>` icons with filters. Brand and product logos come from one source as SVG.

@@ -1,0 +1,72 @@
+<!--
+  Form field with validation (FM-01…FM-09). A visible label, a hint, the right
+  input type and autocomplete, and an error that appears only after the user
+  has interacted (:user-invalid), never on page load. The script keeps
+  aria-invalid and aria-describedby in step with what is shown, and announces
+  a new error once through a single polite live region.
+
+  Needs: tokens.css, base.css, components.css.
+-->
+<form class="form signup" novalidate>
+  <div class="field">
+    <label for="work-email">Work email</label>
+    <p class="hint" id="work-email-hint">We send the invoice copies here.</p>
+    <input class="input" id="work-email" name="email" type="email" autocomplete="email" required
+      aria-describedby="work-email-hint" data-error="work-email-error">
+    <p class="error" id="work-email-error">
+      <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      Enter an email address like name@company.com.
+    </p>
+  </div>
+  <button type="submit" class="button">Create account</button>
+</form>
+
+<script type="module">
+  const form = document.querySelector(".signup");
+
+  // One polite live region for the page.
+  const announcer = Object.assign(document.createElement("div"), { className: "visually-hidden" });
+  announcer.setAttribute("aria-live", "polite");
+  document.body.append(announcer);
+
+  // novalidate turns off the browser's own error bubbles (unstyled, NC rules); this
+  // script shows ours instead. Before a submit, :user-invalid decides; after a failed
+  // submit (or where :user-invalid is unsupported), validity does.
+  const fallback = !CSS.supports("selector(:user-invalid)");
+  const touched = new WeakSet();
+  let submitted = false;
+  const byValidity = () => fallback || submitted;
+  const isInvalid = (el) => (byValidity() ? touched.has(el) && !el.validity.valid : el.matches(":user-invalid"));
+
+  function sync(el, announce = false) {
+    if (!el.matches?.("input, select, textarea")) return;
+    const invalid = isInvalid(el);
+    const errorId = el.dataset.error;
+    el.classList.toggle("user-invalid-fallback", byValidity() && invalid);
+    el.setAttribute("aria-invalid", String(invalid));
+    if (errorId) {
+      // Reference the error only while it is shown: hidden text in aria-describedby is still read.
+      const ids = (el.getAttribute("aria-describedby") || "").split(/\s+/).filter((id) => id && id !== errorId);
+      if (invalid) ids.push(errorId);
+      el.setAttribute("aria-describedby", ids.join(" "));
+      if (invalid && announce) {
+        const label = el.labels?.[0]?.textContent.trim() ?? "";
+        setTimeout(() => { announcer.textContent = `${label}: ${document.getElementById(errorId).textContent.trim()}`; }, 500);
+      }
+    }
+  }
+
+  form.querySelectorAll("input, select, textarea").forEach((el) => sync(el));
+  form.addEventListener("blur", (e) => { touched.add(e.target); sync(e.target, true); }, true);
+  form.addEventListener("input", (e) => sync(e.target));
+  form.addEventListener("submit", (e) => {
+    submitted = true;
+    const fields = [...form.elements].filter((el) => el.willValidate);
+    fields.forEach((el) => { touched.add(el); sync(el); });
+    const first = fields.find((el) => !el.validity.valid);
+    if (first) {
+      e.preventDefault();
+      first.focus(); // focus reads the field's error
+    }
+  });
+</script>

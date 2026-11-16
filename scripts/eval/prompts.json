@@ -1,0 +1,14 @@
+[
+  {
+    "id": "dashboard",
+    "prompt": "Build a single-page admin dashboard for an invoicing app in plain HTML, CSS and JavaScript (index.html, styles.css, app.js; no frameworks, no build step, no CDN libraries). It needs a header with navigation, four summary numbers, a bar chart of revenue for the last six months, and a table of recent invoices with customer, date, status and amount that can be sorted by amount. Use realistic sample data. Work only in this folder."
+  },
+  {
+    "id": "signup",
+    "prompt": "Build a sign-up page for a project-management SaaS in plain HTML, CSS and JavaScript (index.html, styles.css, app.js; no frameworks, no build step, no CDN libraries). The form asks for full name, work email, password, team size (a dropdown) and a preferred start date, plus a terms checkbox. Validate the fields and show a success state after submitting. Work only in this folder."
+  },
+  {
+    "id": "landing",
+    "prompt": "Build a landing page for a meal-planning app in plain HTML, CSS and JavaScript (index.html, styles.css, app.js; no frameworks, no build step, no CDN libraries). Include a hero, a features section, pricing with three plans, an FAQ, a footer and a dark mode toggle. Work only in this folder."
+  }
+]
