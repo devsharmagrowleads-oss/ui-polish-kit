@@ -5,7 +5,7 @@ description: "UI polish core rules for any interface work."
 
 # UI polish: core rules
 
-Apply these whenever you create or change user-interface code (pages, components, styles, copy). Coding agents fail at UI in predictable ways: browser-default controls next to styled ones, the same font and purple gradient every time, uneven spacing, missing states, no dark mode, placeholder copy. These rules prevent that. This file is the short version; the topic files listed below hold the detail (rule, reason, bad and good example, how to check). Read the relevant topic file **before** writing the code it covers.
+Apply these whenever you create or change user-interface code (pages, components, styles, copy). Agents fail at UI predictably: browser-default controls, the same font and purple gradient, uneven spacing, missing states, no dark mode, placeholder copy. This is the short version; the topic files below hold the detail (rule, reason, bad and good example, check). Read the relevant topic file **before** writing the code it covers.
 
 Kit root: `.ui-polish` (contains `rules/`, `recipes/`, `audit/`).
 
@@ -37,27 +37,33 @@ These rules set the look; Modern Web Guidance picks the browser feature. Before 
 
 ## Topic files (read on demand)
 
-- NC Native controls: `.ui-polish/rules/01-native-controls.md`
-- TK Design tokens: `.ui-polish/rules/02-design-tokens.md`
-- TY Typography: `.ui-polish/rules/03-typography.md`
-- SP Spacing and layout: `.ui-polish/rules/04-spacing-layout.md`
-- SL AI-slop blocklist: `.ui-polish/rules/05-ai-slop.md`
-- ST Component states: `.ui-polish/rules/06-component-states.md`
-- FM Forms: `.ui-polish/rules/07-forms.md`
-- RS Responsive design: `.ui-polish/rules/08-responsive.md`
-- DM Dark mode: `.ui-polish/rules/09-dark-mode.md`
-- AX Accessibility: `.ui-polish/rules/10-accessibility.md`
-- MO Motion: `.ui-polish/rules/11-motion.md`
-- CO Colour: `.ui-polish/rules/12-colour.md`
-- FD Finishing details: `.ui-polish/rules/13-finishing-details.md`
-- CP Copy and microcopy: `.ui-polish/rules/14-copy.md`
-- BR Brand intake: `.ui-polish/rules/15-brand-intake.md`
-- SA Self-audit gate: `.ui-polish/rules/16-self-audit.md`
+All in `.ui-polish/rules/`:
+- NC Native controls: `01-native-controls.md`
+- TK Design tokens: `02-design-tokens.md`
+- TY Typography: `03-typography.md`
+- SP Spacing and layout: `04-spacing-layout.md`
+- SL AI-slop blocklist: `05-ai-slop.md`
+- ST Component states: `06-component-states.md`
+- FM Forms: `07-forms.md`
+- RS Responsive design: `08-responsive.md`
+- DM Dark mode: `09-dark-mode.md`
+- AX Accessibility: `10-accessibility.md`
+- MO Motion: `11-motion.md`
+- CO Colour: `12-colour.md`
+- FD Finishing details: `13-finishing-details.md`
+- CP Copy and microcopy: `14-copy.md`
+- BR Brand intake: `15-brand-intake.md`
+- SA Self-audit gate: `16-self-audit.md`
+- DT Data tables: `17-data-tables.md`
+- CH Charts and data visualisation: `18-charts.md`
+- NV Navigation and page structure: `19-navigation.md`
+- IC Icons: `20-icons.md`
+- IN Internationalisation and right-to-left: `21-internationalisation.md`
 
 ## Checking your work
 
 - Static check: `node .ui-polish/audit/cli.mjs .` (add `--json` for machine output). It reports `file:line`, rule ID, severity and a score; exit code 1 means fail. Fix every error, then warnings.
 - Visual audit and scoring procedure: `.ui-polish/audit/PROCEDURE.md`. Full checklist of every rule: `.ui-polish/audit/CHECKLIST.md`.
-- A deliberate exception is allowed only with a reason next to it: `ui-polish-ignore-next-line <RULE-ID>: reason` in a comment, or a `rules` entry in `ui-polish.config.json`.
+- Exceptions need a reason beside them: `ui-polish-ignore-next-line <RULE-ID>: reason`, or a `rules` entry in `ui-polish.config.json`.
 
 Do not say a UI task is complete until the static check passes and you have looked at the screenshots.

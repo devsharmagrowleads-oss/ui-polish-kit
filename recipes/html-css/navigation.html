@@ -1,0 +1,63 @@
+<!--
+  App shell: skip link, header with primary navigation, breadcrumbs and the
+  page header (NV-01…NV-07, RS-07). One <nav> at every width: on a narrow
+  header its list is a popover opened by the "Menu" button; when the header is
+  48rem or wider (a container query, not the viewport) the same list shows
+  inline. The current page is marked with aria-current="page" and more than
+  colour. Separators in the breadcrumbs are decorative CSS.
+
+  Place the skip link as the first element in <body>; <main id="main"> follows.
+  Needs: tokens.css, base.css, components.css.
+-->
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="/">Ledgerly</a>
+    <nav aria-label="Primary">
+      <button type="button" class="button ghost menu-button" popovertarget="site-menu" aria-controls="site-menu">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        Menu
+      </button>
+      <ul id="site-menu" class="site-menu" popover="auto">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/invoices" aria-current="page">Invoices</a></li>
+        <li><a href="/customers">Customers</a></li>
+        <li><a href="/reports">Reports</a></li>
+        <li><a href="/settings">Settings</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <nav class="breadcrumbs" aria-label="Breadcrumbs">
+    <ol>
+      <li><a href="/invoices">Invoices</a></li>
+      <li><a href="/invoices?status=overdue">Overdue</a></li>
+      <li><a href="/invoices/2041" aria-current="page">INV-2041</a></li>
+    </ol>
+  </nav>
+
+  <div class="page-header">
+    <div>
+      <h1>INV-2041</h1>
+      <p>Northwind Freight · issued 3 March 2026 · due 2 April 2026</p>
+    </div>
+    <div class="actions">
+      <a class="button outline" href="/invoices/2041.pdf">Download PDF</a>
+      <button type="button" class="button">Record payment</button>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+  // Without CSS anchor positioning, keep the narrow menu under its button.
+  const menu = document.getElementById("site-menu");
+  const button = document.querySelector(".menu-button");
+  menu.addEventListener("toggle", (event) => {
+    if (event.newState !== "open" || CSS.supports("position-area", "block-end")) return;
+    const b = button.getBoundingClientRect();
+    Object.assign(menu.style, { position: "fixed", inset: "auto", margin: "0", top: `${b.bottom + 8}px`, insetInlineEnd: "16px" });
+  });
+</script>

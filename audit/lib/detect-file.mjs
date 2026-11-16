@@ -541,6 +541,75 @@ function stringToken(text, pos) {
   return m ? m[0] : '';
 }
 
+// ---------------------------------------------------------------------------
+// Tables, page structure, links, icons, direction
+// ---------------------------------------------------------------------------
+
+/** The source between an opening tag and its matching close (first one found; nesting is rare here). */
+function contentOf(text, tag) {
+  const close = text.indexOf(`</${tag.name}`, tag.end);
+  return close < 0 ? '' : text.slice(tag.end + 1, close);
+}
+
+function structure(f, facts, report, once) {
+  if (f.hasMarkup) {
+    // DT-01 tables with no header cells
+    for (const tag of findTags(f.text, 'table')) {
+      const body = contentOf(f.text, tag);
+      if (body && !/<th[\s>]/.test(body) && !/role=["']columnheader["']/.test(body)) {
+        report('DT-01', tag.start, '<table> without header cells. Add a <thead> of <th scope="col"> (and <th scope="row"> for the row\'s name) so every cell has a header for assistive technology, plus a <caption>.');
+      }
+    }
+
+    // NV-05 links used as buttons
+    const fake = /\shref\s*=\s*(?:\{\s*)?(["'`])(#|javascript:[^"'`]*)\1/g;
+    let m;
+    while ((m = fake.exec(f.text))) {
+      report('NV-05', m.index + 1, `href="${clip(m[2], 30)}" makes a link that goes nowhere. Use <button type="button"> for actions, and a real URL for navigation.`);
+    }
+
+    // IC-03 inline SVG that is neither hidden nor named
+    if (f.ext !== '.svg') {
+      for (const tag of findTags(f.text, 'svg')) {
+        if (hasSpread(tag.src)) continue;
+        if (/\saria-hidden\s*=\s*(\{\s*)?["']?true|\saria-hidden(?=[\s/>])|\srole\s*=\s*["']?(img|presentation|none)|\saria-label(ledby)?\s*=/.test(tag.src)) continue;
+        if (/width=["']?0["']?/.test(tag.src) && /height=["']?0["']?/.test(tag.src)) continue; // a hidden sprite sheet
+        if (/<title[\s>]/.test(contentOf(f.text, tag))) continue;
+        report('IC-03', tag.start, 'Inline <svg> with no aria-hidden and no accessible name. Add aria-hidden="true" when it sits next to a text label, or role="img" with aria-label when the icon carries meaning on its own.');
+      }
+    }
+  }
+
+  // NV-02 a full document without <main>. App shells that render into a root element are skipped.
+  if (f.isHtmlDoc) {
+    const body = /<body[\s>]/i.exec(f.text);
+    if (body && !/<main[\s>]|role\s*=\s*["']main["']/i.test(f.text)) {
+      const inner = f.text.slice(body.index).replace(/<script[\s\S]*?<\/script>/gi, '');
+      const shell = /\sid\s*=\s*["'](root|app|__next|__nuxt|svelte|main-app)["']/.test(inner);
+      const text = inner.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      if (!shell && text.length > 40) {
+        report('NV-02', body.index, 'Page without a <main> landmark. Wrap the page content in <main id="main">, put navigation in a labelled <nav>, and add a "Skip to content" link as the first focusable element.');
+      }
+    }
+  }
+
+  // IN-01 physical left/right in a localised project
+  if (facts.localised) {
+    for (const d of styleDeclarations(f)) {
+      const physical = /^(margin|padding|border)-(left|right)(-|$)|^(left|right)$|^border-(top|bottom)-(left|right)-radius$/.test(d.prop)
+        || ((d.prop === 'text-align' || d.prop === 'float' || d.prop === 'clear') && /^(left|right)\b/.test(d.value));
+      if (physical) once('IN-01', d.pos, d.prop, (n, first) => `${n} physical left/right ${n === 1 ? 'property' : 'properties'} (first: \`${first}\`) in a translated project. Use logical properties (margin-inline-start, padding-inline-end, inset-inline-start, text-align: start) so right-to-left layouts mirror.`);
+    }
+    if (f.hasMarkup) {
+      const tw = /(?<=["'`\s:])-?(?:m[lr]|p[lr]|left|right|rounded-[lr]|border-[lr]|scroll-m[lr]|scroll-p[lr])-[\w./[\]-]+|(?<=["'`\s:])(?:text|float)-(?:left|right)(?=["'`\s])/g;
+      let t;
+      while ((t = tw.exec(f.text))) {
+        once('IN-01', t.index, t[0], (n, first) => `${n} physical left/right Tailwind ${n === 1 ? 'utility' : 'utilities'} (first: \`${first}\`) in a translated project. Use the logical ones (ms-/me-, ps-/pe-, start-/end-, rounded-s-/rounded-e-, text-start/text-end).`);
+      }
+    }
+  }
+}
+
 export function runFileDetectors(f, facts, report, once) {
   nativeControls(f, facts, report);
   dialogs(f, facts, report);
@@ -551,4 +620,5 @@ export function runFileDetectors(f, facts, report, once) {
   forms(f, facts, report);
   responsive(f, facts, report);
   documentHead(f, facts, report);
+  structure(f, facts, report, once);
 }

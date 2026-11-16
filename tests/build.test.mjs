@@ -15,9 +15,9 @@ test('generated files on disk are up to date (run `npm run build` if this fails)
   assert.equal(r.status, 0, r.stderr || r.stdout);
 });
 
-test('sixteen topics, each rule complete', () => {
-  assert.equal(topics.length, 16);
-  assert.deepEqual(topics.map((t) => t.prefix), ['NC', 'TK', 'TY', 'SP', 'SL', 'ST', 'FM', 'RS', 'DM', 'AX', 'MO', 'CO', 'FD', 'CP', 'BR', 'SA']);
+test('twenty-one topics, each rule complete', () => {
+  assert.equal(topics.length, 21);
+  assert.deepEqual(topics.map((t) => t.prefix), ['NC', 'TK', 'TY', 'SP', 'SL', 'ST', 'FM', 'RS', 'DM', 'AX', 'MO', 'CO', 'FD', 'CP', 'BR', 'SA', 'DT', 'CH', 'NV', 'IC', 'IN']);
   for (const t of topics) {
     assert.ok(t.rules.length >= 5, `${t.file} has only ${t.rules.length} rules`);
     for (const r of t.rules) {

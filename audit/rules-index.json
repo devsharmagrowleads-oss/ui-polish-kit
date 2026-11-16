@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "topics": [
     {
       "prefix": "NC",
@@ -112,6 +112,41 @@
       "title": "Self-audit gate",
       "file": "16-self-audit.md",
       "when": "Before reporting any UI task as done, before opening a pull request that touches UI, or when asked to review or audit an interface."
+    },
+    {
+      "prefix": "DT",
+      "topic": "data-tables",
+      "title": "Data tables",
+      "file": "17-data-tables.md",
+      "when": "Showing rows of records (lists of users, orders, invoices, logs, search results), building an admin screen or dashboard table, or adding sorting, filtering, selection or pagination to one."
+    },
+    {
+      "prefix": "CH",
+      "topic": "charts",
+      "title": "Charts and data visualisation",
+      "file": "18-charts.md",
+      "when": "Adding a chart, graph, sparkline, KPI tile with a trend, gauge or any visual summary of numbers to a dashboard, report or landing page; choosing a chart library or its colours."
+    },
+    {
+      "prefix": "NV",
+      "topic": "navigation",
+      "title": "Navigation and page structure",
+      "file": "19-navigation.md",
+      "when": "Building the app shell, header, sidebar, tabs, breadcrumbs or page header; adding a new page or route; deciding where a page's title and main actions go."
+    },
+    {
+      "prefix": "IC",
+      "topic": "icons",
+      "title": "Icons",
+      "file": "20-icons.md",
+      "when": "Adding, choosing or sizing an icon; building icon buttons, navigation items, badges, empty states or status messages with icons; importing an icon library or inline SVG."
+    },
+    {
+      "prefix": "IN",
+      "topic": "internationalisation",
+      "title": "Internationalisation and right-to-left",
+      "file": "21-internationalisation.md",
+      "when": "The product is or will be translated, supports right-to-left languages (Arabic, Hebrew, Persian, Urdu), shows dates, numbers, currencies or plurals, or sets fixed widths on text."
     }
   ],
   "rules": {
@@ -619,6 +654,13 @@
       "topic": "responsive",
       "file": "08-responsive.md"
     },
+    "RS-09": {
+      "title": "Components respond to their container",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "responsive",
+      "file": "08-responsive.md"
+    },
     "DM-01": {
       "title": "Dark values are defined for the tokens",
       "severity": "warning",
@@ -745,6 +787,13 @@
       "topic": "accessibility",
       "file": "10-accessibility.md"
     },
+    "AX-13": {
+      "title": "Works in forced-colours (high-contrast) mode",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "accessibility",
+      "file": "10-accessibility.md"
+    },
     "MO-01": {
       "title": "Transition specific properties, never `all`",
       "severity": "info",
@@ -790,6 +839,13 @@
     "MO-07": {
       "title": "Layout stays stable while things move",
       "severity": "warning",
+      "check": "visual",
+      "topic": "motion",
+      "file": "11-motion.md"
+    },
+    "MO-08": {
+      "title": "Page and view changes use view transitions",
+      "severity": "info",
       "check": "visual",
       "topic": "motion",
       "file": "11-motion.md"
@@ -1031,6 +1087,244 @@
       "check": "process",
       "topic": "self-audit",
       "file": "16-self-audit.md"
+    },
+    "DT-01": {
+      "title": "Tables are real tables",
+      "severity": "warning",
+      "check": "static",
+      "topic": "data-tables",
+      "file": "17-data-tables.md"
+    },
+    "DT-02": {
+      "title": "Columns are aligned by what they hold",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "data-tables",
+      "file": "17-data-tables.md"
+    },
+    "DT-03": {
+      "title": "Sorting is visible and announced",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "data-tables",
+      "file": "17-data-tables.md"
+    },
+    "DT-04": {
+      "title": "The header stays and rows have a set density",
+      "severity": "info",
+      "check": "visual",
+      "topic": "data-tables",
+      "file": "17-data-tables.md"
+    },
+    "DT-05": {
+      "title": "Every table has its states",
+      "severity": "error",
+      "check": "visual",
+      "topic": "data-tables",
+      "file": "17-data-tables.md"
+    },
+    "DT-06": {
+      "title": "Paging shows where you are",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "data-tables",
+      "file": "17-data-tables.md"
+    },
+    "DT-07": {
+      "title": "Selection and row actions are predictable",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "data-tables",
+      "file": "17-data-tables.md"
+    },
+    "DT-08": {
+      "title": "Long and missing values are handled",
+      "severity": "info",
+      "check": "visual",
+      "topic": "data-tables",
+      "file": "17-data-tables.md"
+    },
+    "CH-01": {
+      "title": "The chart answers one question",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "charts",
+      "file": "18-charts.md"
+    },
+    "CH-02": {
+      "title": "Colour comes from chart tokens and means something",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "charts",
+      "file": "18-charts.md"
+    },
+    "CH-03": {
+      "title": "Label directly; axes have units",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "charts",
+      "file": "18-charts.md"
+    },
+    "CH-04": {
+      "title": "Scales are honest",
+      "severity": "error",
+      "check": "visual",
+      "topic": "charts",
+      "file": "18-charts.md"
+    },
+    "CH-05": {
+      "title": "Readable without colour or sight",
+      "severity": "error",
+      "check": "visual",
+      "topic": "charts",
+      "file": "18-charts.md"
+    },
+    "CH-06": {
+      "title": "Charts have states and fit their box",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "charts",
+      "file": "18-charts.md"
+    },
+    "CH-07": {
+      "title": "Interaction adds detail, not decoration",
+      "severity": "info",
+      "check": "visual",
+      "topic": "charts",
+      "file": "18-charts.md"
+    },
+    "NV-01": {
+      "title": "The current location is always marked",
+      "severity": "error",
+      "check": "visual",
+      "topic": "navigation",
+      "file": "19-navigation.md"
+    },
+    "NV-02": {
+      "title": "Landmarks and a skip link",
+      "severity": "warning",
+      "check": "static",
+      "topic": "navigation",
+      "file": "19-navigation.md"
+    },
+    "NV-03": {
+      "title": "One page-header pattern",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "navigation",
+      "file": "19-navigation.md"
+    },
+    "NV-04": {
+      "title": "Breadcrumbs for depth",
+      "severity": "info",
+      "check": "visual",
+      "topic": "navigation",
+      "file": "19-navigation.md"
+    },
+    "NV-05": {
+      "title": "Links go places, buttons do things",
+      "severity": "error",
+      "check": "static",
+      "topic": "navigation",
+      "file": "19-navigation.md"
+    },
+    "NV-06": {
+      "title": "View state lives in the URL",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "navigation",
+      "file": "19-navigation.md"
+    },
+    "NV-07": {
+      "title": "The menu is short and grouped",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "navigation",
+      "file": "19-navigation.md"
+    },
+    "IC-01": {
+      "title": "Icon size follows the text beside it",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "icons",
+      "file": "20-icons.md"
+    },
+    "IC-02": {
+      "title": "One style, and fill means \"on\"",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "icons",
+      "file": "20-icons.md"
+    },
+    "IC-03": {
+      "title": "Decorative icons are hidden; meaningful ones have text",
+      "severity": "warning",
+      "check": "static",
+      "topic": "icons",
+      "file": "20-icons.md"
+    },
+    "IC-04": {
+      "title": "Icon plus label by default",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "icons",
+      "file": "20-icons.md"
+    },
+    "IC-05": {
+      "title": "Icons align with their text",
+      "severity": "info",
+      "check": "visual",
+      "topic": "icons",
+      "file": "20-icons.md"
+    },
+    "IC-06": {
+      "title": "Icons are delivered efficiently",
+      "severity": "info",
+      "check": "visual",
+      "topic": "icons",
+      "file": "20-icons.md"
+    },
+    "IN-01": {
+      "title": "Logical properties, not left and right",
+      "severity": "info",
+      "check": "static",
+      "topic": "internationalisation",
+      "file": "21-internationalisation.md"
+    },
+    "IN-02": {
+      "title": "Text can grow and wrap",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "internationalisation",
+      "file": "21-internationalisation.md"
+    },
+    "IN-03": {
+      "title": "Direction and language are declared; direction-aware icons flip",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "internationalisation",
+      "file": "21-internationalisation.md"
+    },
+    "IN-04": {
+      "title": "Format with Intl, pluralise with rules",
+      "severity": "error",
+      "check": "visual",
+      "topic": "internationalisation",
+      "file": "21-internationalisation.md"
+    },
+    "IN-05": {
+      "title": "Strings live outside the components",
+      "severity": "info",
+      "check": "process",
+      "topic": "internationalisation",
+      "file": "21-internationalisation.md"
+    },
+    "IN-06": {
+      "title": "Fonts and line height cover every script",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "internationalisation",
+      "file": "21-internationalisation.md"
     }
   }
 }

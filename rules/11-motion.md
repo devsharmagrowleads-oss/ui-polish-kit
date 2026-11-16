@@ -144,3 +144,24 @@ Severity: warning · Check: visual
 ```
 
 **Check.** Visual: sweep the pointer across lists, tabs and nav; nothing shifts. Trigger each inline message and watch neighbouring content.
+
+## MO-08 · Page and view changes use view transitions
+Severity: info · Check: visual
+
+**Rule.** When moving between pages or views of the same thing (list to detail, tab to tab, step to step), use the View Transitions API: `@view-transition { navigation: auto; }` for multi-page sites, `document.startViewTransition()` around the DOM update in single-page apps, and a shared `view-transition-name` only on the one or two elements the user is tracking. Keep it short (under 300ms), wrap it in `prefers-reduced-motion: no-preference`, and move focus to the new view's heading after the update. It is an enhancement: without support the change happens instantly.
+
+**Why.** A hard cut between a list and a detail page loses the user's place; hand-written page animations with absolute positioning and timers are fragile and block input. View transitions are built in, run off the main thread, and fall back to no animation.
+
+**Bad.**
+```js
+listEl.classList.add('fade-out'); setTimeout(() => { render(detail); detailEl.classList.add('fade-in'); }, 400);
+```
+
+**Good.**
+```js
+const update = () => render(detail);
+const done = document.startViewTransition ? document.startViewTransition(update).finished : Promise.resolve(update());
+done.finally(() => document.getElementById('detail-heading')?.focus());
+```
+
+**Check.** Visual: navigate list → detail → back with reduced motion off and on; the transition is quick, focus lands on the new heading, and with reduced motion it is instant.

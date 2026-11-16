@@ -55,6 +55,7 @@ test('examples/before fails with the expected findings', () => {
     'MO-01', 'MO-02', 'MO-03', 'MO-04',
     'FD-01', 'FD-02', 'FD-03', 'FD-04', 'FD-05',
     'CP-01', 'CP-02', 'CP-03', 'BR-01',
+    'DT-01', 'NV-02', 'NV-05', 'IC-03',
   ];
   const missing = expected.filter((id) => !ids.has(id));
   assert.deepEqual(missing, [], `rules that should fire on examples/before but did not: ${missing.join(', ')}`);
@@ -199,6 +200,43 @@ test('flags the incorrect twin of each guarded pattern', () => {
 // ---------------------------------------------------------------------------
 // Ignore comments and config
 // ---------------------------------------------------------------------------
+
+test('DT-01 tables need header cells', () => {
+  assert.deepEqual(clean({ 'p.html': '<table><tr><td>INV-1</td><td>98.00</td></tr></table>' }).ids, ['DT-01']);
+  assert.deepEqual(clean({ 'p.html': '<table><caption>Invoices</caption><thead><tr><th scope="col">Invoice</th></tr></thead><tbody><tr><td>INV-1</td></tr></tbody></table>' }).ids, []);
+  assert.deepEqual(clean({ 'p.tsx': 'export const T = () => <table><thead><tr>{cols.map((c) => <th key={c}>{c}</th>)}</tr></thead></table>;' }).ids, []);
+});
+
+test('NV-05 links that go nowhere', () => {
+  assert.deepEqual(clean({ 'p.html': '<a href="#" onclick="archive()">Archive</a>' }).ids, ['NV-05']);
+  assert.deepEqual(clean({ 'p.tsx': 'export const L = () => <a href="javascript:void(0)">Open</a>;' }).ids, ['NV-05']);
+  assert.deepEqual(clean({ 'p.html': '<a href="#main">Skip to content</a> <a href="/settings">Settings</a>' }).ids, []);
+});
+
+test('NV-02 pages need a <main>, app shells are skipped', () => {
+  const page = (body) => `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Invoices · Ledgerly</title><meta name="description" content="Invoices."><meta property="og:title" content="x"><meta property="og:description" content="x"><meta property="og:image" content="/og.png"><link rel="icon" href="/favicon.svg"></head><body>${body}</body></html>`;
+  const has = (body) => clean({ 'index.html': page(body), 'favicon.svg': '<svg xmlns="http://www.w3.org/2000/svg"/>', '404.html': page('<main><h1>Page not found</h1></main>') }).ids.includes('NV-02');
+  assert.equal(has('<div class="content"><h1>Invoices</h1><p>Every invoice sent from this workspace in March.</p></div>'), true);
+  assert.equal(has('<main id="main"><h1>Invoices</h1><p>Every invoice sent from this workspace in March.</p></main>'), false);
+  assert.equal(has('<div id="root"></div><script type="module" src="/src/main.tsx"></script>'), false);
+});
+
+test('IC-03 inline SVG must be hidden or named', () => {
+  assert.deepEqual(clean({ 'p.html': '<button type="button"><svg viewBox="0 0 24 24"><path d="M0 0"/></svg> Delete</button>' }).ids, ['IC-03']);
+  assert.deepEqual(clean({ 'p.html': '<button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M0 0"/></svg> Delete</button>' }).ids, []);
+  assert.deepEqual(clean({ 'p.html': '<svg role="img" aria-label="Overdue" viewBox="0 0 24 24"><path d="M0 0"/></svg>' }).ids, []);
+  assert.deepEqual(clean({ 'p.html': '<svg viewBox="0 0 24 24"><title>Overdue</title><path d="M0 0"/></svg>' }).ids, []);
+  assert.deepEqual(clean({ 'p.tsx': 'export const I = (props) => <svg {...props} viewBox="0 0 24 24" />;' }).ids, []);
+});
+
+test('IN-01 physical left/right only in localised projects', () => {
+  const css = { 'app.css': '.alert-icon { margin-left: 0.5rem; text-align: right; }' };
+  assert.deepEqual(clean(css).ids, []);
+  assert.deepEqual(clean({ ...css, 'package.json': '{"dependencies":{"next-intl":"^4.0.0"}}' }).ids, ['IN-01']);
+  assert.deepEqual(clean({ ...css, 'locales/de.json': '{}' }).ids, ['IN-01']);
+  assert.deepEqual(clean({ 'p.tsx': 'export const A = () => <p className="ml-2 text-left">Hi</p>;', 'messages/ar.json': '{}' }).ids, ['IN-01']);
+  assert.deepEqual(clean({ 'app.css': '.alert-icon { margin-inline-start: 0.5rem; text-align: start; }', 'locales/de.json': '{}' }).ids, []);
+});
 
 test('inline ignore comments', () => {
   const css = (comment) => ({ 'a.css': `.a {\n  ${comment}\n  color: #333333;\n}\n.b { color: #444444; }` });

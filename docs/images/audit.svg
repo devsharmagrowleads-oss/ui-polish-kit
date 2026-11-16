@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 612" width="980" height="612" role="img" aria-labelledby="tt td">
   <title id="tt">ui-polish audit output</title>
-  <desc id="td">The static checker fails the before example with 56 errors and 95 warnings, score 0 of 100, and passes the after example with a score of 100.</desc>
+  <desc id="td">The static checker fails the before example with 57 errors and 99 warnings, score 0 of 100, and passes the after example with a score of 100.</desc>
   <rect width="980" height="612" rx="10" fill="#0a1214"/>
   <rect x="0.5" y="0.5" width="979" height="611" rx="10" fill="none" stroke="#2a3a3d"/>
   <circle cx="24" cy="22" r="6" fill="#f08a75"/><circle cx="44" cy="22" r="6" fill="#e9c46a"/><circle cx="64" cy="22" r="6" fill="#7fd3a0"/>
@@ -23,7 +23,7 @@
   <text x="28" y="374" xml:space="preserve"><tspan fill="#7d8f91">  26:34  </tspan><tspan fill="#f08a75">error    </tspan><tspan fill="#5fd0c5">NC-07  </tspan><tspan fill="#e6eded">alert() opens a browser dialog that cannot be styled.</tspan></text>
   <text x="28" y="396" xml:space="preserve"><tspan fill="#7d8f91">  ... 151 more</tspan></text>
   
-  <text x="28" y="440" xml:space="preserve"><tspan fill="#e6eded">56 errors, 95 warnings, 10 info</tspan></text>
+  <text x="28" y="440" xml:space="preserve"><tspan fill="#e6eded">57 errors, 99 warnings, 10 info</tspan></text>
   <text x="28" y="462" xml:space="preserve"><tspan fill="#e6eded">Score 0/100 (minimum 85, fail on error)  </tspan><tspan fill="#f08a75" font-weight="700">FAIL</tspan></text>
   
   <text x="28" y="506" xml:space="preserve"><tspan fill="#7d8f91">$ </tspan><tspan fill="#ffffff" font-weight="700">node .ui-polish/audit/cli.mjs examples/after</tspan></text>

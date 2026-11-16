@@ -1,0 +1,88 @@
+<!--
+  Data table (DT-01…DT-08, RS-06, RS-09). A real <table> with a caption, column
+  and row headers, sticky header and first column, end-aligned tabular numbers,
+  status as text plus colour, and sortable headers (a <button> inside each
+  <th>, aria-sort on the sorted column only, one polite announcement per sort).
+  The rows are readable without JavaScript; sorting is the enhancement. Below
+  36rem of its own width the table becomes labelled cards (container query).
+
+  Raw values for sorting live in data-value, so "$1,240.50" sorts as 1240.5.
+  Needs: tokens.css, base.css, components.css.
+-->
+<div class="table-region" role="region" aria-labelledby="invoices-caption" tabindex="0">
+  <table class="table" id="invoices">
+    <caption id="invoices-caption">Invoices, March 2026</caption>
+    <thead>
+      <tr>
+        <th scope="col" data-type="text">Invoice</th>
+        <th scope="col" data-type="text">Customer</th>
+        <th scope="col" data-type="number">Issued</th>
+        <th scope="col" data-type="text">Status</th>
+        <th scope="col" data-type="number" class="num">Amount (USD)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">INV-2041</th>
+        <td data-label="Customer">Northwind Freight</td>
+        <td data-label="Issued" data-value="20260303"><time datetime="2026-03-03">3 Mar 2026</time></td>
+        <td data-label="Status"><span class="badge overdue">Overdue</span></td>
+        <td data-label="Amount (USD)" class="num" data-value="1240.5">1,240.50</td>
+      </tr>
+      <tr>
+        <th scope="row">INV-2042</th>
+        <td data-label="Customer">Halden &amp; Price Architects</td>
+        <td data-label="Issued" data-value="20260309"><time datetime="2026-03-09">9 Mar 2026</time></td>
+        <td data-label="Status"><span class="badge paid">Paid</span></td>
+        <td data-label="Amount (USD)" class="num" data-value="98">98.00</td>
+      </tr>
+      <tr>
+        <th scope="row">INV-2043</th>
+        <td data-label="Customer">Orchard Lane Bakery</td>
+        <td data-label="Issued" data-value="20260314"><time datetime="2026-03-14">14 Mar 2026</time></td>
+        <td data-label="Status"><span class="badge draft">Draft</span></td>
+        <td data-label="Amount (USD)" class="num" data-value="12480">12,480.00</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- One message per sort. Never put aria-live on the table itself. -->
+<p class="visually-hidden" role="status" id="invoices-status"></p>
+
+<script type="module">
+  const table = document.getElementById("invoices");
+  const tbody = table.tBodies[0];
+  const status = document.getElementById("invoices-status");
+  const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
+
+  // Turn each header into a sort button (only with script, so no dead buttons without it).
+  for (const th of table.tHead.rows[0].cells) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.append(th.textContent.trim());
+    button.insertAdjacentHTML("beforeend",
+      '<svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M6 11l6-6 6 6"/></svg>');
+    th.replaceChildren(button);
+    button.addEventListener("click", () => sortBy(th, button));
+  }
+
+  function sortBy(th, button) {
+    const direction = th.getAttribute("aria-sort") === "ascending" ? "descending" : "ascending";
+    for (const header of table.tHead.rows[0].cells) header.removeAttribute("aria-sort");
+    th.setAttribute("aria-sort", direction);
+
+    const index = th.cellIndex;
+    const factor = direction === "ascending" ? 1 : -1;
+    const value = (row) => row.cells[index].dataset.value ?? row.cells[index].textContent.trim();
+    const rows = [...tbody.rows].sort((a, b) =>
+      factor * (th.dataset.type === "number" ? Number(value(a)) - Number(value(b)) : collator.compare(value(a), value(b))));
+
+    // Move the existing rows; never rebuild them (keeps focus and state).
+    const move = () => rows.forEach((row) => (tbody.moveBefore ? tbody.moveBefore(row, null) : tbody.append(row)));
+    const animate = table.startViewTransition && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (animate) table.startViewTransition(move);
+    else move();
+
+    status.textContent = `Sorted by ${button.textContent.trim()}, ${direction}, ${rows.length} rows`;
+  }
+</script>

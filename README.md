@@ -4,39 +4,60 @@
 
 <p align="center">
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-0a1214?style=flat-square"></a>
-  <img alt="131 rules" src="https://img.shields.io/badge/rules-131-5fd0c5?style=flat-square">
-  <img alt="16 topics" src="https://img.shields.io/badge/topics-16-5fd0c5?style=flat-square">
-  <img alt="57 static checks" src="https://img.shields.io/badge/static%20checks-57-5fd0c5?style=flat-square">
-  <img alt="26 React recipes" src="https://img.shields.io/badge/React%20recipes-26-5fd0c5?style=flat-square">
+  <img alt="168 rules" src="https://img.shields.io/badge/rules-168-5fd0c5?style=flat-square">
+  <img alt="21 topics" src="https://img.shields.io/badge/topics-21-5fd0c5?style=flat-square">
+  <img alt="62 static checks" src="https://img.shields.io/badge/static%20checks-62-5fd0c5?style=flat-square">
+  <img alt="27 React recipes" src="https://img.shields.io/badge/React%20recipes-27-5fd0c5?style=flat-square">
+  <img alt="8 HTML and CSS recipes" src="https://img.shields.io/badge/HTML%2FCSS%20recipes-8-5fd0c5?style=flat-square">
   <img alt="No dependencies" src="https://img.shields.io/badge/dependencies-none-17603c?style=flat-square">
   <img alt="Node 20 or newer" src="https://img.shields.io/badge/node-%E2%89%A5%2020-17603c?style=flat-square">
   <a href="CONTRIBUTING.md"><img alt="Pull requests welcome" src="https://img.shields.io/badge/PRs-welcome-0a1214?style=flat-square"></a>
 </p>
 
+<h3 align="center">Your AI agent builds the UI. This makes it look finished.</h3>
+
 <p align="center">
-  <b>Rules, recipes and an audit you hand to your AI coding agent</b><br>
+  Rules, ready-made components and an audit you hand to your coding agent,<br>
   so the interfaces it builds stop looking generic and stop shipping with the gaps nobody gets round to fixing.
 </p>
 
 <p align="center">
-  Works with <b>Claude Code</b> · <b>Codex</b> · <b>Cursor</b> · <b>Windsurf / Devin Desktop</b> · <b>GitHub Copilot</b> · <b>Gemini CLI</b><br>
-  all generated from one set of rule files.
+  Works with <b>Claude Code</b> · <b>Codex</b> · <b>Cursor</b> · <b>Windsurf / Devin Desktop</b> · <b>GitHub Copilot</b> · <b>Gemini CLI</b>
 </p>
 
 <p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#before-and-after">Before and after</a> ·
+  <a href="#does-it-work">Does it work?</a> ·
+  <a href="#what-the-rules-cover">The rules</a> ·
+  <a href="#components">Components</a> ·
+  <a href="#the-audit">The audit</a> ·
   <a href="#install">Install</a> ·
-  <a href="#the-problem">The problem</a> ·
-  <a href="#what-is-inside">What is inside</a> ·
-  <a href="#rule-topics">Rule topics</a> ·
-  <a href="#how-the-audit-works">The audit</a> ·
-  <a href="#contributing-a-rule">Contribute</a>
+  <a href="#faq">FAQ</a>
 </p>
 
 ---
 
+## Quick start
+
+**Claude Code**, from any project:
+
+```bash
+claude plugin marketplace add devsharmagrowleads-oss/ui-polish-kit
+claude plugin install ui-polish-kit@ui-polish-kit
+```
+
+**Codex, Cursor, Windsurf, Copilot or Gemini CLI**, in your project root:
+
+```bash
+npx github:devsharmagrowleads-oss/ui-polish-kit install cursor   # or codex, windsurf, copilot, gemini, all
+```
+
+Then tell your agent: **"Do the brand intake, then run the UI audit."** From then on it follows the rules on every UI task and has to pass the audit before it says the work is done.
+
 ## Before and after
 
-The same invoicing screen, built twice. Left: what an agent produces when asked for "a SaaS dashboard". Right: the same screen built with the kit's rules. Both are in [`examples/`](examples); open the two `index.html` files to compare them yourself.
+The same invoicing screen, built twice. Left: what an agent produces when asked for "a SaaS dashboard". Right: the same screen built with the kit. Both are in [`examples/`](examples); open the two `index.html` files to compare.
 
 <table>
   <tr>
@@ -48,28 +69,42 @@ The same invoicing screen, built twice. Left: what an agent produces when asked 
     <td><img src="docs/images/example-after.png" alt="The same invoicing screen rebuilt: a dark themed 'New invoice' form with a real type scale, consistent spacing, one icon set, a styled select, date picker, slider and file upload, and a summary panel with real figures."></td>
   </tr>
   <tr>
-    <td align="center">Score <b>0 / 100</b> · 56 errors · 95 warnings</td>
+    <td align="center">Score <b>0 / 100</b> · 57 errors · 99 warnings</td>
     <td align="center">Score <b>100 / 100</b> · no findings</td>
   </tr>
 </table>
 
-## The problem
+### What it fixes
 
-Ask an agent for a SaaS screen and the result usually compiles and usually has these defects:
+Ask an agent for a SaaS screen and the result usually works, and usually has these problems:
 
-- A styled page with a browser-default `<select>` and the blue native date-picker calendar in the middle of it.
-- The same look every time: Inter, a purple-to-blue gradient, gradient headline text, emoji as icons, three identical feature cards.
-- Padding that changes from card to card; colours typed as hex in forty places.
-- No hover, focus, loading, empty or error states. No dark mode, or a dark mode with white dropdowns.
-- "Vite + React" in the tab, no favicon, lorem ipsum, a button that says "Submit".
+| You get | With the kit |
+| --- | --- |
+| A styled page with a grey browser-default dropdown and the blue native date picker in the middle of it | Every control styled to match: selects, date pickers, file uploads, checkboxes, tooltips, dialogs |
+| Inter, a purple-to-blue gradient, gradient headline text, emoji as icons, three identical feature cards | A typeface chosen for the product, the brand's colours, one icon set, layouts shaped by the content |
+| Padding that changes from card to card; hex colours typed in forty places | One spacing scale and one set of design tokens, used everywhere |
+| No hover, focus, loading, empty or error states; no dark mode, or one with white dropdowns | Every state designed; dark mode from redefined tokens |
+| A table of divs with left-aligned numbers; a chart with the default rainbow and no units | Real tables with sortable headers and aligned numbers; honest, labelled charts |
+| "Vite + React" in the browser tab, no favicon, lorem ipsum, a button that says "Submit" | A real title, favicon, social preview, 404 page, and words that say what things do |
 
-Some of these the developer never gets round to fixing. Others they do not know to look for. The kit gives the agent the rules up front, the components to follow them with, and a check it has to pass before it says the work is done.
+## Does it work?
 
-## How it fits together
+We gave Claude Code the same three prompts twice, in empty folders: once as it is, once with the kit installed. Same tools, no other plugins. Each result was scored by the kit's static checker (85 passes).
+
+| Prompt | Without the kit | With the kit |
+| --- | --- | --- |
+| Invoicing dashboard: navigation, summary numbers, revenue chart, sortable invoice table | **53** / 100 · 13 errors | **100** / 100 · 0 errors |
+| Landing page: hero, features, pricing, FAQ, dark mode toggle | **47** / 100 · 11 errors | **96** / 100 · 0 errors |
+
+Without the kit, the agent shipped browser-default selects and date pickers, emoji as icons, hard-coded colours, no favicon or social preview, `href="#"` links and unlabelled icons. With the kit all of those were gone; what remained was a missing 404 page on one and incomplete social-preview tags on the other.
+
+One run per prompt, judged by the kit's own checker, which reads code rather than pixels, so read it as a strong signal rather than a benchmark. Run it yourself with [`node scripts/eval/run.mjs`](scripts/eval/run.mjs) (needs the `claude` CLI; prompts in [`prompts.json`](scripts/eval/prompts.json)).
+
+## How it works
 
 ```mermaid
 flowchart LR
-    R["rules/<br>131 rules, 16 topics<br>one source of truth"] --> B["scripts/build.mjs"]
+    R["rules/<br>168 rules, 21 topics<br>one source of truth"] --> B["scripts/build.mjs"]
     B --> A1["Claude Code<br>plugin and skills"]
     B --> A2["Codex<br>AGENTS.md"]
     B --> A3["Cursor<br>.cursor/rules"]
@@ -81,117 +116,120 @@ flowchart LR
     A4 --> AG
 
     AG --> S1["1. Brand intake<br>writes design.md"]
-    S1 --> S2["2. Build<br>tokens first, then recipes"]
+    S1 --> S2["2. Build<br>tokens first, then components"]
     S2 --> S3["3. Self-audit<br>static checker and screenshots"]
     S3 -- "fails" --> S2
     S3 -- "passes" --> D(["Done"])
 ```
 
-Each agent gets a short entry file that is always loaded (the core checklist plus a table of topic files, about 8,000 characters). The topic files are loaded on demand, because long always-on rule files get ignored.
+1. **Brand intake.** The agent looks for your colours, fonts, logo and tone, asks you for what is missing, and writes `design.md`. Everything later follows it.
+2. **Build.** Design tokens first, then components from the recipes, mobile layout first. Before building a dialog, menu or animation it looks up [Modern Web Guidance](#works-with-modern-web-guidance) to use the browser's own feature.
+3. **Self-audit.** It runs the static checker, takes screenshots at three widths in light and dark, looks at them, fixes what fails, and only then reports the work as done, with the score.
 
-## What is inside
+Each agent gets a short entry file that is always loaded (the core checklist and a list of topics, about 8,000 characters). The detailed topic files are loaded only when the work touches them, because long always-on rule files get ignored.
 
-| Path | What it is |
+## What the rules cover
+
+168 rules in 21 topics. Each rule has the rule, why it matters, a bad example, a good example and how to check it.
+
+**Look and feel**
+
+| Topic | What it stops |
 | --- | --- |
-| `rules/` | The source of truth. 16 topic files, 131 rules. Each rule: the rule, why it matters, a bad example, a good example, how to check it. `_core.md` is the short always-loaded checklist. |
-| `recipes/react-tailwind-shadcn/` | Token setup (CSS variables + Tailwind v4 theme, v3 config) and 26 token-styled components that replace every native control: Select, Combobox, DatePicker, TimePicker, FileUpload, Slider, ColorPicker, Checkbox, RadioGroup, Switch, Tooltip, ConfirmDialog, Toaster, and more. |
-| `audit/cli.mjs` | Static checker. Node 20+, no dependencies. Reports `file:line`, rule ID, severity and a score; `--json` for machines. Covers 57 of the rules. |
-| `audit/PROCEDURE.md` | The agent-facing audit: screenshot at 375 / 768 / 1440px in light and dark, walk a 29-item checklist, score, fix, re-check, report. |
-| `audit/screenshot.mjs` | Captures those screenshots and reports horizontal overflow and console errors (needs `playwright-core`). |
-| `templates/design.md` | Brand intake template the agent fills in before building. |
-| `scripts/build.mjs` | Generates every agent format from `rules/`. Nothing is hand-duplicated. |
-| `scripts/install.mjs` | Installs the kit into a project for the agents you choose. |
-| `skills/`, `.claude-plugin/`, `dist/` | Generated outputs, committed so agents and the Claude Code marketplace can install straight from the repository. |
-| `examples/` | Before/after pair; also the checker's test fixture. |
-| `tests/` | Tests for the checker, the build and the installer. |
+| [Design tokens](rules/02-design-tokens.md) · TK | Hard-coded hex colours and arbitrary pixel values scattered through components |
+| [Typography](rules/03-typography.md) · TY | The same default font every time; includes 14 Google Font pairings by product personality |
+| [Spacing and layout](rules/04-spacing-layout.md) · SP | Padding that changes from card to card, no rhythm, no grid |
+| [Colour](rules/12-colour.md) · CO | Unplanned palettes, no neutral scale, accent colour on everything |
+| [Dark mode](rules/09-dark-mode.md) · DM | Inverted colours and white dropdowns in a dark theme |
+| [AI-slop blocklist](rules/05-ai-slop.md) · SL | Purple-to-blue gradients, gradient text, emoji as icons, glass everywhere, three identical cards |
+| [Icons](rules/20-icons.md) · IC | Icons of every size, mixed styles, unhidden SVGs, mystery icon-only buttons |
+| [Motion](rules/11-motion.md) · MO | `transition: all`, slow or pointless animation, no reduced-motion handling, hard cuts between views |
 
-## Rule topics
+**Components and states**
 
-| # | Topic | ID | What it stops |
-| --- | --- | --- | --- |
-| 1 | [Native controls](rules/01-native-controls.md) | NC | Browser-default selects, date pickers, file inputs, checkboxes, tooltips and `alert()` dialogs in a styled page |
-| 2 | [Design tokens](rules/02-design-tokens.md) | TK | Hard-coded hex colours and arbitrary pixel values scattered through components |
-| 3 | [Typography](rules/03-typography.md) | TY | The same default font every time; includes 14 Google Font pairings by product personality |
-| 4 | [Spacing and layout](rules/04-spacing-layout.md) | SP | Padding that changes from card to card, no rhythm, no grid |
-| 5 | [AI-slop blocklist](rules/05-ai-slop.md) | SL | Purple-to-blue gradients, gradient text, emoji as icons, glass everywhere, three identical cards |
-| 6 | [Component states](rules/06-component-states.md) | ST | Missing hover, focus, disabled, loading, empty and error states |
-| 7 | [Forms](rules/07-forms.md) | FM | Unlabelled inputs, badly timed validation, vague error messages |
-| 8 | [Responsive](rules/08-responsive.md) | RS | Horizontal scroll, tiny touch targets, tables that break on phones |
-| 9 | [Dark mode](rules/09-dark-mode.md) | DM | Inverted colours and white dropdowns in a dark theme |
-| 10 | [Accessibility](rules/10-accessibility.md) | AX | Low contrast, no focus ring, clickable `<div>`s, no keyboard path |
-| 11 | [Motion](rules/11-motion.md) | MO | `transition: all`, slow or pointless animation, no reduced-motion handling |
-| 12 | [Colour](rules/12-colour.md) | CO | Unplanned palettes, no neutral scale, accent colour on everything |
-| 13 | [Finishing details](rules/13-finishing-details.md) | FD | Scaffold page titles, no favicon, no social preview, no 404 page |
-| 14 | [Copy](rules/14-copy.md) | CP | Lorem ipsum, "Feature One", buttons that say "Submit" |
-| 15 | [Brand intake](rules/15-brand-intake.md) | BR | Building before anyone has written down the brand's colours, fonts and tone |
-| 16 | [Self-audit gate](rules/16-self-audit.md) | SA | Declaring a UI task done without looking at it |
+| Topic | What it stops |
+| --- | --- |
+| [Native controls](rules/01-native-controls.md) · NC | Browser-default selects, date pickers, file inputs, checkboxes, tooltips and `alert()` dialogs in a styled page |
+| [Component states](rules/06-component-states.md) · ST | Missing hover, focus, disabled, loading, empty and error states |
+| [Forms](rules/07-forms.md) · FM | Unlabelled inputs, badly timed validation, vague error messages |
+| [Data tables](rules/17-data-tables.md) · DT | Div grids, left-aligned numbers, invisible sorting, headers that scroll away, blank empty tables |
+| [Charts](rules/18-charts.md) · CH | Rainbow pies, distant legends, axes without units, bar charts that do not start at zero |
+| [Navigation](rules/19-navigation.md) · NV | No current-page marker, actions that move between pages, `href="#"`, filters lost on reload |
 
-## Install
+**Reach**
 
-From a clone, `node path/to/ui-polish-kit/cli.mjs install <agent>` does the same as the `npx` form.
+| Topic | What it stops |
+| --- | --- |
+| [Responsive](rules/08-responsive.md) · RS | Horizontal scroll, tiny touch targets, tables that break on phones, components that ignore their container |
+| [Accessibility](rules/10-accessibility.md) · AX | Low contrast, no focus ring, clickable `<div>`s, no keyboard path, states that vanish in high-contrast mode |
+| [Internationalisation](rules/21-internationalisation.md) · IN | `margin-left` layouts that break in Arabic, fixed-width labels, hand-rolled plurals and dates |
 
-Every install (except the Claude Code plugin) copies the kit into `.ui-polish/` in your project and adds one entry file for the agent. Commit both.
+**Finish and process**
 
-| Agent | Command (run in your project root) | What it writes |
+| Topic | What it stops |
+| --- | --- |
+| [Finishing details](rules/13-finishing-details.md) · FD | Scaffold page titles, no favicon, no social preview, no 404 page |
+| [Copy](rules/14-copy.md) · CP | Lorem ipsum, "Feature One", buttons that say "Submit" |
+| [Brand intake](rules/15-brand-intake.md) · BR | Building before anyone has written down the brand's colours, fonts and tone |
+| [Self-audit gate](rules/16-self-audit.md) · SA | Declaring a UI task done without looking at it |
+
+## Components
+
+Ready-to-copy code that follows the rules, so the agent does not have to reinvent a date picker every time.
+
+| Folder | For | What is in it |
 | --- | --- | --- |
-| Claude Code (plugin) | `claude plugin marketplace add devsharmagrowleads-oss/ui-polish-kit` then `claude plugin install ui-polish-kit@ui-polish-kit` | Nothing in your project. Skills `/ui-polish-kit:ui-polish` and `/ui-polish-kit:ui-audit`. |
-| Claude Code (project skills) | `npx github:devsharmagrowleads-oss/ui-polish-kit install claude` | `.claude/skills/ui-polish/`, `.claude/skills/ui-audit/` |
-| Codex and any `AGENTS.md` reader | `npx github:devsharmagrowleads-oss/ui-polish-kit install codex` | A marked block in `AGENTS.md` (your own content is kept) |
-| Cursor | `npx github:devsharmagrowleads-oss/ui-polish-kit install cursor` | `.cursor/rules/ui-polish-*.mdc`: one always-on rule, one description-triggered rule per topic |
-| Windsurf | `npx github:devsharmagrowleads-oss/ui-polish-kit install windsurf` | `.windsurf/rules/ui-polish-*.md` |
-| Devin Desktop | `npx github:devsharmagrowleads-oss/ui-polish-kit install devin` | `.devin/rules/ui-polish-*.md` (same files, current path) |
-| GitHub Copilot | `npx github:devsharmagrowleads-oss/ui-polish-kit install copilot` | A marked block in `.github/copilot-instructions.md` |
-| Gemini CLI | `npx github:devsharmagrowleads-oss/ui-polish-kit install gemini` | A marked block in `GEMINI.md` |
-| Several at once | `npx github:devsharmagrowleads-oss/ui-polish-kit install cursor codex claude` or `install all` | |
+| [`recipes/react-tailwind-shadcn/`](recipes/react-tailwind-shadcn) | React with Tailwind and shadcn/ui | Design tokens (Tailwind v4, with a v3 config) and 27 components that replace every native control: Select, Combobox, DatePicker, TimePicker, FileUpload, Slider, ColorPicker, Checkbox, RadioGroup, Switch, Tooltip, ConfirmDialog, Toaster, DataTable, EmptyState and more |
+| [`recipes/html-css/`](recipes/html-css) | Everything else: plain HTML, server-rendered pages, Vue, Svelte, Astro | The same tokens in plain CSS, and 8 copy-paste components (dialog, select, form field, data table, menu, tooltip, toasts, navigation) built on the browser's own `<dialog>`, popover and customizable `<select>`, with small fallbacks for browsers that lag |
 
-Options: `--target <dir>` to install somewhere other than the current directory, `--dry-run` to preview. Re-running the installer updates in place.
-
-To try the Claude Code plugin from a local clone: `claude plugin marketplace add /path/to/ui-polish-kit`, then install as above.
-
-Manual install, if you prefer copying: copy `rules/` (without `_core.md`), `recipes/`, `audit/` and `templates/` into `<project>/.ui-polish/`, then copy the file for your agent from `dist/`.
-
-### Modern Web Guidance
-
-The core rules work together with [Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance), the guides from the Chrome, Edge, Firefox and MDN teams on modern browser features. Before building a dialog, popover, menu, form validation, animation or performance fix, the agent looks up the matching guide (`npx -y modern-web-guidance@latest search …`) and uses the native browser feature it recommends instead of custom JavaScript or another library. ui-polish-kit then decides how it looks: tokens, states, dark mode. Where a guide suggests a native control the kit restricts (for example a bare `<select>`), the kit's rule wins unless the control can be fully styled.
-
-This works with every agent above and needs nothing extra beyond Node and an internet connection. To also install it as a skill:
-
-- Claude Code: `claude plugin install modern-web-guidance@ui-polish-kit` (from this kit's marketplace)
-- Any agent: `npx modern-web-guidance@latest install`
-
-### After installing
-
-1. Ask the agent to do the brand intake. It looks for existing colours, fonts and tone in the repo, asks you for what is missing, and writes `design.md`.
-2. Ask it to audit what exists: "run the UI audit" (Claude Code: `/ui-polish-kit:ui-audit`).
-3. From then on it follows the core rules on every UI task and must pass the self-audit gate before saying it is done.
-
-## How the audit works
+## The audit
 
 Two halves, because they catch different things.
 
-**Static checker**: reads source, no browser.
+**1. Static checker.** Reads your source, no browser, no dependencies. Reports `file:line`, rule ID, severity and a score.
 
 <p align="center">
-  <img src="docs/images/audit.svg" alt="Audit output: the before example fails with 56 errors and 95 warnings, score 0 of 100; the after example passes with a score of 100." width="92%">
+  <img src="docs/images/audit.svg" alt="Audit output: the before example fails with 57 errors and 99 warnings, score 0 of 100; the after example passes with a score of 100." width="92%">
 </p>
 
 ```bash
-node .ui-polish/audit/cli.mjs .                 # report with file:line, rule ID, severity, score
+node .ui-polish/audit/cli.mjs .                 # report: file:line, rule ID, severity, score
 node .ui-polish/audit/cli.mjs . --json          # machine-readable
 node .ui-polish/audit/cli.mjs . --fail-on warning --min-score 95    # stricter, for CI
 node .ui-polish/audit/cli.mjs --list-rules      # every rule and whether it is checked statically
 ```
 
-It detects: native `<select>`, date/time, file, range and colour inputs and default checkboxes/radios without restyling; `alert()` / `confirm()` / `prompt()`; `title=` tooltips; unstyled scrollbars and autofill; hard-coded colours outside token files; Tailwind arbitrary values (`p-[13px]`, `z-[999]`); raw palette utilities; off-scale spacing; magic z-index; missing tokens; system-only or default-prone fonts with no recorded decision; fonts loaded without `display=swap`; heading-level problems; purple/indigo-to-blue gradients (by class name and by hue); gradient text; emoji as icons; more than one icon library; overused `backdrop-blur`; glow shadows; generic hero copy; unlabelled inputs; missing `autocomplete`; missing viewport meta; fixed widths; `100vw`; missing dark tokens, `dark:` palette overrides, `filter: invert` dark mode, missing `color-scheme`; no `:focus-visible`; `outline: none` without a replacement; images without `alt` or dimensions; click handlers on `<div>`; zoom disabled; missing `lang`; unnamed icon buttons; positive `tabindex`; `transition: all`; slow transitions; no reduced-motion handling; `animate-bounce`; missing favicon, title, description, Open Graph tags, 404 page; lorem ipsum; filler names; vague microcopy; missing `design.md`.
+<details>
+<summary><b>What the checker detects (62 rules)</b></summary>
 
-Scoring: start at 100; an error costs 5, a warning 2, an info 0.5; one rule can cost at most three times its weight. Pass needs zero errors and a score of at least 85. Exit code 0 pass, 1 fail, 2 usage error.
+| Area | Detects |
+| --- | --- |
+| Native controls | `<select>`, date/time, file, range and colour inputs, default checkboxes and radios without restyling; `alert()` / `confirm()` / `prompt()`; `title=` tooltips; unstyled scrollbars and autofill |
+| Tokens | Hard-coded colours outside token files; Tailwind arbitrary values (`p-[13px]`, `z-[999]`); raw palette utilities; off-scale spacing; magic z-index; no tokens at all |
+| Typography | System-only or default-prone fonts with no recorded decision; fonts loaded without `display=swap`; heading-level problems |
+| AI-slop | Purple/indigo-to-blue gradients (by class name and by hue); gradient text; emoji as icons; more than one icon library; overused `backdrop-blur`; glow shadows; generic hero copy |
+| Forms | Unlabelled inputs; missing `autocomplete` |
+| Responsive | Missing viewport meta; fixed widths; `100vw` |
+| Dark mode | Missing dark tokens; `dark:` palette overrides; `filter: invert` dark mode; missing `color-scheme` |
+| Accessibility | No `:focus-visible`; `outline: none` without a replacement; images without `alt`; click handlers on `<div>`; zoom disabled; missing `lang`; unnamed icon buttons; positive `tabindex` |
+| Structure | Tables without header cells; pages without `<main>`; `href="#"` and `javascript:` links; inline SVG icons that are neither hidden nor named; left/right CSS in translated projects |
+| Motion | `transition: all`; slow transitions; no reduced-motion handling; `animate-bounce` |
+| Finishing | Missing favicon, title, description, Open Graph tags, 404 page; images without dimensions |
+| Copy and brand | Lorem ipsum; filler names; vague microcopy; missing `design.md` |
 
-False positives are kept low on purpose: the checker only fires on patterns that are wrong almost everywhere. When code is deliberately correct, suppress the finding where it occurs, with the reason:
+</details>
+
+Scoring: start at 100; an error costs 5, a warning 2, an info 0.5; one rule can cost at most three times its weight. Passing needs zero errors and a score of at least 85. Exit code 0 pass, 1 fail, 2 usage error.
+
+It only fires on patterns that are wrong almost everywhere. When code is deliberately different, say why where it happens:
 
 ```tsx
 {/* ui-polish-ignore-next-line TK-01: partner logo colours are fixed by their brand */}
 <LogoWall colors={['#e01e5a', '#36c5f0']} />
 ```
+
+<details>
+<summary><b>More ways to suppress, and project settings</b></summary>
 
 Also available: `ui-polish-ignore-line`, `ui-polish-disable <IDs>` … `ui-polish-enable`, `ui-polish-ignore-file <IDs>`. Project-wide settings go in `ui-polish.config.json`:
 
@@ -208,12 +246,78 @@ Also available: `ui-polish-ignore-line`, `ui-polish-disable <IDs>` … `ui-polis
 }
 ```
 
-**Visual audit**: the agent follows `audit/PROCEDURE.md`: starts the app, captures each page at three widths in both themes (plus open dropdowns, date pickers and dialogs, and empty, loading and error states), looks at every image, walks the 29-item checklist, does a keyboard pass, scores, fixes in priority order, re-checks, and reports scores, fixes, what remains and what it could not verify. The static checker cannot judge spacing rhythm, hierarchy or whether a page looks like a template; this half does.
+</details>
+
+**2. Visual audit.** The checker cannot judge spacing rhythm, hierarchy or whether a page looks like a template, so the agent also follows [`audit/PROCEDURE.md`](audit/PROCEDURE.md): it starts the app, captures each page at 375, 768 and 1440px in light and dark (plus open dropdowns, dialogs, and the empty, loading and error states), looks at every image, walks a 35-item checklist, does a keyboard pass, fixes in priority order, re-checks, and reports what it fixed, what remains and what it could not verify.
 
 ```bash
-npm i -D playwright-core          # uses installed Chrome or Edge
+npm i -D playwright-core          # uses your installed Chrome or Edge
 node .ui-polish/audit/screenshot.mjs http://localhost:3000/ http://localhost:3000/settings
 ```
+
+## Install
+
+Every install except the Claude Code plugin copies the kit into `.ui-polish/` in your project and adds one entry file for the agent. Commit both, so your whole team and CI get them.
+
+| Agent | Command (in your project root) | What it writes |
+| --- | --- | --- |
+| Claude Code (plugin) | `claude plugin marketplace add devsharmagrowleads-oss/ui-polish-kit` then `claude plugin install ui-polish-kit@ui-polish-kit` | Nothing in your project. Skills `/ui-polish-kit:ui-polish` and `/ui-polish-kit:ui-audit` |
+| Claude Code (project skills) | `npx github:devsharmagrowleads-oss/ui-polish-kit install claude` | `.claude/skills/ui-polish/`, `.claude/skills/ui-audit/` |
+| Codex and any `AGENTS.md` reader | `npx github:devsharmagrowleads-oss/ui-polish-kit install codex` | A marked block in `AGENTS.md`; your own content is kept |
+| Cursor | `npx github:devsharmagrowleads-oss/ui-polish-kit install cursor` | `.cursor/rules/ui-polish-*.mdc`: one always-on rule, one per topic loaded when relevant |
+| Windsurf | `npx github:devsharmagrowleads-oss/ui-polish-kit install windsurf` | `.windsurf/rules/ui-polish-*.md` |
+| Devin Desktop | `npx github:devsharmagrowleads-oss/ui-polish-kit install devin` | `.devin/rules/ui-polish-*.md` |
+| GitHub Copilot | `npx github:devsharmagrowleads-oss/ui-polish-kit install copilot` | A marked block in `.github/copilot-instructions.md` |
+| Gemini CLI | `npx github:devsharmagrowleads-oss/ui-polish-kit install gemini` | A marked block in `GEMINI.md` |
+| Several at once | `npx github:devsharmagrowleads-oss/ui-polish-kit install cursor codex claude` or `install all` | |
+
+Options: `--target <dir>` installs somewhere else, `--dry-run` previews. Re-running the installer updates in place. From a clone, `node path/to/ui-polish-kit/cli.mjs install <agent>` does the same. To try the Claude Code plugin from a clone: `claude plugin marketplace add /path/to/ui-polish-kit`.
+
+<details>
+<summary><b>Manual install</b></summary>
+
+Copy `rules/` (without `_core.md`), `recipes/`, `audit/` and `templates/` into `<project>/.ui-polish/`, then copy the file for your agent from `dist/`.
+
+</details>
+
+### Works with Modern Web Guidance
+
+The kit works together with [Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance), the guides from the Chrome, Edge, Firefox and MDN teams on modern browser features. Before building a dialog, popover, menu, form validation, animation or performance fix, the agent looks up the matching guide and uses the browser's own feature instead of custom JavaScript or another library; ui-polish-kit then decides how it looks. Where a guide suggests a native control the kit restricts (a bare `<select>`, for example), the kit's rule wins unless the control can be fully styled.
+
+This needs nothing beyond Node and an internet connection. To also install it as a skill: `claude plugin install modern-web-guidance@ui-polish-kit` (Claude Code, from this kit's marketplace) or `npx modern-web-guidance@latest install` (any agent).
+
+## FAQ
+
+**Does it only work with React?**
+No. The rules apply to any web UI. The components come in two flavours: React with Tailwind and shadcn/ui, and plain HTML and CSS for everything else.
+
+**Will it slow my agent down or cost a lot of context?**
+The always-loaded part is about 8,000 characters. The detailed topics load only when the task touches them: the table rules when the agent builds a table, the chart rules when it builds a chart. In the test above, runs with the kit took about five minutes instead of two to three, the extra time going on the brand intake and the self-audit.
+
+**Does it replace ESLint or Stylelint?**
+No. Those check code correctness; this checks whether the interface is finished and looks designed. Run both.
+
+**Can I use only some of the rules?**
+Yes. Turn rules off or change their severity in `ui-polish.config.json`, or suppress one case with a comment and a reason.
+
+**My brand uses Inter (or a purple gradient). Will it fight me?**
+No. Record the decision in `design.md` and the kit follows it. The rules only push back on choices made by habit.
+
+**Does the checker send my code anywhere?**
+No. It runs locally, with no dependencies and no network access.
+
+## Inside the repository
+
+| Path | What it is |
+| --- | --- |
+| `rules/` | The source of truth: 21 topic files and `_core.md`, the short always-loaded checklist |
+| `recipes/` | The components, described above |
+| `audit/` | The static checker (`cli.mjs`), the visual audit procedure, the screenshot tool and the full checklist |
+| `templates/design.md` | The brand intake template the agent fills in |
+| `scripts/` | `build.mjs` generates every agent format from `rules/`; `install.mjs` installs the kit; `eval/` runs the before/after test |
+| `skills/`, `.claude-plugin/`, `dist/` | Generated, and committed so agents and the Claude Code marketplace can install straight from the repository |
+| `examples/` | The before/after pair, also the checker's test fixture |
+| `tests/` | Tests for the checker, the build and the installer |
 
 ## Developing the kit
 
@@ -221,11 +325,11 @@ node .ui-polish/audit/screenshot.mjs http://localhost:3000/ http://localhost:300
 npm run build         # regenerate skills/, dist/, .claude-plugin/, audit/rules-index.json, audit/CHECKLIST.md
 npm run build:check   # fail if generated files are stale (use in CI)
 npm test              # checker, build and installer tests
-node audit/cli.mjs examples/before    # fails, about 160 findings
-node audit/cli.mjs examples/after     # passes, 100/100
+node audit/cli.mjs examples/before    # fails: 166 findings
+node audit/cli.mjs examples/after     # passes: 100/100
 ```
 
-There are no dependencies and no install step.
+No dependencies, no install step.
 
 ## Contributing a rule
 

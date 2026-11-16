@@ -1,0 +1,52 @@
+<!--
+  Confirmation dialog (NC-07, FD-08). Replaces confirm(). Native <dialog> as a
+  modal: the browser makes the page inert, traps focus, closes on Esc and the
+  back gesture, and returns focus to the button that opened it. Do not add
+  role="dialog", aria-modal or a focus trap.
+
+  Needs: tokens.css, base.css, components.css.
+-->
+<button type="button" class="button destructive" command="show-modal" commandfor="delete-invoice">
+  Delete invoice
+</button>
+
+<!-- closedby="any": a click outside also closes it (light dismiss). -->
+<dialog id="delete-invoice" class="dialog" closedby="any" aria-labelledby="delete-invoice-title" aria-describedby="delete-invoice-desc">
+  <h2 id="delete-invoice-title">Delete invoice INV-2041?</h2>
+  <p id="delete-invoice-desc">The invoice and its payment history are removed for everyone in the workspace. This cannot be undone.</p>
+  <form method="dialog" class="actions">
+    <!-- autofocus on the safe action in a destructive confirmation -->
+    <button type="submit" class="button outline" value="cancel" autofocus>Keep invoice</button>
+    <button type="submit" class="button destructive" value="delete">Delete invoice</button>
+  </form>
+</dialog>
+
+<script type="module">
+  const dialog = document.getElementById("delete-invoice");
+
+  dialog.addEventListener("close", () => {
+    // "" means dismissed without choosing (Esc, click outside).
+    if (dialog.returnValue === "delete") {
+      // Call the real delete here, then confirm success (ST-05).
+    }
+    dialog.returnValue = "";
+  });
+
+  // Invoker commands (command / commandfor): load the polyfill only where missing.
+  if (!("commandForElement" in HTMLButtonElement.prototype)) {
+    for (const button of document.querySelectorAll('[command="show-modal"]')) {
+      button.addEventListener("click", () => document.getElementById(button.getAttribute("commandfor"))?.showModal());
+    }
+  }
+
+  // closedby="any" where unsupported: close when both press and release land outside the box.
+  if (!("closedBy" in HTMLDialogElement.prototype)) {
+    const outside = (event) => {
+      const r = dialog.getBoundingClientRect();
+      return event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom;
+    };
+    let pressedOutside = false;
+    dialog.addEventListener("pointerdown", (event) => { pressedOutside = outside(event); });
+    dialog.addEventListener("pointerup", (event) => { if (pressedOutside && outside(event)) dialog.close(); });
+  }
+</script>

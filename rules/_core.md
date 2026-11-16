@@ -1,6 +1,6 @@
 # UI polish: core rules
 
-Apply these whenever you create or change user-interface code (pages, components, styles, copy). Coding agents fail at UI in predictable ways: browser-default controls next to styled ones, the same font and purple gradient every time, uneven spacing, missing states, no dark mode, placeholder copy. These rules prevent that. This file is the short version; the topic files listed below hold the detail (rule, reason, bad and good example, how to check). Read the relevant topic file **before** writing the code it covers.
+Apply these whenever you create or change user-interface code (pages, components, styles, copy). Agents fail at UI predictably: browser-default controls, the same font and purple gradient, uneven spacing, missing states, no dark mode, placeholder copy. This is the short version; the topic files below hold the detail (rule, reason, bad and good example, check). Read the relevant topic file **before** writing the code it covers.
 
 Kit root: `{{KIT}}` (contains `rules/`, `recipes/`, `audit/`).
 
@@ -38,6 +38,6 @@ These rules set the look; Modern Web Guidance picks the browser feature. Before 
 
 - Static check: `node {{KIT}}/audit/cli.mjs .` (add `--json` for machine output). It reports `file:line`, rule ID, severity and a score; exit code 1 means fail. Fix every error, then warnings.
 - Visual audit and scoring procedure: `{{KIT}}/audit/PROCEDURE.md`. Full checklist of every rule: `{{KIT}}/audit/CHECKLIST.md`.
-- A deliberate exception is allowed only with a reason next to it: `ui-polish-ignore-next-line <RULE-ID>: reason` in a comment, or a `rules` entry in `ui-polish.config.json`.
+- Exceptions need a reason beside them: `ui-polish-ignore-next-line <RULE-ID>: reason`, or a `rules` entry in `ui-polish.config.json`.
 
 Do not say a UI task is complete until the static check passes and you have looked at the screenshots.

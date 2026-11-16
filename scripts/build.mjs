@@ -148,8 +148,9 @@ function frontmatter(fields) {
 
 function renderCore(root, topics, { kit, topicPath, compactTopics = false }) {
   const core = fs.readFileSync(path.join(root, 'rules', '_core.md'), 'utf8').replace(/\r\n/g, '\n').trim();
+  // Compact form (Windsurf's 6,000-character budget): name the folder once.
   const table = compactTopics
-    ? topics.map((t) => `- ${t.prefix} ${t.title}: \`${topicPath(t)}\``).join('\n')
+    ? [`All in \`${topicPath(topics[0]).slice(0, -topics[0].file.length)}\`:`, ...topics.map((t) => `- ${t.prefix} ${t.title}: \`${t.file}\``)].join('\n')
     : ['| Topic | File | Read it when |', '| --- | --- | --- |', ...topics.map((t) => `| ${t.prefix} ${t.title} | \`${topicPath(t)}\` | ${t.when} |`)].join('\n');
   if (!core.includes('{{TOPICS}}') || !core.includes('{{KIT}}')) throw new Error('rules/_core.md must contain {{KIT}} and {{TOPICS}}');
   return core.replace('{{TOPICS}}', table).replaceAll('{{KIT}}', kit);
@@ -174,7 +175,7 @@ function auditStub(kit) {
     '',
     `1. Static check: \`node ${kit}/audit/cli.mjs .\` (add \`--json\` for machine output). Record the score.`,
     `2. Start the app and capture every page in scope at 375, 768 and 1440px, in light and dark: \`node ${kit}/audit/screenshot.mjs <url>\` or your browser tool. Capture open dropdowns, date pickers and dialogs, and the empty, loading and error states. Look at every image.`,
-    '3. Walk the 29-item visual checklist in the procedure; mark pass, fail or n/a. Blocker items fail the audit on their own.',
+    '3. Walk the 35-item visual checklist in the procedure; mark pass, fail or n/a. Blocker items fail the audit on their own.',
     '4. Keyboard pass, form pass, resize pass.',
     '5. Score: static score from the checker; visual score = passed / (passed + failed). PASS needs a passing static check, no failed blocker and a visual score of at least 90.',
     '6. Fix: design.md and tokens first, then errors and blockers, then warnings. Fix causes; do not weaken the config or add ignores without a reason.',

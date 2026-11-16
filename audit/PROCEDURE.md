@@ -50,44 +50,52 @@ Mark each item pass, fail or n/a. Items marked **[B]** are blockers: a fail on a
 7. Left edges line up; content sits in a container with a gutter; card rows align. (SP-04, SP-05, SP-06)
 8. Nothing from the slop list: purple-blue gradients, gradient text, emoji icons, glass panels, glow shadows, three identical feature cards, everything centred, oversized radii, invented metrics, decorative blobs. (SL-01 to SL-12)
 9. Colour: one primary action per region; brand colour used sparingly; red/green/amber only for error/success/warning. (CO-03, CO-04)
-10. One icon set, consistent size and stroke. (SL-04)
-11. Copy is real and specific: no lorem ipsum, filler names, "Submit", "Something went wrong"; sentence case; numbers and dates formatted. (CP-01 to CP-07, TY-07)
-12. Images have the right aspect ratio, are sharp, and none is broken. (FD-04)
+10. One icon set, outline style, sized to the text beside it; icons line up with their labels; icon-only buttons are rare and named. (SL-04, IC-01 to IC-05)
+11. Tables: real headers, numbers end-aligned and tabular, the sorted column marked, header stays visible when scrolling, long values truncated with the full text available. (DT-01 to DT-08)
+12. Charts: the right form for the question, colours from the chart tokens, direct labels, axes with units, bar charts from zero, a text summary. (CH-01 to CH-05)
+13. Navigation: the current page is marked (not by colour alone), every page has the same header with the title and actions in the same place, deep pages have breadcrumbs. (NV-01, NV-03, NV-04)
+14. Copy is real and specific: no lorem ipsum, filler names, "Submit", "Something went wrong"; sentence case; numbers and dates formatted. (CP-01 to CP-07, TY-07)
+15. Images have the right aspect ratio, are sharp, and none is broken. (FD-04)
 
 ### At 375px
-13. **[B]** The layout is a real mobile layout: single column, readable sizes, sensible order, reduced padding. (RS-04)
-14. **[B]** Navigation is usable (menu button or tab bar) and tables have a small-screen form. (RS-06, RS-07)
-15. Touch targets are at least 44px with space between them. (RS-05)
-16. Dialogs, popovers and the date picker fit the viewport. (FD-08, NC-12)
+16. **[B]** The layout is a real mobile layout: single column, readable sizes, sensible order, reduced padding. (RS-04)
+17. **[B]** Navigation is usable (menu button or tab bar) and tables have a small-screen form. (RS-06, RS-07)
+18. Touch targets are at least 44px with space between them. (RS-05)
+19. Dialogs, popovers and the date picker fit the viewport. (FD-08, NC-12)
 
 ### Dark theme
-17. **[B]** Every surface, popup and control is dark: no white rectangles, no light scrollbars, no light autofill. (DM-01, DM-04, NC-09, NC-10)
-18. Layers are distinguishable (page, card, popover, dialog); borders visible; primary and status colours readable. (DM-05)
-19. Logos, illustrations, charts and screenshots work on the dark background. (DM-06, CO-05)
+20. **[B]** Every surface, popup and control is dark: no white rectangles, no light scrollbars, no light autofill. (DM-01, DM-04, NC-09, NC-10)
+21. Layers are distinguishable (page, card, popover, dialog); borders visible; primary and status colours readable. (DM-05)
+22. Logos, illustrations, charts and screenshots work on the dark background. (DM-06, CO-05)
+
+### High contrast and right-to-left
+23. In forced-colours mode (Windows Contrast themes, or DevTools > Rendering > Emulate forced-colors), focus rings, selected states, checkbox marks and dividers are still visible. (AX-13)
+24. If the product is translated: with `dir="rtl"` the layout mirrors, direction icons flip and nothing overlaps; long translations do not cut off labels. (IN-01 to IN-03)
 
 ### States (captured in step 2)
-20. **[B]** Each interactive element shows hover, focus-visible, active and disabled. (ST-01, AX-01)
-21. Loading uses skeletons or in-place indicators and does not shift the layout. (ST-02, FD-10)
-22. Empty states explain and offer an action. (ST-03, CP-06)
-23. Errors appear where they happen with a way forward; form errors sit under their fields. (ST-04, FM-04, CP-05)
-24. Success is confirmed; toasts are placed and timed sensibly. (ST-05, FD-07)
+25. **[B]** Each interactive element shows hover, focus-visible, active and disabled. (ST-01, AX-01)
+26. Loading uses skeletons or in-place indicators and does not shift the layout. (ST-02, FD-10)
+27. Empty states explain and offer an action. (ST-03, CP-06)
+28. Errors appear where they happen with a way forward; form errors sit under their fields. (ST-04, FM-04, CP-05)
+29. Success is confirmed; toasts are placed and timed sensibly. (ST-05, FD-07)
 
 ### Document and finishing
-25. Tab shows a real title and the favicon; a nonsense URL shows the designed 404. (FD-01, FD-02, FD-05)
-26. The UI matches `design.md`: colours, fonts, radius, density, tone. (BR-05)
+30. Tab shows a real title and the favicon; a nonsense URL shows the designed 404. (FD-01, FD-02, FD-05)
+31. The UI matches `design.md`: colours, fonts, radius, density, tone. (BR-05)
 
 ## 4. Interaction pass
 
-27. **[B]** Keyboard only: Tab through each page. Focus is always visible, order is logical, Enter/Space activate, Escape closes overlays and focus returns to the trigger; nothing is unreachable. (AX-10, AX-04)
-28. Forms: labels visible; validation on blur; submit shows progress and cannot double-submit; input preserved on failure. (FM-01, FM-03, FM-08)
-29. Resize continuously from 320 to 1440px: nothing breaks between the three capture widths. Console shows no errors. (RS-03)
+32. **[B]** Keyboard only: Tab through each page. Focus is always visible, order is logical, Enter/Space activate, Escape closes overlays and focus returns to the trigger; nothing is unreachable. (AX-10, AX-04)
+33. Forms: labels visible; validation on blur; submit shows progress and cannot double-submit; input preserved on failure. (FM-01, FM-03, FM-08)
+34. Reload and press back after choosing a tab, filter and sort: the same view returns. Moving between views keeps focus on the new heading. (NV-06, MO-08)
+35. Resize continuously from 320 to 1440px: nothing breaks between the three capture widths. Console shows no errors. (RS-03)
 
 For contrast, measure rather than judge when in doubt: in a browser tool, read computed `color` and `background-color` of the element and compute the WCAG ratio; 4.5:1 for text, 3:1 for large text, input borders and focus rings.
 
 ## 5. Score
 
 - **Static score**: from step 1 (0 to 100).
-- **Visual score**: `round(100 × passed / (passed + failed))` over the 29 items, ignoring n/a.
+- **Visual score**: `round(100 × passed / (passed + failed))` over the 35 items, ignoring n/a.
 - **Verdict: PASS** only if the static check passes, no **[B]** item fails, and the visual score is at least 90. Otherwise **FAIL**.
 
 ## 6. Fix

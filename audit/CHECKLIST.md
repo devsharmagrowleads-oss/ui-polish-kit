@@ -97,6 +97,7 @@ Generated from `rules/` by `scripts/build.mjs`. Do not edit. `static` rules are 
 - [ ] **RS-06** (error, visual) Tables have a small-screen form
 - [ ] **RS-07** (error, visual) Navigation has a small-screen form
 - [ ] **RS-08** (warning, visual) Fluid media, viewport units and safe areas
+- [ ] **RS-09** (warning, visual) Components respond to their container
 
 ## DM · Dark mode (`rules/09-dark-mode.md`)
 
@@ -121,6 +122,7 @@ Generated from `rules/` by `scripts/build.mjs`. Do not edit. `static` rules are 
 - [ ] **AX-10** (error, visual) Everything works from the keyboard
 - [ ] **AX-11** (warning, visual) Semantic structure before ARIA
 - [ ] **AX-12** (warning, visual) Not colour alone; announce changes
+- [ ] **AX-13** (warning, visual) Works in forced-colours (high-contrast) mode
 
 ## MO · Motion (`rules/11-motion.md`)
 
@@ -131,6 +133,7 @@ Generated from `rules/` by `scripts/build.mjs`. Do not edit. `static` rules are 
 - [ ] **MO-05** (warning, visual) Easing matches direction
 - [ ] **MO-06** (warning, visual) Animate only what helps
 - [ ] **MO-07** (warning, visual) Layout stays stable while things move
+- [ ] **MO-08** (info, visual) Page and view changes use view transitions
 
 ## CO · Colour (`rules/12-colour.md`)
 
@@ -180,3 +183,52 @@ Generated from `rules/` by `scripts/build.mjs`. Do not edit. `static` rules are 
 - [ ] **SA-03** (error, process) Screenshot it and look
 - [ ] **SA-04** (error, process) Operate it
 - [ ] **SA-05** (warning, process) Report with the score and the gaps
+
+## DT · Data tables (`rules/17-data-tables.md`)
+
+- [ ] **DT-01** (warning, static) Tables are real tables
+- [ ] **DT-02** (warning, visual) Columns are aligned by what they hold
+- [ ] **DT-03** (warning, visual) Sorting is visible and announced
+- [ ] **DT-04** (info, visual) The header stays and rows have a set density
+- [ ] **DT-05** (error, visual) Every table has its states
+- [ ] **DT-06** (warning, visual) Paging shows where you are
+- [ ] **DT-07** (warning, visual) Selection and row actions are predictable
+- [ ] **DT-08** (info, visual) Long and missing values are handled
+
+## CH · Charts and data visualisation (`rules/18-charts.md`)
+
+- [ ] **CH-01** (warning, visual) The chart answers one question
+- [ ] **CH-02** (warning, visual) Colour comes from chart tokens and means something
+- [ ] **CH-03** (warning, visual) Label directly; axes have units
+- [ ] **CH-04** (error, visual) Scales are honest
+- [ ] **CH-05** (error, visual) Readable without colour or sight
+- [ ] **CH-06** (warning, visual) Charts have states and fit their box
+- [ ] **CH-07** (info, visual) Interaction adds detail, not decoration
+
+## NV · Navigation and page structure (`rules/19-navigation.md`)
+
+- [ ] **NV-01** (error, visual) The current location is always marked
+- [ ] **NV-02** (warning, static) Landmarks and a skip link
+- [ ] **NV-03** (warning, visual) One page-header pattern
+- [ ] **NV-04** (info, visual) Breadcrumbs for depth
+- [ ] **NV-05** (error, static) Links go places, buttons do things
+- [ ] **NV-06** (warning, visual) View state lives in the URL
+- [ ] **NV-07** (warning, visual) The menu is short and grouped
+
+## IC · Icons (`rules/20-icons.md`)
+
+- [ ] **IC-01** (warning, visual) Icon size follows the text beside it
+- [ ] **IC-02** (warning, visual) One style, and fill means "on"
+- [ ] **IC-03** (warning, static) Decorative icons are hidden; meaningful ones have text
+- [ ] **IC-04** (warning, visual) Icon plus label by default
+- [ ] **IC-05** (info, visual) Icons align with their text
+- [ ] **IC-06** (info, visual) Icons are delivered efficiently
+
+## IN · Internationalisation and right-to-left (`rules/21-internationalisation.md`)
+
+- [ ] **IN-01** (info, static) Logical properties, not left and right
+- [ ] **IN-02** (warning, visual) Text can grow and wrap
+- [ ] **IN-03** (warning, visual) Direction and language are declared; direction-aware icons flip
+- [ ] **IN-04** (error, visual) Format with Intl, pluralise with rules
+- [ ] **IN-05** (info, process) Strings live outside the components
+- [ ] **IN-06** (warning, visual) Fonts and line height cover every script
