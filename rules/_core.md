@@ -6,7 +6,7 @@ Kit root: `{{KIT}}` (contains `rules/`, `recipes/`, `audit/`).
 
 ## Workflow, in this order
 
-1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `{{KIT}}/templates/design.md`, with a `Surface:` line. Everything later follows it. (BR)
+1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `{{KIT}}/templates/design.md`, with a `Surface:` line and an Assets table: ask for any missing logo, icon, social image or photos. Everything later follows it. (BR, AS)
 2. **Tokens.** Define colour, spacing, radius, shadow, type, z-index and motion tokens for light and dark before writing any component. Start from `{{KIT}}/recipes/react-tailwind-shadcn/tokens/tokens.css`. (TK, CO, DM)
 3. **Build.** Use tokens and the recipes in `{{KIT}}/recipes/` only. Design the 375px layout first. (all topics)
 4. **Self-audit.** Run the static checker, screenshot the result at 375 / 768 / 1440px in light and dark, look at the screenshots, fix what fails, re-check. Only then report the task as done, with the score. (SA)

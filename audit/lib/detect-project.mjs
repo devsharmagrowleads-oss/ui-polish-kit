@@ -76,6 +76,24 @@ export function runProjectDetectors(project, report) {
     const iconFile = has(/(^|\/)(favicon\.(ico|svg|png)|icon\.(ico|svg|png|tsx|jsx|js|ts)|apple-icon\.\w+|apple-touch-icon[\w-]*\.png)$/);
     if (!linkIcon && !iconFile) {
       report('FD-01', at(entry), 'No favicon. The browser tab shows a blank page icon (or the framework logo). Add an SVG/ICO favicon and an apple-touch-icon.');
+    } else {
+      const touchIcon = files.some((f) => /rel=["']apple-touch-icon(-precomposed)?["']|\bapple\s*:\s*[{["'`]/i.test(f.text)) || has(/(^|\/)(apple-icon\.\w+|apple-touch-icon[\w-]*\.png)$/);
+      if (!touchIcon) {
+        report('AS-02', at(entry), 'There is a favicon but no apple-touch-icon, so a site saved to an iPhone home screen shows a screenshot thumbnail. Add a 180×180 PNG with a solid background (<link rel="apple-touch-icon" href="/apple-touch-icon.png">), generated from the same mark as the favicon.');
+      }
+    }
+    const manifest = has(/(^|\/)([\w-]*\.webmanifest|manifest\.json|manifest\.(ts|js)|manifest\.webmanifest)$/) || files.some((f) => /rel=["']manifest["']/i.test(f.text));
+    const themeColor = files.some((f) => /name=["']theme-color["']|\bthemeColor\s*:/.test(f.text));
+    if (!manifest && !themeColor) {
+      report('AS-03', at(entry), 'No theme-color meta tag and no web app manifest. Set <meta name="theme-color"> from the background token (one per colour scheme) and add a site.webmanifest with name, short_name, colours and icons, so mobile browser chrome and installed versions match the product.');
+    }
+    // LP-07: marketing pages need privacy, terms and contact links (run.mjs drops it on app surfaces).
+    {
+      const privacyRoute = has(/(^|\/)(privacy|privacy-policy|legal|datenschutz)(\/|\.|-|$)/i);
+      const privacyLink = files.some((f) => f.hasMarkup && /href\s*=\s*\{?\s*["'`][^"'`]*(privacy|legal)/i.test(f.text));
+      if (!privacyRoute && !privacyLink) {
+        report('LP-07', at(entry), 'Marketing site with no privacy policy page or link. Link privacy, terms and contact from the footer of every page, and next to forms that collect personal data. Ask the owner for the legal text; do not invent it.');
+      }
     }
     if (!has(/(^|\/)(404\.(html?|tsx|jsx|js|astro|vue|svelte|md)|not-found\.(tsx|jsx|js)|\+error\.svelte|error\.vue|\[\.\.\.[\w]+\]\.\w+)$/)) {
       report('FD-05', at(entry), 'No 404 page. Mistyped URLs land on the host\'s default error screen. Add a not-found page with the site navigation and a way back.');
