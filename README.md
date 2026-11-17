@@ -32,6 +32,7 @@
   <a href="#what-the-rules-cover">The rules</a> ·
   <a href="#components">Components</a> ·
   <a href="#the-audit">The audit</a> ·
+  <a href="#elevate-from-correct-to-premium">Elevate</a> ·
   <a href="#install">Install</a> ·
   <a href="#faq">FAQ</a>
 </p>
@@ -53,7 +54,7 @@ claude plugin install ui-polish-kit@ui-polish-kit
 npx github:devsharmagrowleads-oss/ui-polish-kit install cursor   # or codex, windsurf, copilot, gemini, all
 ```
 
-Then tell your agent: **"Do the brand intake, then run the UI audit."** From then on it follows the rules on every UI task and has to pass the audit before it says the work is done.
+Then tell your agent: **"Do the brand intake, then run the UI audit."** From then on it follows the rules on every UI task and has to pass the audit before it says the work is done. To take a working UI to premium, say **"Run the UI elevate."**
 
 ## Before and after
 
@@ -213,6 +214,7 @@ node .ui-polish/audit/cli.mjs . --json          # machine-readable
 node .ui-polish/audit/cli.mjs . --fail-on warning --min-score 95    # stricter, for CI
 node .ui-polish/audit/cli.mjs --list-rules      # every rule and whether it is checked statically
 node .ui-polish/audit/cli.mjs . --surface app   # treat the project as a product app (or marketing, both)
+node .ui-polish/audit/cli.mjs . --polish polish.json --html report.html   # add the Polish score; write a shareable report
 ```
 
 <details>
@@ -276,14 +278,40 @@ npm i -D playwright-core          # uses your installed Chrome or Edge
 node .ui-polish/audit/screenshot.mjs http://localhost:3000/ http://localhost:3000/settings
 ```
 
+## Elevate: from correct to premium
+
+The audit removes defects. **Elevate** goes further: it takes a UI that already works, often the first version a coding agent built, and remaps it the way a professional designer would, keeping the same product, content and brand. Ask your agent to "run the UI elevate", or use `/ui-polish-kit:ui-elevate` in Claude Code. It follows [`audit/ELEVATE.md`](audit/ELEVATE.md):
+
+1. **Intake.** Reads `design.md` (brand, surface, assets) and asks you for anything missing, such as the real logo or product screenshots.
+2. **Baseline.** Runs the checker and captures every page at three widths in light and dark.
+3. **Critique.** Writes a design-lead critique of each page: focal point, hierarchy, rhythm, craft and the journey (conversion for marketing sites, activation for apps).
+4. **Plan.** Ranks the improvements by impact, system-level first (tokens, type scale, spacing, shared components), and shows you the plan plus any brand changes that need your approval.
+5. **Apply, then re-measure,** until the target is met.
+
+Progress is measured with two scores:
+
+| Score | What it measures | How |
+| --- | --- | --- |
+| **Static** (0–100) | Defects in the code: default controls, hard-coded colours, missing states, UX-law violations | The checker, automatically |
+| **Polish** (0–100) | Whether it looks designed: hierarchy, typography, spacing, colour, surfaces, components, imagery, motion, copy, consistency, and the conversion or activation journey | Eleven dimensions scored 0–4 from the screenshots against the anchors in [`audit/POLISH.md`](audit/POLISH.md), each with evidence |
+
+Elevation is done when the static check passes, Polish is at least 80 ("polished"; 90 and over is "premium") and no dimension is below 2. The result is a **shareable HTML report**: both scores with before/after changes, Polish by dimension, findings by file, and before/after screenshot pairs, all in one self-contained file you can send to a client or a teammate.
+
+```bash
+node .ui-polish/audit/cli.mjs . --json --polish .ui-polish-audit/polish-before.json > .ui-polish-audit/before.json
+# … elevate …
+node .ui-polish/audit/cli.mjs . --polish .ui-polish-audit/polish.json \
+  --before .ui-polish-audit/before.json --html .ui-polish-audit/report.html
+```
+
 ## Install
 
 Every install except the Claude Code plugin copies the kit into `.ui-polish/` in your project and adds one entry file for the agent. Commit both, so your whole team and CI get them.
 
 | Agent | Command (in your project root) | What it writes |
 | --- | --- | --- |
-| Claude Code (plugin) | `claude plugin marketplace add devsharmagrowleads-oss/ui-polish-kit` then `claude plugin install ui-polish-kit@ui-polish-kit` | Nothing in your project. Skills `/ui-polish-kit:ui-polish` and `/ui-polish-kit:ui-audit` |
-| Claude Code (project skills) | `npx github:devsharmagrowleads-oss/ui-polish-kit install claude` | `.claude/skills/ui-polish/`, `.claude/skills/ui-audit/` |
+| Claude Code (plugin) | `claude plugin marketplace add devsharmagrowleads-oss/ui-polish-kit` then `claude plugin install ui-polish-kit@ui-polish-kit` | Nothing in your project. Skills `/ui-polish-kit:ui-polish`, `/ui-polish-kit:ui-audit` and `/ui-polish-kit:ui-elevate` |
+| Claude Code (project skills) | `npx github:devsharmagrowleads-oss/ui-polish-kit install claude` | `.claude/skills/ui-polish/`, `.claude/skills/ui-audit/`, `.claude/skills/ui-elevate/` |
 | Codex and any `AGENTS.md` reader | `npx github:devsharmagrowleads-oss/ui-polish-kit install codex` | A marked block in `AGENTS.md`; your own content is kept |
 | Cursor | `npx github:devsharmagrowleads-oss/ui-polish-kit install cursor` | `.cursor/rules/ui-polish-*.mdc`: one always-on rule, one per topic loaded when relevant |
 | Windsurf | `npx github:devsharmagrowleads-oss/ui-polish-kit install windsurf` | `.windsurf/rules/ui-polish-*.md` |

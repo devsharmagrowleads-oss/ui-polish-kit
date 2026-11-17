@@ -32,7 +32,8 @@ test('twenty-six topics, each rule complete', () => {
 test('an output exists for every agent', () => {
   const required = [
     'audit/rules-index.json', 'audit/CHECKLIST.md',
-    'skills/ui-polish/SKILL.md', 'skills/ui-audit/SKILL.md',
+    'skills/ui-polish/SKILL.md', 'skills/ui-audit/SKILL.md', 'skills/ui-elevate/SKILL.md',
+    'dist/claude-project/.claude/skills/ui-elevate/SKILL.md', 'dist/cursor/.cursor/rules/ui-polish-elevate.mdc', 'dist/windsurf/.windsurf/rules/ui-polish-elevate.md',
     '.claude-plugin/plugin.json', '.claude-plugin/marketplace.json',
     'dist/claude-project/.claude/skills/ui-polish/SKILL.md', 'dist/claude-project/.claude/skills/ui-audit/SKILL.md',
     'dist/agents-md/AGENTS.md', 'dist/gemini/GEMINI.md', 'dist/copilot/.github/copilot-instructions.md',

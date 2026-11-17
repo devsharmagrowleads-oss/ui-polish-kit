@@ -47,6 +47,10 @@ export function formatText(result, { color = false, maxPerFile = 0 } = {}) {
   const verdict = result.pass ? c('green', 'PASS') : c('red', 'FAIL');
   out.push(`${error} error${error === 1 ? '' : 's'}, ${warning} warning${warning === 1 ? '' : 's'}, ${info} info`);
   out.push(`Score ${c('bold', `${result.score}/100`)} (minimum ${result.minScore}, fail on ${result.failOn})  ${verdict}`);
+  if (result.polish) {
+    const p = result.polish;
+    out.push(`Polish ${c('bold', `${p.score}/100`)} (${p.band}; target ${p.target.score}, no dimension below ${p.target.dimension})  ${p.meetsTarget ? c('green', 'MEETS TARGET') : c('yellow', 'BELOW TARGET')}`);
+  }
   if (!result.findings.length) out.push('No static findings. Static checks cannot see layout, spacing rhythm or visual quality: run the visual audit in audit/PROCEDURE.md.');
   else out.push(c('dim', 'Each rule ID is explained in rules/ (rule, why, bad/good example, how to check). Suppress a deliberate exception with a `ui-polish-ignore-next-line <ID>` comment.'));
   return out.join('\n');

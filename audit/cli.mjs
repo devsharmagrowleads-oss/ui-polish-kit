@@ -4,10 +4,14 @@
 //   node audit/cli.mjs [path] [--json] [--min-score N] [--fail-on error|warning|never]
 //                      [--rules ID,ID] [--config file] [--surface S] [--max-per-file N] [--list-rules]
 
+import fs from 'node:fs';
+import path from 'node:path';
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
 import { audit, loadRuleIndex, STATIC_RULE_IDS } from './lib/run.mjs';
 import { formatText } from './lib/report.mjs';
+import { loadPolish } from './lib/polish.mjs';
+import { renderHtml, collectScreenshots } from './lib/report-html.mjs';
 
 const HELP = `ui-polish audit: static UI checks with file:line, rule ID, severity and a score.
 
@@ -22,6 +26,10 @@ Options
   --config <file>        Config file (default: ui-polish.config.json in the project root)
   --surface <kind>       marketing | app | both | auto (default: config, then design.md, then detected)
   --max-per-file <n>     Limit findings printed per file in text output
+  --polish <file>        Polish score from screenshots (audit/POLISH.md format); printed and included in --json
+  --html <file>          Also write a self-contained HTML report (scores, findings, screenshots)
+  --before <file>        A previous --json result, to show before/after changes in the HTML report
+  --screenshots <dir>    Screenshots for the HTML report (default <path>/.ui-polish-audit; before/ holds baselines)
   --list-rules           List every rule and whether the static checker covers it
   --no-color             Disable ANSI colours
   -h, --help             Show this help
@@ -59,6 +67,10 @@ export function parseArgs(argv) {
     else if (a === '--rules') opts.only = need(i++, a).split(',').map((s) => s.trim().toUpperCase()).filter(Boolean);
     else if (a === '--config') opts.config = need(i++, a);
     else if (a === '--surface') opts.overrides = { ...opts.overrides, surface: need(i++, a) };
+    else if (a === '--polish') opts.polish = need(i++, a);
+    else if (a === '--html') opts.html = need(i++, a);
+    else if (a === '--before') opts.before = need(i++, a);
+    else if (a === '--screenshots') opts.screenshots = need(i++, a);
     else if (a === '--max-per-file') opts.maxPerFile = Number(need(i++, a)) || 0;
     else if (a.startsWith('-')) throw new Error(`Unknown option ${a}`);
     else if (!pathSet) { opts.path = a; pathSet = true; } else throw new Error(`Unexpected argument ${a}`);
@@ -89,6 +101,16 @@ export function main(argv = process.argv.slice(2)) {
       if (bad.length) throw new Error(`Unknown rule ID(s): ${bad.join(', ')}`);
     }
     const result = audit(opts.path, opts);
+    if (opts.polish) result.polish = loadPolish(opts.polish);
+    if (opts.html) {
+      let before = null;
+      if (opts.before) {
+        try { before = JSON.parse(fs.readFileSync(opts.before, 'utf8')); } catch (err) { throw new Error(`Cannot read --before ${opts.before}: ${err.message}`); }
+      }
+      const shotsDir = opts.screenshots ?? path.join(opts.path, '.ui-polish-audit');
+      fs.writeFileSync(opts.html, renderHtml(result, { before, screenshots: collectScreenshots(shotsDir, opts.html) }));
+      if (!opts.json) process.stderr.write(`HTML report written to ${opts.html}\n`);
+    }
     if (opts.json) process.stdout.write(`${JSON.stringify({ version: 1, ...result }, null, 2)}\n`);
     else {
       const color = opts.color ?? (process.stdout.isTTY && !process.env.NO_COLOR);

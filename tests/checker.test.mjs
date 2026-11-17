@@ -414,3 +414,82 @@ Fonts: Figtree.
   assert.deepEqual(site(head, '<main><h1>Invoices</h1></main><footer><a href="/privacy">Privacy</a></footer>', doc('marketing')).ids, []);
   assert.deepEqual(site(head, undefined, { ...doc('marketing'), 'privacy.html': page(head) }).ids, []);
 });
+
+// ---------------------------------------------------------------------------
+// Polish score and HTML report
+// ---------------------------------------------------------------------------
+
+const POLISH_IDS = ['hierarchy', 'typography', 'spacing', 'colour', 'surfaces', 'components', 'imagery', 'motion', 'copy', 'consistency', 'journey'];
+const polishData = (scores) => ({ assessedAt: '2026-11-17', pages: ['/'], dimensions: Object.fromEntries(POLISH_IDS.map((id, i) => [id, { score: scores[i], note: scores[i] === null ? 'No images in scope.' : '', evidence: ['home-1440-light.png'] }])) });
+
+test('Polish score: computed, banded and validated', async () => {
+  const { scorePolish } = await import('../audit/lib/polish.mjs');
+  const all4 = scorePolish(polishData(Array(11).fill(4)));
+  assert.equal(all4.score, 100);
+  assert.equal(all4.band, 'premium');
+  assert.equal(all4.meetsTarget, true);
+  // null dimensions are left out of the average
+  const mixed = scorePolish(polishData([4, 4, 3, 4, 3, 4, null, 3, 4, 3, 2]));
+  assert.equal(mixed.score, 85);
+  assert.equal(mixed.band, 'polished');
+  // a dimension below 2 misses the target even with a high average
+  const lopsided = scorePolish(polishData([4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1]));
+  assert.equal(lopsided.score, 93);
+  assert.equal(lopsided.meetsTarget, false);
+  assert.equal(scorePolish(polishData(Array(11).fill(1))).band, 'generic');
+  assert.throws(() => scorePolish({ dimensions: { hierarchy: { score: 3 } } }), /missing dimension "typography"/);
+  assert.throws(() => scorePolish(polishData([5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4])), /integer from 0 to 4/);
+  assert.throws(() => scorePolish({ dimensions: { ...polishData(Array(11).fill(3)).dimensions, vibes: { score: 4 } } }), /unknown dimension "vibes"/);
+  const noReason = polishData(Array(11).fill(3));
+  noReason.dimensions.imagery = { score: null };
+  assert.throws(() => scorePolish(noReason), /say why/);
+});
+
+test('CLI --polish and --html write a self-contained report with before/after', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ui-polish-report-'));
+  try {
+    const shots = path.join(dir, 'shots');
+    fs.mkdirSync(path.join(shots, 'before'), { recursive: true });
+    const png = fs.readFileSync(path.join(ROOT, 'examples', 'after', 'apple-touch-icon.png'));
+    fs.writeFileSync(path.join(shots, 'home-1440-light.png'), png);
+    fs.writeFileSync(path.join(shots, 'before', 'home-1440-light.png'), png);
+    fs.writeFileSync(path.join(dir, 'polish.json'), JSON.stringify(polishData([4, 4, 3, 4, 3, 4, null, 3, 4, 3, 2])));
+    fs.writeFileSync(path.join(dir, 'polish-before.json'), JSON.stringify(polishData([1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1])));
+    const before = spawnSync(process.execPath, [CLI, path.join(ROOT, 'examples', 'before'), '--json', '--polish', path.join(dir, 'polish-before.json')], { encoding: 'utf8' });
+    assert.equal(before.status, 1);
+    const beforeJson = JSON.parse(before.stdout);
+    assert.equal(beforeJson.polish.score, 25);
+    fs.writeFileSync(path.join(dir, 'before.json'), before.stdout);
+
+    const html = path.join(dir, 'report.html');
+    const r = spawnSync(process.execPath, [CLI, path.join(ROOT, 'examples', 'after'), '--polish', path.join(dir, 'polish.json'), '--before', path.join(dir, 'before.json'), '--screenshots', shots, '--html', html, '--no-color'], { encoding: 'utf8' });
+    assert.equal(r.status, 0, r.stderr);
+    assert.match(r.stdout, /Polish 85\/100 \(polished/);
+    const page = fs.readFileSync(html, 'utf8');
+    assert.match(page, /^<!doctype html>/);
+    assert.match(page, /<meta name="color-scheme" content="light dark">/);
+    assert.match(page, /\+100 from 0/);
+    assert.match(page, /\+60 from 25/);
+    assert.match(page, /Hierarchy and focal point/);
+    assert.match(page, /src="data:image\/png;base64,/);
+    assert.match(page, /before, after/);
+    assert.doesNotMatch(page, /<script/);
+
+    // bad polish.json is a usage error, not a crash
+    fs.writeFileSync(path.join(dir, 'bad.json'), '{"dimensions":{}}');
+    const bad = spawnSync(process.execPath, [CLI, path.join(ROOT, 'examples', 'after'), '--polish', path.join(dir, 'bad.json')], { encoding: 'utf8' });
+    assert.equal(bad.status, 2);
+    assert.match(bad.stderr, /missing dimension/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('HTML report escapes finding text', async () => {
+  const { renderHtml } = await import('../audit/lib/report-html.mjs');
+  const result = clean({ 'p.html': '<a href="#">x</a>' });
+  result.findings[0].message = '<img src=x onerror=alert(1)>';
+  const page = renderHtml(result);
+  assert.doesNotMatch(page, /<img src=x onerror/);
+  assert.match(page, /&lt;img src=x onerror=alert\(1\)&gt;/);
+});
