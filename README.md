@@ -331,7 +331,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: devsharmagrowleads-oss/ui-polish-kit@v0.3.1
+      - uses: devsharmagrowleads-oss/ui-polish-kit@v0.3.2
         with:
           path: .            # folder to audit
           min-score: "90"    # optional; defaults to the project config, then 85
