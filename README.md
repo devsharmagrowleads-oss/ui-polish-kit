@@ -4,9 +4,9 @@
 
 <p align="center">
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-0a1214?style=flat-square"></a>
-  <img alt="188 rules" src="https://img.shields.io/badge/rules-188-5fd0c5?style=flat-square">
-  <img alt="23 topics" src="https://img.shields.io/badge/topics-23-5fd0c5?style=flat-square">
-  <img alt="66 static checks" src="https://img.shields.io/badge/static%20checks-66-5fd0c5?style=flat-square">
+  <img alt="208 rules" src="https://img.shields.io/badge/rules-208-5fd0c5?style=flat-square">
+  <img alt="26 topics" src="https://img.shields.io/badge/topics-26-5fd0c5?style=flat-square">
+  <img alt="70 static checks" src="https://img.shields.io/badge/static%20checks-70-5fd0c5?style=flat-square">
   <img alt="27 React recipes" src="https://img.shields.io/badge/React%20recipes-27-5fd0c5?style=flat-square">
   <img alt="8 HTML and CSS recipes" src="https://img.shields.io/badge/HTML%2FCSS%20recipes-8-5fd0c5?style=flat-square">
   <img alt="No dependencies" src="https://img.shields.io/badge/dependencies-none-17603c?style=flat-square">
@@ -69,7 +69,7 @@ The same invoicing screen, built twice. Left: what an agent produces when asked 
     <td><img src="docs/images/example-after.png" alt="The same invoicing screen rebuilt: a dark themed 'New invoice' form with a real type scale, consistent spacing, one icon set, a styled select, date picker, slider and file upload, and a summary panel with real figures."></td>
   </tr>
   <tr>
-    <td align="center">Score <b>0 / 100</b> · 57 errors · 101 warnings</td>
+    <td align="center">Score <b>0 / 100</b> · 58 errors · 101 warnings</td>
     <td align="center">Score <b>100 / 100</b> · no findings</td>
   </tr>
 </table>
@@ -104,7 +104,7 @@ One run per prompt, judged by the kit's own checker, which reads code rather tha
 
 ```mermaid
 flowchart LR
-    R["rules/<br>188 rules, 23 topics<br>one source of truth"] --> B["scripts/build.mjs"]
+    R["rules/<br>208 rules, 26 topics<br>one source of truth"] --> B["scripts/build.mjs"]
     B --> A1["Claude Code<br>plugin and skills"]
     B --> A2["Codex<br>AGENTS.md"]
     B --> A3["Cursor<br>.cursor/rules"]
@@ -130,7 +130,7 @@ Each agent gets a short entry file that is always loaded (the core checklist and
 
 ## What the rules cover
 
-188 rules in 23 topics. Each rule has the rule, why it matters, a bad example, a good example and how to check it.
+208 rules in 26 topics. Each rule has the rule, why it matters, a bad example, a good example and how to check it.
 
 **Look and feel**
 
@@ -171,11 +171,19 @@ Each agent gets a short entry file that is always loaded (the core checklist and
 | [Accessibility](rules/10-accessibility.md) · AX | Low contrast, no focus ring, clickable `<div>`s, no keyboard path, states that vanish in high-contrast mode |
 | [Internationalisation](rules/21-internationalisation.md) · IN | `margin-left` layouts that break in Arabic, fixed-width labels, hand-rolled plurals and dates |
 
+**For one kind of product.** These apply only where they fit: the checker and the agent skip them on the other kind of project, based on the surface in `design.md`.
+
+| Topic | Applies to | What it stops |
+| --- | --- | --- |
+| [Landing pages and conversion](rules/25-landing-pages.md) · LP | Marketing sites | Slogan heroes, three competing calls to action, "Sarah K." testimonials, abstract illustrations instead of the product, four equal pricing plans, no privacy or terms links, eight-field signup forms |
+| [Activation and first run](rules/26-activation.md) · AC | Product apps (SaaS, dashboards, admin tools) | New accounts landing on a dashboard of zeros, seven onboarding steps before any value, "No data" empty states, blocking modal tours, invite prompts at signup |
+
 **Finish and process**
 
 | Topic | What it stops |
 | --- | --- |
 | [Finishing details](rules/13-finishing-details.md) · FD | Scaffold page titles, no favicon, no social preview, no 404 page |
+| [Launch assets](rules/24-launch-assets.md) · AS | Shipping without the owner's assets: no inventory, the framework logo as favicon, no touch icon or manifest, a logo that vanishes in dark mode, picsum and placehold.co images. The agent asks the owner for each missing asset, with options |
 | [Copy](rules/14-copy.md) · CP | Lorem ipsum, "Feature One", buttons that say "Submit" |
 | [Brand intake](rules/15-brand-intake.md) · BR | Building before anyone has written down the brand's colours, fonts and tone |
 | [Self-audit gate](rules/16-self-audit.md) · SA | Declaring a UI task done without looking at it |
@@ -208,7 +216,7 @@ node .ui-polish/audit/cli.mjs . --surface app   # treat the project as a product
 ```
 
 <details>
-<summary><b>What the checker detects (66 rules)</b></summary>
+<summary><b>What the checker detects (70 rules)</b></summary>
 
 | Area | Detects |
 | --- | --- |
@@ -225,6 +233,7 @@ node .ui-polish/audit/cli.mjs . --surface app   # treat the project as a product
 | Finishing | Missing favicon, title, description, Open Graph tags, 404 page; images without dimensions |
 | Copy and brand | Lorem ipsum; filler names; vague microcopy; missing `design.md`; no recorded surface (marketing, app or both) when the code does not show it |
 | UX laws and hierarchy | Navigation with more than eight top-level links (Hick); phone, card and postcode patterns that reject spaces (Postel); more than four font weights |
+| Assets and surface | Favicon without apple-touch-icon; no theme-color or manifest; placeholder and random-image services; marketing sites without a privacy link |
 
 </details>
 
@@ -260,7 +269,7 @@ Also available: `ui-polish-ignore-line`, `ui-polish-disable <IDs>` … `ui-polis
 
 </details>
 
-**2. Visual audit.** The checker cannot judge spacing rhythm, hierarchy or whether a page looks like a template, so the agent also follows [`audit/PROCEDURE.md`](audit/PROCEDURE.md): it starts the app, captures each page at 375, 768 and 1440px in light and dark (plus open dropdowns, dialogs, and the empty, loading and error states), looks at every image, walks a 38-item checklist, does a keyboard pass, fixes in priority order, re-checks, and reports what it fixed, what remains and what it could not verify.
+**2. Visual audit.** The checker cannot judge spacing rhythm, hierarchy or whether a page looks like a template, so the agent also follows [`audit/PROCEDURE.md`](audit/PROCEDURE.md): it starts the app, captures each page at 375, 768 and 1440px in light and dark (plus open dropdowns, dialogs, and the empty, loading and error states), looks at every image, walks a 41-item checklist, does a keyboard pass, fixes in priority order, re-checks, and reports what it fixed, what remains and what it could not verify.
 
 ```bash
 npm i -D playwright-core          # uses your installed Chrome or Edge
@@ -337,7 +346,7 @@ No. It runs locally, with no dependencies and no network access.
 npm run build         # regenerate skills/, dist/, .claude-plugin/, audit/rules-index.json, audit/CHECKLIST.md
 npm run build:check   # fail if generated files are stale (use in CI)
 npm test              # checker, build and installer tests
-node audit/cli.mjs examples/before    # fails: 169 findings
+node audit/cli.mjs examples/before    # fails: 171 findings
 node audit/cli.mjs examples/after     # passes: 100/100
 ```
 

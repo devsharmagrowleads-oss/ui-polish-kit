@@ -11,7 +11,7 @@ Kit root: `.ui-polish` (contains `rules/`, `recipes/`, `audit/`).
 
 ## Workflow, in this order
 
-1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `.ui-polish/templates/design.md`, with a `Surface:` line. Everything later follows it. (BR)
+1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `.ui-polish/templates/design.md`, with a `Surface:` line and an Assets table: ask for any missing logo, icon, social image or photos. Everything later follows it. (BR, AS)
 2. **Tokens.** Define colour, spacing, radius, shadow, type, z-index and motion tokens for light and dark before writing any component. Start from `.ui-polish/recipes/react-tailwind-shadcn/tokens/tokens.css`. (TK, CO, DM)
 3. **Build.** Use tokens and the recipes in `.ui-polish/recipes/` only. Design the 375px layout first. (all topics)
 4. **Self-audit.** Run the static checker, screenshot the result at 375 / 768 / 1440px in light and dark, look at the screenshots, fix what fails, re-check. Only then report the task as done, with the score. (SA)
@@ -38,7 +38,7 @@ These rules set the look; Modern Web Guidance picks the browser feature. Before 
 
 ## Topic files (read on demand)
 
-All in `.ui-polish/rules/`: NC `01-native-controls.md` · TK `02-design-tokens.md` · TY `03-typography.md` · SP `04-spacing-layout.md` · SL `05-ai-slop.md` · ST `06-component-states.md` · FM `07-forms.md` · RS `08-responsive.md` · DM `09-dark-mode.md` · AX `10-accessibility.md` · MO `11-motion.md` · CO `12-colour.md` · FD `13-finishing-details.md` · CP `14-copy.md` · BR `15-brand-intake.md` · SA `16-self-audit.md` · DT `17-data-tables.md` · CH `18-charts.md` · NV `19-navigation.md` · IC `20-icons.md` · IN `21-internationalisation.md` · UX `22-ux-laws.md` · VH `23-visual-hierarchy.md`.
+All in `.ui-polish/rules/`: NC `01-native-controls.md` · TK `02-design-tokens.md` · TY `03-typography.md` · SP `04-spacing-layout.md` · SL `05-ai-slop.md` · ST `06-component-states.md` · FM `07-forms.md` · RS `08-responsive.md` · DM `09-dark-mode.md` · AX `10-accessibility.md` · MO `11-motion.md` · CO `12-colour.md` · FD `13-finishing-details.md` · CP `14-copy.md` · BR `15-brand-intake.md` · SA `16-self-audit.md` · DT `17-data-tables.md` · CH `18-charts.md` · NV `19-navigation.md` · IC `20-icons.md` · IN `21-internationalisation.md` · UX `22-ux-laws.md` · VH `23-visual-hierarchy.md` · AS `24-launch-assets.md` · LP `25-landing-pages.md` (marketing only) · AC `26-activation.md` (app only).
 
 ## Checking your work
 

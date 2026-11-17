@@ -45,6 +45,22 @@ Measured contrast pairs (must be at least 4.5:1 for text): foreground on backgro
 - Imagery: <real product screenshots | photography style | illustration style>; avoid <stock photos, generic 3D shapes>
 - Logo files: <paths>; favicon source: <path>
 
+## Assets
+Status is provided, generated (assumed), missing (owner sending by <date>) or skipped (reason). Ask the owner for everything missing in one message (AS-01).
+
+| Asset | Status | Source |
+| --- | --- | --- |
+| Logo: full, mark, for light and dark backgrounds | <…> | <paths> |
+| Favicon (SVG + 32px ICO) and apple-touch-icon (180px PNG) | <…> | <…> |
+| Manifest icons (192px, 512px, maskable) | <…> | <…> |
+| Social preview image (1200×630) | <…> | <…> |
+| Product screenshots or photography | <…> | <…> |
+| Privacy policy, terms, contact (marketing surfaces) | <…> | <…> |
+
+## Activation or conversion
+- App surfaces: the activation moment (the first success that proves the product): <e.g. first invoice sent>
+- Marketing surfaces: the one conversion goal of each page: <e.g. start free trial>
+
 ## Voice and tone
 - Rules: <e.g. plain, brief, sentence case, no exclamation marks, British spelling>
 - Vocabulary: we say <workspace>, never <team/org>

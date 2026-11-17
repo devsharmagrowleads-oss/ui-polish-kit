@@ -184,6 +184,30 @@
       "file": "23-visual-hierarchy.md",
       "surface": "all",
       "when": "Laying out any page, section, card, dashboard or detail view; styling headings, labels, values and secondary text; deciding what a screen should draw the eye to first; reviewing a screen that looks flat, busy or \"all the same\"."
+    },
+    {
+      "prefix": "AS",
+      "topic": "launch-assets",
+      "title": "Launch assets",
+      "file": "24-launch-assets.md",
+      "surface": "all",
+      "when": "Starting UI work in a project, doing the brand intake, setting up the document head or root layout, adding images, logos or icons, or preparing a site or app for review or launch."
+    },
+    {
+      "prefix": "LP",
+      "topic": "landing-pages",
+      "title": "Landing pages and conversion",
+      "file": "25-landing-pages.md",
+      "surface": "marketing",
+      "when": "Building or changing a marketing site, landing page, homepage, hero, pricing page, feature or product page, signup or lead-capture form, waitlist, or any page whose job is to explain the product and get a visitor to act."
+    },
+    {
+      "prefix": "AC",
+      "topic": "activation",
+      "title": "Activation and first run",
+      "file": "26-activation.md",
+      "surface": "app",
+      "when": "Building what a new user sees after signing up (first run, onboarding, welcome screens, setup checklists, product tours), the empty version of any main screen, invite flows, sample data, or the screen a returning user lands on."
     }
   ],
   "rules": {
@@ -1690,6 +1714,166 @@
       "topic": "visual-hierarchy",
       "surface": "all",
       "file": "23-visual-hierarchy.md"
+    },
+    "AS-01": {
+      "title": "Take an asset inventory and ask for what is missing",
+      "severity": "error",
+      "check": "process",
+      "topic": "launch-assets",
+      "surface": "all",
+      "file": "24-launch-assets.md"
+    },
+    "AS-02": {
+      "title": "A complete icon set",
+      "severity": "warning",
+      "check": "static",
+      "topic": "launch-assets",
+      "surface": "all",
+      "file": "24-launch-assets.md"
+    },
+    "AS-03": {
+      "title": "Theme colour and manifest",
+      "severity": "info",
+      "check": "static",
+      "topic": "launch-assets",
+      "surface": "all",
+      "file": "24-launch-assets.md"
+    },
+    "AS-04": {
+      "title": "Logos work on every background",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "launch-assets",
+      "surface": "all",
+      "file": "24-launch-assets.md"
+    },
+    "AS-05": {
+      "title": "No placeholder or random images",
+      "severity": "error",
+      "check": "static",
+      "topic": "launch-assets",
+      "surface": "all",
+      "file": "24-launch-assets.md"
+    },
+    "LP-01": {
+      "title": "The hero says what, for whom, and what to do",
+      "severity": "error",
+      "check": "visual",
+      "topic": "landing-pages",
+      "surface": "marketing",
+      "file": "25-landing-pages.md"
+    },
+    "LP-02": {
+      "title": "One goal per page, asked for at every decision point",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "landing-pages",
+      "surface": "marketing",
+      "file": "25-landing-pages.md"
+    },
+    "LP-03": {
+      "title": "Proof sits next to the claim",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "landing-pages",
+      "surface": "marketing",
+      "file": "25-landing-pages.md"
+    },
+    "LP-04": {
+      "title": "Show the real product",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "landing-pages",
+      "surface": "marketing",
+      "file": "25-landing-pages.md"
+    },
+    "LP-05": {
+      "title": "Pricing is easy to choose from",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "landing-pages",
+      "surface": "marketing",
+      "file": "25-landing-pages.md"
+    },
+    "LP-06": {
+      "title": "Answer the objections before they leave",
+      "severity": "info",
+      "check": "visual",
+      "topic": "landing-pages",
+      "surface": "marketing",
+      "file": "25-landing-pages.md"
+    },
+    "LP-07": {
+      "title": "Legal and contact links are present",
+      "severity": "warning",
+      "check": "static",
+      "topic": "landing-pages",
+      "surface": "marketing",
+      "file": "25-landing-pages.md"
+    },
+    "LP-08": {
+      "title": "Lead forms ask for as little as possible",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "landing-pages",
+      "surface": "marketing",
+      "file": "25-landing-pages.md"
+    },
+    "AC-01": {
+      "title": "The first screen is designed for a new account",
+      "severity": "error",
+      "check": "visual",
+      "topic": "activation",
+      "surface": "app",
+      "file": "26-activation.md"
+    },
+    "AC-02": {
+      "title": "Reach the first success fast",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "activation",
+      "surface": "app",
+      "file": "26-activation.md"
+    },
+    "AC-03": {
+      "title": "A setup checklist for the rest",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "activation",
+      "surface": "app",
+      "file": "26-activation.md"
+    },
+    "AC-04": {
+      "title": "Empty states show the way forward",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "activation",
+      "surface": "app",
+      "file": "26-activation.md"
+    },
+    "AC-05": {
+      "title": "Help in context, not tours",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "activation",
+      "surface": "app",
+      "file": "26-activation.md"
+    },
+    "AC-06": {
+      "title": "Invite and share when there is something to share",
+      "severity": "info",
+      "check": "visual",
+      "topic": "activation",
+      "surface": "app",
+      "file": "26-activation.md"
+    },
+    "AC-07": {
+      "title": "Returning users land where they left off",
+      "severity": "info",
+      "check": "visual",
+      "topic": "activation",
+      "surface": "app",
+      "file": "26-activation.md"
     }
   }
 }

@@ -38,7 +38,7 @@ Thanks for helping. The most useful contributions are new rules for defects you 
 4. Severity: `error` for defects a user will hit or see immediately (default controls, broken keyboard access, unreadable text); `warning` for likely problems; `info` for advice.
 5. Check: `static` only if you are adding a detector (next section). Otherwise `visual` (verified from screenshots or the running app) or `process` (about how the agent works).
 6. Write for an LLM reader: be specific, give numbers and names, explain the reason, avoid "make it look good". If the rule mentions a recipe or another rule ID, the build verifies that the file and the ID exist.
-7. If the rule belongs in the 38-item visual checklist, add it to `audit/PROCEDURE.md`. If it is important enough for the always-loaded core, edit `rules/_core.md`, and keep that file short: the entry files have a 12,000-character ceiling and the Windsurf files a 6,000-character one, both enforced by the build.
+7. If the rule belongs in the 41-item visual checklist, add it to `audit/PROCEDURE.md`. If it is important enough for the always-loaded core, edit `rules/_core.md`, and keep that file short: the entry files have a 12,000-character ceiling and the Windsurf files a 6,000-character one, both enforced by the build.
 
 ## Adding a static detector
 

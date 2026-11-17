@@ -56,7 +56,7 @@ test('examples/before fails with the expected findings', () => {
     'FD-01', 'FD-02', 'FD-03', 'FD-04', 'FD-05',
     'CP-01', 'CP-02', 'CP-03', 'BR-01',
     'DT-01', 'NV-02', 'NV-05', 'IC-03',
-    'UX-10',
+    'UX-10', 'AS-03', 'AS-05',
   ];
   const missing = expected.filter((id) => !ids.has(id));
   assert.deepEqual(missing, [], `rules that should fire on examples/before but did not: ${missing.join(', ')}`);
@@ -109,7 +109,7 @@ test('NC-09 unstyled scrollbars, only when something scrolls', () => {
 });
 
 test('RS-01 missing viewport meta', () => {
-  const head = '<meta name="description" content="x"><meta property="og:title" content="x"><meta property="og:description" content="x"><meta property="og:image" content="x"><link rel="icon" href="i.svg">';
+  const head = '<meta name="description" content="x"><meta property="og:title" content="x"><meta property="og:description" content="x"><meta property="og:image" content="x"><link rel="icon" href="i.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="theme-color" content="white">';
   const r = clean({ 'index.html': `<!doctype html><html lang="en"><head><title>Invoices · Ledgerly</title>${head}</head><body><h1>Invoices</h1></body></html>`, '404.html': '' });
   assert.deepEqual(r.ids, ['RS-01']);
 });
@@ -215,7 +215,7 @@ test('NV-05 links that go nowhere', () => {
 });
 
 test('NV-02 pages need a <main>, app shells are skipped', () => {
-  const page = (body) => `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Invoices · Ledgerly</title><meta name="description" content="Invoices."><meta property="og:title" content="x"><meta property="og:description" content="x"><meta property="og:image" content="/og.png"><link rel="icon" href="/favicon.svg"></head><body>${body}</body></html>`;
+  const page = (body) => `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Invoices · Ledgerly</title><meta name="description" content="Invoices."><meta property="og:title" content="x"><meta property="og:description" content="x"><meta property="og:image" content="/og.png"><link rel="icon" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="theme-color" content="white"></head><body>${body}</body></html>`;
   const has = (body) => clean({ 'index.html': page(body), 'favicon.svg': '<svg xmlns="http://www.w3.org/2000/svg"/>', '404.html': page('<main><h1>Page not found</h1></main>') }).ids.includes('NV-02');
   assert.equal(has('<div class="content"><h1>Invoices</h1><p>Every invoice sent from this workspace in March.</p></div>'), true);
   assert.equal(has('<main id="main"><h1>Invoices</h1><p>Every invoice sent from this workspace in March.</p></main>'), false);
@@ -376,4 +376,41 @@ test('surface: design.md, config and detection decide which topics apply', async
   // unknown surface with a design.md: BR-06 asks for the line
   assert.deepEqual(clean(doc(null)).ids, ['BR-06']);
   assert.throws(() => clean({}, { overrides: { surface: 'website' } }), /surface must be one of/);
+});
+
+// ---------------------------------------------------------------------------
+// Launch assets, landing pages, activation
+// ---------------------------------------------------------------------------
+
+const page = (head, body = '<main><h1>Invoices</h1></main>') => `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Invoices · Ledgerly</title><meta name="description" content="Invoices."><meta property="og:title" content="x"><meta property="og:description" content="x"><meta property="og:image" content="/og.png">${head}</head><body>${body}</body></html>`;
+const site = (head, body, extra = {}) => clean({ 'index.html': page(head, body), '404.html': page(head), ...extra });
+
+test('AS-02 favicon without apple-touch-icon; AS-03 no theme-color or manifest', () => {
+  assert.deepEqual(site('<link rel="icon" href="/favicon.svg"><meta name="theme-color" content="white">').ids, ['AS-02']);
+  assert.deepEqual(site('<link rel="icon" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png">').ids, ['AS-03']);
+  assert.deepEqual(site('<link rel="icon" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">').ids, []);
+  // Next.js file conventions count
+  assert.deepEqual(site('<link rel="icon" href="/favicon.svg">', undefined, { 'app/apple-icon.png': '', 'app/manifest.ts': 'export default {}' }).ids, []);
+  // no favicon at all is FD-01, not AS-02
+  assert.deepEqual(site('<meta name="theme-color" content="white">').ids, ['FD-01']);
+});
+
+test('AS-05 placeholder and random-image services', () => {
+  assert.deepEqual(clean({ 'p.html': '<img src="https://picsum.photos/600/400" alt="Team" width="600" height="400">' }).ids, ['AS-05']);
+  assert.deepEqual(clean({ 'a.css': '.hero { background-image: url(https://source.unsplash.com/random/1600x900); }' }).ids, ['AS-05']);
+  assert.deepEqual(clean({ 'p.tsx': 'export const A = () => <img src="https://placehold.co/80x80" alt="" width={80} height={80} />;' }).ids, ['AS-05']);
+  assert.deepEqual(clean({ 'p.html': '<img src="/images/team-studio.webp" alt="The team in the studio" width="1200" height="800">' }).ids, []);
+});
+
+test('LP-07 legal links only on marketing surfaces', () => {
+  const head = '<link rel="icon" href="/favicon.svg"><link rel="apple-touch-icon" href="/a.png"><meta name="theme-color" content="white">';
+  const doc = (surface) => ({ 'design.md': `# Design
+Surface: ${surface}
+Fonts: Figtree.
+` });
+  assert.deepEqual(site(head, undefined, doc('marketing')).ids, ['LP-07']);
+  assert.deepEqual(site(head, undefined, doc('both')).ids, ['LP-07']);
+  assert.deepEqual(site(head, undefined, doc('app')).ids, []);
+  assert.deepEqual(site(head, '<main><h1>Invoices</h1></main><footer><a href="/privacy">Privacy</a></footer>', doc('marketing')).ids, []);
+  assert.deepEqual(site(head, undefined, { ...doc('marketing'), 'privacy.html': page(head) }).ids, []);
 });

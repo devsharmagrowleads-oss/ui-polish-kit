@@ -7,7 +7,7 @@ Kit root: `.ui-polish` (contains `rules/`, `recipes/`, `audit/`).
 
 ## Workflow, in this order
 
-1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `.ui-polish/templates/design.md`, with a `Surface:` line. Everything later follows it. (BR)
+1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `.ui-polish/templates/design.md`, with a `Surface:` line and an Assets table: ask for any missing logo, icon, social image or photos. Everything later follows it. (BR, AS)
 2. **Tokens.** Define colour, spacing, radius, shadow, type, z-index and motion tokens for light and dark before writing any component. Start from `.ui-polish/recipes/react-tailwind-shadcn/tokens/tokens.css`. (TK, CO, DM)
 3. **Build.** Use tokens and the recipes in `.ui-polish/recipes/` only. Design the 375px layout first. (all topics)
 4. **Self-audit.** Run the static checker, screenshot the result at 375 / 768 / 1440px in light and dark, look at the screenshots, fix what fails, re-check. Only then report the task as done, with the score. (SA)
@@ -59,6 +59,9 @@ These rules set the look; Modern Web Guidance picks the browser feature. Before 
 | IN Internationalisation and right-to-left | `.ui-polish/rules/21-internationalisation.md` | The product is or will be translated, supports right-to-left languages (Arabic, Hebrew, Persian, Urdu), shows dates, numbers, currencies or plurals, or sets fixed widths on text. |
 | UX UX laws | `.ui-polish/rules/22-ux-laws.md` | Designing any screen, flow or navigation; placing primary actions; deciding how many options, steps or fields to show; building multi-step forms, checkouts or onboarding; reviewing a page for usability before calling it done. |
 | VH Visual hierarchy | `.ui-polish/rules/23-visual-hierarchy.md` | Laying out any page, section, card, dashboard or detail view; styling headings, labels, values and secondary text; deciding what a screen should draw the eye to first; reviewing a screen that looks flat, busy or "all the same". |
+| AS Launch assets | `.ui-polish/rules/24-launch-assets.md` | Starting UI work in a project, doing the brand intake, setting up the document head or root layout, adding images, logos or icons, or preparing a site or app for review or launch. |
+| LP Landing pages and conversion | `.ui-polish/rules/25-landing-pages.md` | Marketing sites and landing pages only. Building or changing a marketing site, landing page, homepage, hero, pricing page, feature or product page, signup or lead-capture form, waitlist, or any page whose job is to explain the product and get a visitor to act. |
+| AC Activation and first run | `.ui-polish/rules/26-activation.md` | Product apps (SaaS, dashboards, admin tools) only. Building what a new user sees after signing up (first run, onboarding, welcome screens, setup checklists, product tours), the empty version of any main screen, invite flows, sample data, or the screen a returning user lands on. |
 
 ## Checking your work
 

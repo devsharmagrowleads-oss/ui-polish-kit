@@ -15,9 +15,11 @@ test('generated files on disk are up to date (run `npm run build` if this fails)
   assert.equal(r.status, 0, r.stderr || r.stdout);
 });
 
-test('twenty-three topics, each rule complete', () => {
-  assert.equal(topics.length, 23);
-  assert.deepEqual(topics.map((t) => t.prefix), ['NC', 'TK', 'TY', 'SP', 'SL', 'ST', 'FM', 'RS', 'DM', 'AX', 'MO', 'CO', 'FD', 'CP', 'BR', 'SA', 'DT', 'CH', 'NV', 'IC', 'IN', 'UX', 'VH']);
+test('twenty-six topics, each rule complete', () => {
+  assert.equal(topics.length, 26);
+  assert.deepEqual(topics.map((t) => t.prefix), ['NC', 'TK', 'TY', 'SP', 'SL', 'ST', 'FM', 'RS', 'DM', 'AX', 'MO', 'CO', 'FD', 'CP', 'BR', 'SA', 'DT', 'CH', 'NV', 'IC', 'IN', 'UX', 'VH', 'AS', 'LP', 'AC']);
+  assert.equal(topics.find((t) => t.prefix === 'LP').surface, 'marketing');
+  assert.equal(topics.find((t) => t.prefix === 'AC').surface, 'app');
   for (const t of topics) assert.ok(['all', 'marketing', 'app'].includes(t.surface), `${t.file}: bad surface ${t.surface}`);
   for (const t of topics) {
     assert.ok(t.rules.length >= 5, `${t.file} has only ${t.rules.length} rules`);

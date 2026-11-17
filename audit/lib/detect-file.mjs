@@ -618,6 +618,18 @@ const NAV_SKIP = /breadcrumb|pagination|pager|footer|sitemap|table of contents|c
 const LOOSE_FIELD = /\b(tel|phone|mobile|cc-number|card-?number|card|iban|postal-code|postcode|zip)\b/i;
 const STRICT_FIELD = /\b(cc-csc|csc|cvc|cvv|one-time-code|otp|pin)\b/i;
 
+// AS-05: images from placeholder and random-image services.
+const PLACEHOLDER_IMAGES = /\b(?:via\.placeholder\.com|placehold\.(?:co|it|jp)|placeholder\.com|picsum\.photos|source\.unsplash\.com|unsplash\.it|placekitten\.com|placebear\.com|placecage\.com|fillmurray\.com|dummyimage\.com|lorempixel\.com|loremflickr\.com|fakeimg\.pl|placeimg\.com|baconmockup\.com)\b/gi;
+
+function assets(f, facts, report) {
+  if (f.ext === '.md') return;
+  let m;
+  PLACEHOLDER_IMAGES.lastIndex = 0;
+  while ((m = PLACEHOLDER_IMAGES.exec(f.text))) {
+    report('AS-05', m.index, `Image from ${m[0]}, a placeholder or random-image service. It is unrelated to the product, changes or disappears, and marks the page as a template. Use the product's own screenshots or the owner's photos (ask for them during the asset inventory), or design the section without an image.`);
+  }
+}
+
 function uxLaws(f, facts, report) {
   if (!f.hasMarkup) return;
   // UX-02 Hick's law: a navigation bar with too many top-level links.
@@ -662,4 +674,5 @@ export function runFileDetectors(f, facts, report, once) {
   documentHead(f, facts, report);
   structure(f, facts, report, once);
   uxLaws(f, facts, report);
+  assets(f, facts, report);
 }

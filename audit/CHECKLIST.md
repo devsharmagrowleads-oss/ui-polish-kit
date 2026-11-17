@@ -258,3 +258,32 @@ Generated from `rules/` by `scripts/build.mjs`. Do not edit. `static` rules are 
 - [ ] **VH-05** (warning, visual) Layout follows how the page is scanned
 - [ ] **VH-06** (warning, visual) It passes the squint test
 - [ ] **VH-07** (warning, static) Few font weights
+
+## AS · Launch assets (`rules/24-launch-assets.md`)
+
+- [ ] **AS-01** (error, process) Take an asset inventory and ask for what is missing
+- [ ] **AS-02** (warning, static) A complete icon set
+- [ ] **AS-03** (info, static) Theme colour and manifest
+- [ ] **AS-04** (warning, visual) Logos work on every background
+- [ ] **AS-05** (error, static) No placeholder or random images
+
+## LP · Landing pages and conversion (`rules/25-landing-pages.md`) · marketing surfaces only
+
+- [ ] **LP-01** (error, visual) The hero says what, for whom, and what to do
+- [ ] **LP-02** (warning, visual) One goal per page, asked for at every decision point
+- [ ] **LP-03** (warning, visual) Proof sits next to the claim
+- [ ] **LP-04** (warning, visual) Show the real product
+- [ ] **LP-05** (warning, visual) Pricing is easy to choose from
+- [ ] **LP-06** (info, visual) Answer the objections before they leave
+- [ ] **LP-07** (warning, static) Legal and contact links are present
+- [ ] **LP-08** (warning, visual) Lead forms ask for as little as possible
+
+## AC · Activation and first run (`rules/26-activation.md`) · app surfaces only
+
+- [ ] **AC-01** (error, visual) The first screen is designed for a new account
+- [ ] **AC-02** (warning, visual) Reach the first success fast
+- [ ] **AC-03** (warning, visual) A setup checklist for the rest
+- [ ] **AC-04** (warning, visual) Empty states show the way forward
+- [ ] **AC-05** (warning, visual) Help in context, not tours
+- [ ] **AC-06** (info, visual) Invite and share when there is something to share
+- [ ] **AC-07** (info, visual) Returning users land where they left off
