@@ -38,7 +38,7 @@ These rules set the look; Modern Web Guidance picks the browser feature. Before 
 ## Checking your work
 
 - Static check: `node {{KIT}}/audit/cli.mjs .` (add `--json` for machine output). It reports `file:line`, rule ID, severity and a score; exit code 1 means fail. Fix every error, then warnings.
-- Visual audit and scoring procedure: `{{KIT}}/audit/PROCEDURE.md`. Full checklist of every rule: `{{KIT}}/audit/CHECKLIST.md`.
+- Visual audit and scoring procedure: `{{KIT}}/audit/PROCEDURE.md`. Premium pass: `{{KIT}}/audit/ELEVATE.md`. Full checklist of every rule: `{{KIT}}/audit/CHECKLIST.md`.
 - Exceptions need a reason beside them: `ui-polish-ignore-next-line <RULE-ID>: reason`, or a `rules` entry in `ui-polish.config.json`.
 
 Do not say a UI task is complete until the static check passes and you have looked at the screenshots.

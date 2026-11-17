@@ -15,7 +15,7 @@ Follow the procedure in `.ui-polish/audit/PROCEDURE.md` exactly. In short:
 5. Score: static score from the checker; visual score = passed / (passed + failed). PASS needs a passing static check, no failed blocker and a visual score of at least 90.
 6. Fix: design.md and tokens first, then errors and blockers, then warnings. Fix causes; do not weaken the config or add ignores without a reason.
 7. Re-run the checker, re-capture, repeat until PASS or the remainder needs the owner.
-8. Report: scores before and after, fixed, remaining, assumptions and suppressions, not verified.
+8. Report: scores before and after, fixed, remaining, assumptions and suppressions, not verified. Optionally score Polish (`.ui-polish/audit/POLISH.md`) and add `--polish polish.json --html report.html` for a shareable report.
 
 Every rule ID is explained in `.ui-polish/rules/`; the one-page list is `.ui-polish/audit/CHECKLIST.md`.
 

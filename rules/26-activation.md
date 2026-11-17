@@ -3,7 +3,7 @@ topic: activation
 prefix: AC
 title: Activation and first run
 surface: app
-when: Building what a new user sees after signing up (first run, onboarding, welcome screens, setup checklists, product tours), the empty version of any main screen, invite flows, sample data, or the screen a returning user lands on.
+when: Building what a new user sees after signup (first run, onboarding, setup checklist, tours), empty screens, invite flows, or the home screen for returning users.
 ---
 
 # Activation and first run

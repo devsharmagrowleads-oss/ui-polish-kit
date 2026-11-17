@@ -31,7 +31,7 @@ const CHECKS = ['static', 'visual', 'process'];
 const PARTS = ['Rule', 'Why', 'Bad', 'Good', 'Check'];
 /** Which kind of product a topic applies to. Projects declare theirs as marketing, app or both. */
 export const TOPIC_SURFACES = ['all', 'marketing', 'app'];
-const SURFACE_NOTE = { marketing: 'Marketing sites and landing pages only. ', app: 'Product apps (SaaS, dashboards, admin tools) only. ' };
+const SURFACE_NOTE = { marketing: 'Marketing sites only. ', app: 'Product apps only. ' };
 
 /** Size ceilings per output kind, in characters. Always-on files are loaded into every prompt. */
 export const LIMITS = { alwaysOn: 12000, windsurfFile: 6000, cursorLines: 500, codexBytes: 32 * 1024, skillDescription: 1536 };
@@ -135,6 +135,14 @@ export function loadTopics(root = ROOT) {
       if (!all.has(m[1])) problems.push(`${t.file} mentions ${m[1]}, which is not a rule`);
     }
   }
+  // The hand-written audit documents may only name rules that exist.
+  for (const doc of ['audit/PROCEDURE.md', 'audit/POLISH.md', 'audit/ELEVATE.md']) {
+    const abs = path.join(root, doc);
+    if (!fs.existsSync(abs)) { problems.push(`${doc} is missing`); continue; }
+    for (const m of fs.readFileSync(abs, 'utf8').matchAll(/\b([A-Z]{2}-\d{2})\b/g)) {
+      if (!all.has(m[1])) problems.push(`${doc} mentions ${m[1]}, which is not a rule`);
+    }
+  }
   if (problems.length) throw new Error(`Rule cross-check failed:\n  - ${[...new Set(problems)].join('\n  - ')}`);
   return topics;
 }
@@ -185,9 +193,26 @@ function auditStub(kit) {
     '5. Score: static score from the checker; visual score = passed / (passed + failed). PASS needs a passing static check, no failed blocker and a visual score of at least 90.',
     '6. Fix: design.md and tokens first, then errors and blockers, then warnings. Fix causes; do not weaken the config or add ignores without a reason.',
     '7. Re-run the checker, re-capture, repeat until PASS or the remainder needs the owner.',
-    '8. Report: scores before and after, fixed, remaining, assumptions and suppressions, not verified.',
+    `8. Report: scores before and after, fixed, remaining, assumptions and suppressions, not verified. Optionally score Polish (\`${kit}/audit/POLISH.md\`) and add \`--polish polish.json --html report.html\` for a shareable report.`,
     '',
     `Every rule ID is explained in \`${kit}/rules/\`; the one-page list is \`${kit}/audit/CHECKLIST.md\`.`,
+    '',
+  ].join('\n');
+}
+
+function elevateStub(kit) {
+  return [
+    '# UI elevate',
+    '',
+    `Raise a working interface to a premium one. Follow \`${kit}/audit/ELEVATE.md\` exactly; the Polish rubric is \`${kit}/audit/POLISH.md\`. In short:`,
+    '',
+    '1. Intake: read `design.md` (surface, assets, brand). If it is missing or incomplete, do the brand intake and ask the owner for missing assets first. `design.md` stays binding.',
+    `2. Baseline: \`node ${kit}/audit/cli.mjs . --json > .ui-polish-audit/before.json\`; screenshots of every page in scope at 375, 768 and 1440px, light and dark, into \`.ui-polish-audit/before/\`; score the 11 Polish dimensions (0 to 4) from them into \`polish-before.json\`.`,
+    '3. Critique each page like a design lead: focal point, hierarchy, rhythm, craft, journey (conversion for marketing, activation for apps). Every point cites a screenshot.',
+    '4. Plan: rank moves by the weakest Polish dimensions, system-level first (tokens, type scale, spacing, shared components). Show the plan, any brand changes and any missing assets to the owner.',
+    '5. Apply: tokens, then shared components (recipes), then pages. Keep the static check passing. No slop: premium means restraint.',
+    `6. Re-measure into \`.ui-polish-audit/\` (same file names), re-score into \`polish.json\`, then \`node ${kit}/audit/cli.mjs . --polish .ui-polish-audit/polish.json --before .ui-polish-audit/before.json --html .ui-polish-audit/report.html\`.`,
+    '7. Done when the static check passes, Polish is at least 80 and no dimension is below 2. Report both scores before and after, what changed, what needs the owner, and the HTML report.',
     '',
   ].join('\n');
 }
@@ -208,7 +233,8 @@ function checklist(topics) {
 }
 
 const SKILL_POLISH = 'Design-quality rules for building or changing any user interface: web pages, React/Tailwind/shadcn components, forms, dashboards, landing pages, stylesheets and UI copy. Use before writing UI code so the result uses design tokens, themed controls (no browser-default selects, date pickers or file inputs), deliberate typography, consistent spacing, complete component states, dark mode and accessibility instead of generic AI-looking defaults.';
-const SKILL_AUDIT = 'Audit an interface: run the ui-polish static checker, screenshot the running app at mobile, tablet and desktop widths in light and dark, walk the checklist, score it, fix failures and re-check. Use when asked to review, audit, polish or QA a UI, when a UI looks generic or unfinished, and before reporting any UI task as done.';
+const SKILL_ELEVATE = 'Elevate a working interface to a premium, professionally designed one: baseline the static and Polish scores with screenshots, critique each page like a design lead, plan ranked improvements to hierarchy, typography, spacing, colour, surfaces, components, imagery, motion, copy, consistency and the conversion or activation journey, apply them within the brand, re-measure and produce a shareable HTML report. Use when asked to make a UI look premium, professional, polished, more designed or less generic, to redesign or remap an existing site or app, or to raise its Polish score.';
+const SKILL_AUDIT ='Audit an interface: run the ui-polish static checker, screenshot the running app at mobile, tablet and desktop widths in light and dark, walk the checklist, score it, fix failures and re-check. Use when asked to review, audit, polish or QA a UI, when a UI looks generic or unfinished, and before reporting any UI task as done.';
 
 export function buildOutputs(root = ROOT) {
   const topics = loadTopics(root);
@@ -239,6 +265,7 @@ export function buildOutputs(root = ROOT) {
   for (const t of topics) {
     put(`dist/cursor/.cursor/rules/ui-polish-${t.file.replace(/\.md$/, '')}.mdc`, `${frontmatter({ description: `${t.title} rules (ui-polish-kit). ${t.when}`, alwaysApply: false })}\n${digest(t, `${KIT}/rules/${t.file}`)}`);
   }
+  put('dist/cursor/.cursor/rules/ui-polish-elevate.mdc', `${frontmatter({ description: `UI elevate procedure (ui-polish-kit). ${SKILL_ELEVATE}`, alwaysApply: false })}\n${elevateStub(KIT)}`);
   put('dist/cursor/.cursor/rules/ui-polish-audit.mdc', `${frontmatter({ description: `UI audit procedure (ui-polish-kit). ${SKILL_AUDIT}`, alwaysApply: false })}\n${auditStub(KIT)}`);
 
   // --- Windsurf / Devin Desktop: always_on core (compact), model_decision topics
@@ -247,20 +274,24 @@ export function buildOutputs(root = ROOT) {
   for (const t of topics) {
     put(`dist/windsurf/.windsurf/rules/ui-polish-${t.file}`, `${frontmatter({ trigger: bare('model_decision'), description: `${t.title} rules (ui-polish-kit). ${t.when}` })}\n${digest(t, `${KIT}/rules/${t.file}`)}`);
   }
+  put('dist/windsurf/.windsurf/rules/ui-polish-elevate.md', `${frontmatter({ trigger: bare('model_decision'), description: `UI elevate procedure (ui-polish-kit). ${SKILL_ELEVATE}` })}\n${elevateStub(KIT)}`);
   put('dist/windsurf/.windsurf/rules/ui-polish-audit.md', `${frontmatter({ trigger: bare('model_decision'), description: `UI audit procedure (ui-polish-kit). ${SKILL_AUDIT}` })}\n${auditStub(KIT)}`);
 
   // --- Claude Code: plugin (repo root) and project-skill variant
   const skill = (kit, topicPath) => ({
     polish: `${frontmatter({ name: 'ui-polish', description: SKILL_POLISH })}\n${renderCore(root, topics, { kit, topicPath })}`,
     audit: `${frontmatter({ name: 'ui-audit', description: SKILL_AUDIT, 'argument-hint': '[path or URL to audit]' })}\n${auditStub(kit)}\nIf arguments were given, they name the scope: $ARGUMENTS`,
+    elevate: `${frontmatter({ name: 'ui-elevate', description: SKILL_ELEVATE, 'argument-hint': '[pages, flows or URL to elevate]' })}\n${elevateStub(kit)}\nIf arguments were given, they name the scope: $ARGUMENTS`,
   });
   const pluginKit = '${CLAUDE_PLUGIN_ROOT}';
   const plugin = skill(pluginKit, (t) => `${pluginKit}/rules/${t.file}`);
   put('skills/ui-polish/SKILL.md', plugin.polish);
   put('skills/ui-audit/SKILL.md', plugin.audit);
+  put('skills/ui-elevate/SKILL.md', plugin.elevate);
   const project = skill(KIT, (t) => `${KIT}/rules/${t.file}`);
   put('dist/claude-project/.claude/skills/ui-polish/SKILL.md', project.polish);
   put('dist/claude-project/.claude/skills/ui-audit/SKILL.md', project.audit);
+  put('dist/claude-project/.claude/skills/ui-elevate/SKILL.md', project.elevate);
 
   put('.claude-plugin/plugin.json', JSON.stringify({
     name: 'ui-polish-kit',

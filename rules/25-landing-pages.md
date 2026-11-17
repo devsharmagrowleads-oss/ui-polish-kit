@@ -3,7 +3,7 @@ topic: landing-pages
 prefix: LP
 title: Landing pages and conversion
 surface: marketing
-when: Building or changing a marketing site, landing page, homepage, hero, pricing page, feature or product page, signup or lead-capture form, waitlist, or any page whose job is to explain the product and get a visitor to act.
+when: Building a marketing site, landing page, homepage, hero, pricing or feature page, or a signup, lead or waitlist form.
 ---
 
 # Landing pages and conversion

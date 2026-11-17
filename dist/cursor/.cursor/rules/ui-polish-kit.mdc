@@ -64,13 +64,13 @@ These rules set the look; Modern Web Guidance picks the browser feature. Before 
 | UX UX laws | `.ui-polish/rules/22-ux-laws.md` | Designing any screen, flow or navigation; placing primary actions; deciding how many options, steps or fields to show; building multi-step forms, checkouts or onboarding; reviewing a page for usability before calling it done. |
 | VH Visual hierarchy | `.ui-polish/rules/23-visual-hierarchy.md` | Laying out any page, section, card, dashboard or detail view; styling headings, labels, values and secondary text; deciding what a screen should draw the eye to first; reviewing a screen that looks flat, busy or "all the same". |
 | AS Launch assets | `.ui-polish/rules/24-launch-assets.md` | Starting UI work in a project, doing the brand intake, setting up the document head or root layout, adding images, logos or icons, or preparing a site or app for review or launch. |
-| LP Landing pages and conversion | `.ui-polish/rules/25-landing-pages.md` | Marketing sites and landing pages only. Building or changing a marketing site, landing page, homepage, hero, pricing page, feature or product page, signup or lead-capture form, waitlist, or any page whose job is to explain the product and get a visitor to act. |
-| AC Activation and first run | `.ui-polish/rules/26-activation.md` | Product apps (SaaS, dashboards, admin tools) only. Building what a new user sees after signing up (first run, onboarding, welcome screens, setup checklists, product tours), the empty version of any main screen, invite flows, sample data, or the screen a returning user lands on. |
+| LP Landing pages and conversion | `.ui-polish/rules/25-landing-pages.md` | Marketing sites only. Building a marketing site, landing page, homepage, hero, pricing or feature page, or a signup, lead or waitlist form. |
+| AC Activation and first run | `.ui-polish/rules/26-activation.md` | Product apps only. Building what a new user sees after signup (first run, onboarding, setup checklist, tours), empty screens, invite flows, or the home screen for returning users. |
 
 ## Checking your work
 
 - Static check: `node .ui-polish/audit/cli.mjs .` (add `--json` for machine output). It reports `file:line`, rule ID, severity and a score; exit code 1 means fail. Fix every error, then warnings.
-- Visual audit and scoring procedure: `.ui-polish/audit/PROCEDURE.md`. Full checklist of every rule: `.ui-polish/audit/CHECKLIST.md`.
+- Visual audit and scoring procedure: `.ui-polish/audit/PROCEDURE.md`. Premium pass: `.ui-polish/audit/ELEVATE.md`. Full checklist of every rule: `.ui-polish/audit/CHECKLIST.md`.
 - Exceptions need a reason beside them: `ui-polish-ignore-next-line <RULE-ID>: reason`, or a `rules` entry in `ui-polish.config.json`.
 
 Do not say a UI task is complete until the static check passes and you have looked at the screenshots.

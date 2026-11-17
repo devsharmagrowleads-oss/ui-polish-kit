@@ -7,7 +7,7 @@
 // audit checker, design.md template) plus its own entry file:
 //
 //   codex     AGENTS.md                              (also read by Cursor, Copilot agent, Windsurf, and others)
-//   claude    .claude/skills/ui-polish, ui-audit     (project skills; the plugin is the alternative)
+//   claude    .claude/skills/ui-polish, ui-audit, ui-elevate (project skills; the plugin is the alternative)
 //   cursor    .cursor/rules/ui-polish-*.mdc
 //   windsurf  .windsurf/rules/ui-polish-*.md
 //   devin     .devin/rules/ui-polish-*.md            (Devin Desktop, the current name and path for Windsurf rules)
@@ -86,7 +86,7 @@ export function install({ agents, target, dry = false, log = console.log }) {
   n += copyDir(path.join(ROOT, 'audit'), path.join(kit, 'audit'), log, dry);
   n += copyDir(path.join(ROOT, 'templates'), path.join(kit, 'templates'), log, dry);
   const version = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;
-  const readme = `# .ui-polish\n\nInstalled by ui-polish-kit ${version}. Rules, recipes and the audit checker that this project's AI agent follows when it builds UI.\n\nDo not edit: re-run the installer to update. Project decisions belong in \`design.md\` (template: \`templates/design.md\`) and \`ui-polish.config.json\` at the project root.\n\n- Static check: \`node .ui-polish/audit/cli.mjs .\`\n- Audit procedure: \`audit/PROCEDURE.md\`\n`;
+  const readme = `# .ui-polish\n\nInstalled by ui-polish-kit ${version}. Rules, recipes and the audit checker that this project's AI agent follows when it builds UI.\n\nDo not edit: re-run the installer to update. Project decisions belong in \`design.md\` (template: \`templates/design.md\`) and \`ui-polish.config.json\` at the project root.\n\n- Static check: \`node .ui-polish/audit/cli.mjs .\`\n- Audit procedure: \`audit/PROCEDURE.md\`\n- Premium pass and Polish score: \`audit/ELEVATE.md\`, \`audit/POLISH.md\`\n`;
   if (!dry) fs.writeFileSync(path.join(kit, 'README.md'), readme);
   written.push(`.ui-polish/ (${n + 1} files: rules, recipes, audit, templates)`);
 
@@ -121,8 +121,9 @@ export function install({ agents, target, dry = false, log = console.log }) {
     log('\nNext');
     log('  1. Ask your agent to do the brand intake: it writes design.md from .ui-polish/templates/design.md.');
     log('  2. Check an existing UI:  node .ui-polish/audit/cli.mjs .');
-    log('  3. Commit .ui-polish/ and the agent files so the whole team (and CI) gets them.');
-    log('  4. The rules look up Modern Web Guidance with npx (needs Node and internet). To also install it');
+    log('  3. To raise a working UI to premium, ask your agent to run the UI elevate (.ui-polish/audit/ELEVATE.md).');
+    log('  4. Commit .ui-polish/ and the agent files so the whole team (and CI) gets them.');
+    log('  5. The rules look up Modern Web Guidance with npx (needs Node and internet). To also install it');
     log('     as a skill for your agent: npx modern-web-guidance@latest install');
   }
   return written;

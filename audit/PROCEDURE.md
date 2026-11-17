@@ -125,6 +125,8 @@ Re-run step 1. Re-capture the screenshots for every page you changed and re-walk
 
 ## 8. Report
 
+For a report the owner can open or forward, score the Polish dimensions from your screenshots (`audit/POLISH.md`) and write the HTML report: `node <kit>/audit/cli.mjs . --polish .ui-polish-audit/polish.json --html .ui-polish-audit/report.html` (add `--before` with an earlier `--json` result to show the changes). To go beyond fixing defects, run the elevate procedure (`audit/ELEVATE.md`).
+
 Give the owner this, and nothing vaguer:
 
 ```text
