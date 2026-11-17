@@ -30,6 +30,8 @@ Options
   --html <file>          Also write a self-contained HTML report (scores, findings, screenshots)
   --before <file>        A previous --json result, to show before/after changes in the HTML report
   --screenshots <dir>    Screenshots for the HTML report (default <path>/.ui-polish-audit; before/ holds baselines)
+  --link-screenshots     Link screenshots next to the report instead of embedding them (keeps the file small;
+                         embedding is automatic up to 12 MB)
   --list-rules           List every rule and whether the static checker covers it
   --no-color             Disable ANSI colours
   -h, --help             Show this help
@@ -71,6 +73,7 @@ export function parseArgs(argv) {
     else if (a === '--html') opts.html = need(i++, a);
     else if (a === '--before') opts.before = need(i++, a);
     else if (a === '--screenshots') opts.screenshots = need(i++, a);
+    else if (a === '--link-screenshots') opts.linkScreenshots = true;
     else if (a === '--max-per-file') opts.maxPerFile = Number(need(i++, a)) || 0;
     else if (a.startsWith('-')) throw new Error(`Unknown option ${a}`);
     else if (!pathSet) { opts.path = a; pathSet = true; } else throw new Error(`Unexpected argument ${a}`);
@@ -108,7 +111,7 @@ export function main(argv = process.argv.slice(2)) {
         try { before = JSON.parse(fs.readFileSync(opts.before, 'utf8')); } catch (err) { throw new Error(`Cannot read --before ${opts.before}: ${err.message}`); }
       }
       const shotsDir = opts.screenshots ?? path.join(opts.path, '.ui-polish-audit');
-      fs.writeFileSync(opts.html, renderHtml(result, { before, screenshots: collectScreenshots(shotsDir, opts.html) }));
+      fs.writeFileSync(opts.html, renderHtml(result, { before, screenshots: collectScreenshots(shotsDir, opts.html, { link: opts.linkScreenshots }) }));
       if (!opts.json) process.stderr.write(`HTML report written to ${opts.html}\n`);
     }
     if (opts.json) process.stdout.write(`${JSON.stringify({ version: 1, ...result }, null, 2)}\n`);

@@ -120,7 +120,45 @@ export function loadProject(root, config) {
     const f = loadFile(root, rel, config);
     if (f) files.push(f);
   }
-  return { root, config, allFiles, files, facts: collectFacts(root, allFiles, files, config) };
+  const unused = unusedStylesheets(root, allFiles, files);
+  const live = files.filter((f) => !unused.includes(f.rel));
+  const facts = collectFacts(root, allFiles, live, config);
+  facts.unusedStylesheets = unused;
+  facts.hasUi = live.some((f) => f.hasMarkup || f.isStyle);
+  return { root, config, allFiles, files: live, facts };
+}
+
+const REFERENCE_FILE = /\.(html?|[cm]?[jt]sx?|vue|svelte|astro|css|scss|less|pcss|md|mdx|json|ya?ml|toml)$/i;
+
+/**
+ * Stylesheets that no other file mentions by name: leftovers such as Vite's
+ * App.css after the app stopped importing it. Their findings would describe
+ * code that never reaches the page, so they are skipped (and listed in the report).
+ * Token files are never skipped: their facts matter even when imported by a bundler config.
+ */
+function unusedStylesheets(root, allFiles, files) {
+  const sheets = files.filter((f) => f.isStyle && !f.isTokenFile);
+  if (!sheets.length) return [];
+  let corpus = '';
+  for (const rel of allFiles) {
+    if (!REFERENCE_FILE.test(rel)) continue;
+    try {
+      const abs = path.join(root, rel);
+      if (fs.statSync(abs).size > 1024 * 1024) continue;
+      corpus += `\n${rel}\n${fs.readFileSync(abs, 'utf8')}`;
+    } catch { /* unreadable: ignore */ }
+  }
+  const isUnused = (f) => {
+    const base = path.basename(f.rel);
+    // Count mentions outside the file's own listing line; a stylesheet only "mentioned" by itself is unused.
+    const hits = corpus.split(base).length - 1;
+    const selfNames = corpus.split(`\n${f.rel}\n`).length - 1;
+    return hits - selfNames <= 0;
+  };
+  const unused = sheets.filter(isUnused);
+  // Only judge when the project visibly wires stylesheets by reference (another one is linked or imported);
+  // a folder of loose stylesheets, or a partial tree, is audited as it is.
+  return unused.length < sheets.length ? unused.map((f) => f.rel) : [];
 }
 
 // ---------------------------------------------------------------------------
@@ -419,7 +457,11 @@ export function detectSurface(allFiles, files) {
   // A root page that opens with an <h1> and outbound calls to action is a landing page.
   const root = files.find((f) => /^(src\/)?(app\/page|pages\/index|index)\.(tsx|jsx|js|html|astro|vue|svelte)$/.test(f.rel));
   if (root && /<h1[\s>]/.test(root.text) && /<a\b[^>]*target=["']_blank/.test(root.text) && !app.size) marketing.add('landing page');
-  const m = marketing.size >= 2;
+  // A collection of published writing (five or more Markdown/MDX posts under content/, posts/, blog/…) is a
+  // public site on its own; one stray app-like demo component does not make it a product app.
+  const posts = allFiles.filter((p) => /(^|\/)(content|posts|_posts|blog|articles|writing|notes)\/.+\.mdx?$/i.test(p)).length;
+  if (posts >= 5) marketing.add('published posts');
+  const m = marketing.size >= 2 || (posts >= 5 && app.size <= 1);
   const a = app.size >= 2;
   const value = m && a ? 'both' : m ? 'marketing' : a ? 'app' : 'unknown';
   return { value, signals: { marketing: [...marketing], app: [...app] } };

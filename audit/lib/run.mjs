@@ -64,6 +64,7 @@ export function audit(root, options = {}) {
   if (!['error', 'warning', 'never'].includes(config.failOn)) throw new Error(`failOn must be error, warning or never (got ${JSON.stringify(config.failOn)})`);
 
   const project = loadProject(root, config);
+  if (!project.facts.hasUi) throw new Error(`No UI files (HTML, CSS, JSX/TSX, Vue, Svelte or Astro) found in ${root}${config.include.length ? " with the configured include patterns" : ""}. Point the checker at the folder that contains the interface.`);
   const surface = project.facts.surface;
   const findings = [];
   const seen = new Set();
@@ -119,7 +120,7 @@ export function audit(root, options = {}) {
   const order = { error: 0, warning: 1, info: 2 };
   findings.sort((a, b) => (a.file === b.file ? a.line - b.line || order[a.severity] - order[b.severity] : a.file === null ? -1 : b.file === null ? 1 : a.file.localeCompare(b.file)));
 
-  return { ...score(findings, config, index), root, configFile: config.configFile, surface, designDoc: project.facts.designDoc, filesScanned: project.files.length, findings };
+  return { ...score(findings, config, index), root, configFile: config.configFile, surface, unusedStylesheets: project.facts.unusedStylesheets, designDoc: project.facts.designDoc, filesScanned: project.files.length, findings };
 }
 
 export function score(findings, config, index) {

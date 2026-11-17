@@ -544,3 +544,19 @@ test('Polish scorer label is validated and shown in the report', async () => {
   assert.match(page, /Polish score \(independent reviewer\)/);
   assert.match(page, /the before score was self-scored/);
 });
+
+test('--link-screenshots links images instead of embedding them', async () => {
+  const { collectScreenshots } = await import('../audit/lib/report-html.mjs');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ui-polish-link-'));
+  try {
+    const shots = path.join(dir, 'shots');
+    fs.mkdirSync(shots);
+    fs.copyFileSync(path.join(ROOT, 'examples', 'after', 'apple-touch-icon.png'), path.join(shots, 'home-375-light.png'));
+    const embedded = collectScreenshots(shots, path.join(dir, 'report.html'));
+    assert.match(embedded[0].src, /^data:image\/png;base64,/);
+    const linked = collectScreenshots(shots, path.join(dir, 'report.html'), { link: true });
+    assert.equal(linked[0].src, 'shots/home-375-light.png');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});

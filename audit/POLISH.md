@@ -28,11 +28,23 @@ Polish score = round(100 × sum of scores ÷ (4 × number of scored dimensions))
 - **Consistency on a single page.** With one page in scope, compare its sections and its breakpoints: the same action labelled differently in two places, or a component that changes style between 375 and 1440px, is inconsistency.
 - **The app journey needs two captures.** Capture a brand-new account (first run, empty states) and a populated home. If only one could be captured, score from it, say which in `note`, and do not give a 4.
 
+## What usually holds a page below 80
+
+Three independent reviewers scoring the same pages agreed within 3 points, and they capped the same things every time. Fix these before asking for the independent score, and capture the evidence:
+
+- **No captured states** caps `components` at 3: capture loading, empty and error states and an open overlay (a query such as `?state=loading` that the file names keep, or an `--init` script).
+- **App journey without a first run** caps `journey` at 3: capture a brand-new account as well as a populated one.
+- **Marketing journey without proof** caps `journey` at 2: a testimonial, a sourced number or customer logos next to the claims (real ones; if there are none, the score stays at 2 and the report says why).
+- **Clipped navigation at 375px** caps `spacing` at 3: wrap it, or show that it scrolls.
+- **Motion** is scored `null` from still screenshots; that is expected and does not count against the page.
+
+A worked example with scores and reasons for one dashboard is in `audit/POLISH-EXAMPLE.md`; use it to calibrate, not when scoring that project.
+
 ## Independent check
 
 The agent that made the changes scores its own result too generously. In our first runs, a reviewer who saw only this file and the screenshots scored the finished pages 7 to 12 points lower than the agent that elevated them, and below the target. So before reporting the target as met:
 
-1. Give a reviewer that did not do the work (a fresh agent or session, or a person) only this file and the screenshot folder. Do not show them your scores, the plan or `design.md`.
+1. Give a reviewer that did not do the work (a fresh agent or session, or a person) only this file and the screenshot folder. Do not show them your scores, the plan, `design.md` or `audit/POLISH-EXAMPLE.md` (a worked example of one project anchors anyone who scores that project).
 2. Ask for a `polish.json` in the format below, and validate it with `--polish`.
 3. Report both scores. The target counts as met only if the independent score meets it. Where the two differ by more than one point on a dimension, say why in the report.
 
@@ -51,26 +63,6 @@ The agent that made the changes scores its own result too generously. In our fir
 | `copy` | Copy and content | CP-01 to CP-07, SL-07, LP-01 | Lorem ipsum, slogans, "Submit", "Something went wrong" | Real, specific copy; buttons mostly say what they do | Copy is short, concrete and in one voice; headings carry the meaning; every message says what happened and what next |
 | `consistency` | Consistency | NV-03, SP-02, IC-02, TK-08, CP-07 | Each screen looks designed by someone else | Shared components, minor drift between screens | Every page uses the same header pattern, spacing, components and voice; nothing feels one-off |
 | `journey` | Journey: conversion (marketing) or activation (app) | Marketing: LP-01 to LP-08. App: AC-01 to AC-07, UX-09, UX-12 | Marketing: vague hero, competing calls to action, no proof. App: a new account sees zeros and empty charts | Marketing: clear hero and call to action, some proof. App: designed empty states, a way to start | Marketing: passes the five-second test, proof beside each claim, pricing easy to choose from, the goal is asked for at each decision point. App: designed first run, fast path to the first success, setup checklist, helpful returning-user home |
-
-## Worked example
-
-An independent reviewer's scores for the invoicing dashboard in `docs/sample-report.html`, before and after elevation, as a reference for what each level looks like. Overall: 48 (generic) before, 73 (competent) after.
-
-| Dimension | Before | Why | After | Why |
-| --- | --- | --- | --- | --- |
-| hierarchy | 2 | Clear title and action, but four KPI cards of equal weight; no focal point | 3 | One tinted, larger lead KPI; the others still close in weight |
-| typography | 2 | System font with a workable scale; nothing chosen | 3 | A chosen typeface, confident scale, aligned amounts; some labels small |
-| spacing | 1 | Tidy at 1440px, but the page scrolls sideways at 375px | 3 | No overflow; rows stack on phones; the nav tabs still clip at 375px |
-| colour | 2 | Framework blue on grey; dark theme reads as an inversion | 3 | Restrained brand teal on tinted neutrals; dark theme re-tuned |
-| surfaces | 2 | One bordered-card style, no layering | 3 | Same quiet cards plus one tinted lead card; reads in both themes |
-| components | 2 | Good table and badges; no empty, loading or error states; table not adapted for phones | 3 | Partial month marked, due dates shown, phone card list; states still not shown |
-| imagery | 2 | One icon set and a simple mark | 2 | Unchanged: nothing more in scope |
-| motion | null | Not observable from stills | null | Not observable from stills |
-| copy | 2 | Real data; generic "View all" | 3 | Action copy: "Send reminders", "View open invoices" |
-| consistency | 2 | The phone layout breaks the system | 3 | Same patterns across sections and widths |
-| journey | 2 | Populated home with one action; KPIs not actionable; no first run captured | 3 | KPIs lead to the next action; still no first run captured |
-
-What would have reached 4: a single lead number with everything else clearly secondary (hierarchy); designed empty, loading and error states (components); a captured first-run screen (journey); and a phone nav that does not clip (spacing).
 
 ## `polish.json`
 

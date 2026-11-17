@@ -6,16 +6,16 @@ Kit root: `{{KIT}}` (contains `rules/`, `recipes/`, `audit/`).
 
 ## Workflow, in this order
 
-1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `{{KIT}}/templates/design.md`, with a `Surface:` line and an Assets table: ask for any missing logo, icon, social image or photos. Everything later follows it. (BR, AS)
-2. **Tokens.** Define colour, spacing, radius, shadow, type, z-index and motion tokens for light and dark before writing any component. Start from `{{KIT}}/recipes/react-tailwind-shadcn/tokens/tokens.css`. (TK, CO, DM)
+1. **Intake.** Read `design.md`. If missing, find brand colours, fonts, logo and tone in the repo, ask the owner for the rest (including missing logo, icons, social image, photos) and write `design.md` from `{{KIT}}/templates/design.md` with a `Surface:` line and an Assets table. No answer possible (non-interactive run, "you decide")? Choose, mark it "assumed", and carry on: never stop at intake. (BR, AS)
+2. **Tokens.** Colour, spacing, radius, shadow, type, z-index and motion tokens for light and dark, before any component. Start from `{{KIT}}/recipes/react-tailwind-shadcn/tokens/tokens.css`. (TK, CO, DM)
 3. **Build.** Use tokens and the recipes in `{{KIT}}/recipes/` only. Design the 375px layout first. (all topics)
-4. **Self-audit.** Run the static checker, screenshot the result at 375 / 768 / 1440px in light and dark, look at the screenshots, fix what fails, re-check. Only then report the task as done, with the score. (SA)
+4. **Self-audit.** Static checker, then screenshots at 375 / 768 / 1440px in light and dark; look, fix, re-check. Only then report done, with the score. (SA)
 
 ## Non-negotiables
 
-1. **No browser-default controls.** Never ship a bare `<select>`, `<input type="date|time|file|range|color">`, default checkbox/radio, `title=` tooltip, `alert()`/`confirm()`/`prompt()`, default scrollbar or autofill colour. Every control uses the project's tokens; dropdowns, date pickers, comboboxes and menus use the recipes. (NC)
+1. **No browser-default controls.** No bare `<select>`, `<input type="date|time|file|range|color">`, default checkbox/radio, `title=` tooltip, `alert()`/`confirm()`/`prompt()`, default scrollbar or autofill colour. Controls use tokens and the recipes. (NC)
 2. **Tokens only.** No hex/rgb literals, raw palette utilities (`bg-blue-600`), or arbitrary values (`p-[13px]`, `z-[999]`) outside the token file. (TK)
-3. **Deliberate typography.** Fonts come from `design.md`; if it names none, choose a pairing that fits the product from the list in the typography topic and record it. Never fall back to Inter, Roboto, Poppins, Geist or a system stack by habit. One type scale, real line-height, 45–75 character lines. (TY)
+3. **Deliberate typography.** Fonts from `design.md`, or a pairing chosen from the typography topic and recorded; never Inter, Roboto, Poppins, Geist or a system stack by habit. One type scale, real line-height, 45–75 character lines. (TY)
 4. **One spacing scale.** Every padding, margin and gap is a step on the 4px scale; the same kind of component always uses the same padding; space inside a group is smaller than space between groups. (SP)
 5. **No AI-slop defaults.** No purple/indigo-to-blue gradients, gradient text, emoji as icons, glass on every surface, three identical feature cards, glow shadows, everything centred, everything fully rounded, invented dashboard metrics, or generic hero copy. (SL)
 6. **Every state exists.** Each interactive element has hover, focus-visible, active and disabled; each data view has loading (skeleton), empty, error and success. (ST)
@@ -29,7 +29,7 @@ Kit root: `{{KIT}}` (contains `rules/`, `recipes/`, `audit/`).
 
 ## Modern Web Guidance
 
-These rules set the look; Modern Web Guidance picks the browser feature. Before a dialog, popover, menu, form validation, animation or performance fix, run `npx -y modern-web-guidance@latest search "<pattern>"`, then `retrieve "<id>"`, and use the native API and fallback it gives, styled with tokens, instead of custom JS or a library. If it suggests a control an NC rule restricts, NC wins unless tokens fully style it everywhere.
+These rules set the look; Modern Web Guidance picks the browser feature. Before a dialog, popover, menu, form validation, animation or performance fix, run `npx -y modern-web-guidance@latest search "<pattern>"`, then `retrieve "<id>"`, and use its native API and fallback, styled with tokens. If it suggests a control an NC rule restricts, NC wins unless tokens fully style it.
 
 ## Topic files (read on demand)
 

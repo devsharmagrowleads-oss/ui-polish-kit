@@ -82,3 +82,37 @@ test('elevate-run fixes: wrapper labels, early-return h1, pseudo-element focus, 
   assert.ok(r.findings.some((f) => f.ruleId === 'FD-03' && /public\/og-image\.png/.test(f.message)), 'missing og:image file');
   assert.ok(!clean({ 'index.html': head, ...routes, 'public/og-image.png': 'png' }).ids.includes('FD-03'));
 });
+
+test('unused stylesheets are skipped and listed; an empty folder is an error', () => {
+  const html = '<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ledgerly · Home</title><link rel="stylesheet" href="styles.css"></head><body><main><h1>Home</h1></main></body></html>';
+  const r = clean({ 'index.html': html, 'styles.css': '.a { color: var(--foreground); }', 'App.css': '.b { padding: 13px; color: #333333; }' });
+  assert.deepEqual(r.unusedStylesheets, ['App.css']);
+  assert.ok(!r.findings.some((f) => f.file === 'App.css'));
+  // Loose stylesheets with nothing linking any of them are still audited.
+  assert.ok(clean({ 'a.css': '.a { color: #333333; }' }).ids.includes('TK-01'));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'uip-empty-'));
+  try { assert.throws(() => audit(dir), /No UI files/); } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('AX-02 focus-within look-back stays inside the component', () => {
+  const two = `export const A = () => (
+  <div className="rounded-md border focus-within:ring-2 focus-within:ring-ring"><input aria-label="Search" className="outline-none" /></div>
+);
+export const B = () => (
+  <input aria-label="Name" className="outline-none" />
+);`;
+  const r = clean({ 'a.tsx': two });
+  const ax = r.findings.filter((f) => f.ruleId === 'AX-02');
+  assert.equal(ax.length, 1, 'only the input in B, whose component has no focus-within wrapper');
+  assert.equal(ax[0].line, 5);
+});
+
+test('surface: a site of published posts is marketing', async () => {
+  const { detectSurface } = await import('../audit/lib/project.mjs');
+  const posts = Array.from({ length: 6 }, (_, i) => `content/posts/post-${i}.mdx`);
+  assert.equal(detectSurface(['app/page.tsx', ...posts], []).value, 'marketing');
+  // one demo table does not turn a blog into an app
+  assert.equal(detectSurface(['app/page.tsx', ...posts], [{ rel: 'app/demo.tsx', hasMarkup: true, text: '<table></table>' }]).value, 'marketing');
+  // a real app with docs stays an app
+  assert.equal(detectSurface(['app/dashboard/page.tsx', 'app/settings/page.tsx', ...posts.slice(0, 2)], []).value, 'app');
+});

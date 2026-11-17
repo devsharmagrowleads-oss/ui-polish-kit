@@ -136,7 +136,7 @@ export function loadTopics(root = ROOT) {
     }
   }
   // The hand-written audit documents may only name rules that exist.
-  for (const doc of ['audit/PROCEDURE.md', 'audit/POLISH.md', 'audit/ELEVATE.md']) {
+  for (const doc of ['audit/PROCEDURE.md', 'audit/POLISH.md', 'audit/POLISH-EXAMPLE.md', 'audit/ELEVATE.md']) {
     const abs = path.join(root, doc);
     if (!fs.existsSync(abs)) { problems.push(`${doc} is missing`); continue; }
     for (const m of fs.readFileSync(abs, 'utf8').matchAll(/\b([A-Z]{2}-\d{2})\b/g)) {

@@ -14,7 +14,7 @@ const EMBED_LIMIT = 12 * 1024 * 1024;
  * Collect screenshots from `dir` (and `dir/before/` for the baseline captures).
  * Returns [{ name, src, before }] where src/before are data: URIs or paths relative to `outFile`.
  */
-export function collectScreenshots(dir, outFile) {
+export function collectScreenshots(dir, outFile, { link = false } = {}) {
   if (!dir || !fs.existsSync(dir)) return [];
   const list = (d) => (fs.existsSync(d) ? fs.readdirSync(d).filter((f) => MIME[path.extname(f).toLowerCase()]).sort() : []);
   const now = list(dir);
@@ -22,7 +22,7 @@ export function collectScreenshots(dir, outFile) {
   const before = new Set(list(beforeDir));
   const files = [...now.map((f) => path.join(dir, f)), ...now.filter((f) => before.has(f)).map((f) => path.join(beforeDir, f))];
   const total = files.reduce((n, f) => n + fs.statSync(f).size, 0);
-  const embed = total <= EMBED_LIMIT;
+  const embed = !link && total <= EMBED_LIMIT;
   const src = (file) => (embed
     ? `data:${MIME[path.extname(file).toLowerCase()]};base64,${fs.readFileSync(file).toString('base64')}`
     : path.relative(path.dirname(path.resolve(outFile)), path.resolve(file)).split(path.sep).join('/'));
