@@ -6,6 +6,7 @@
       "topic": "native-controls",
       "title": "Native controls",
       "file": "01-native-controls.md",
+      "surface": "all",
       "when": "Adding or touching any form control, dropdown, select, date or time picker, file upload, slider, colour input, checkbox, radio, tooltip, confirm/alert dialog, scrollable area or menu."
     },
     {
@@ -13,6 +14,7 @@
       "topic": "design-tokens",
       "title": "Design tokens",
       "file": "02-design-tokens.md",
+      "surface": "all",
       "when": "Starting a UI, creating the theme or global stylesheet, or about to type a colour, pixel value, radius, shadow, z-index or duration into a component."
     },
     {
@@ -20,6 +22,7 @@
       "topic": "typography",
       "title": "Typography",
       "file": "03-typography.md",
+      "surface": "all",
       "when": "Choosing or loading fonts, setting up the type scale, styling headings or body text, or laying out numbers and tables."
     },
     {
@@ -27,6 +30,7 @@
       "topic": "spacing-layout",
       "title": "Spacing and layout",
       "file": "04-spacing-layout.md",
+      "surface": "all",
       "when": "Laying out a page or section, setting padding, margin or gap, building cards, lists, grids, sidebars or page containers."
     },
     {
@@ -34,6 +38,7 @@
       "topic": "ai-slop",
       "title": "AI-slop blocklist",
       "file": "05-ai-slop.md",
+      "surface": "all",
       "when": "Designing a landing page, hero, feature section, dashboard, card grid or any new visual direction; choosing backgrounds, gradients, shadows, icons or decorative elements."
     },
     {
@@ -41,6 +46,7 @@
       "topic": "component-states",
       "title": "Component states",
       "file": "06-component-states.md",
+      "surface": "all",
       "when": "Building any interactive element (button, link, input, row, tab, card action) or any view that loads, lists, saves or deletes data."
     },
     {
@@ -48,6 +54,7 @@
       "topic": "forms",
       "title": "Forms",
       "file": "07-forms.md",
+      "surface": "all",
       "when": "Building or editing any form, input, sign-in or sign-up screen, settings page, search box, filter bar or inline edit."
     },
     {
@@ -55,6 +62,7 @@
       "topic": "responsive",
       "title": "Responsive design",
       "file": "08-responsive.md",
+      "surface": "all",
       "when": "Building any page layout, navigation, table, grid or overlay; before declaring a page done on desktop; whenever fixed widths or heights are being set."
     },
     {
@@ -62,6 +70,7 @@
       "topic": "dark-mode",
       "title": "Dark mode",
       "file": "09-dark-mode.md",
+      "surface": "all",
       "when": "Defining colour tokens, adding a theme switch, or styling any surface, border, shadow, image or chart that must work on a dark background."
     },
     {
@@ -69,6 +78,7 @@
       "topic": "accessibility",
       "title": "Accessibility",
       "file": "10-accessibility.md",
+      "surface": "all",
       "when": "Building any interactive component, choosing text or border colours, adding images or icons, handling focus, writing custom widgets, or reviewing a page before completion."
     },
     {
@@ -76,6 +86,7 @@
       "topic": "motion",
       "title": "Motion",
       "file": "11-motion.md",
+      "surface": "all",
       "when": "Adding transitions, animations, hover effects, page or overlay entrances, loading indicators or scroll effects."
     },
     {
@@ -83,6 +94,7 @@
       "topic": "colour",
       "title": "Colour",
       "file": "12-colour.md",
+      "surface": "all",
       "when": "Creating or changing the palette, choosing a primary or accent colour, colouring status, charts, badges or backgrounds."
     },
     {
@@ -90,6 +102,7 @@
       "topic": "finishing-details",
       "title": "Finishing details",
       "file": "13-finishing-details.md",
+      "surface": "all",
       "when": "Setting up the document head or root layout, adding images, toasts, modals or overlays, creating error pages, or preparing a project for review or launch."
     },
     {
@@ -97,6 +110,7 @@
       "topic": "copy",
       "title": "Copy and microcopy",
       "file": "14-copy.md",
+      "surface": "all",
       "when": "Writing any text a user will read - headings, button labels, form labels, error messages, empty states, toasts, placeholder data, meta descriptions."
     },
     {
@@ -104,6 +118,7 @@
       "topic": "brand-intake",
       "title": "Brand intake",
       "file": "15-brand-intake.md",
+      "surface": "all",
       "when": "Starting UI work in a project for the first time, starting a new product, page or redesign, or whenever design.md is missing or does not answer a design question."
     },
     {
@@ -111,6 +126,7 @@
       "topic": "self-audit",
       "title": "Self-audit gate",
       "file": "16-self-audit.md",
+      "surface": "all",
       "when": "Before reporting any UI task as done, before opening a pull request that touches UI, or when asked to review or audit an interface."
     },
     {
@@ -118,6 +134,7 @@
       "topic": "data-tables",
       "title": "Data tables",
       "file": "17-data-tables.md",
+      "surface": "all",
       "when": "Showing rows of records (lists of users, orders, invoices, logs, search results), building an admin screen or dashboard table, or adding sorting, filtering, selection or pagination to one."
     },
     {
@@ -125,6 +142,7 @@
       "topic": "charts",
       "title": "Charts and data visualisation",
       "file": "18-charts.md",
+      "surface": "all",
       "when": "Adding a chart, graph, sparkline, KPI tile with a trend, gauge or any visual summary of numbers to a dashboard, report or landing page; choosing a chart library or its colours."
     },
     {
@@ -132,6 +150,7 @@
       "topic": "navigation",
       "title": "Navigation and page structure",
       "file": "19-navigation.md",
+      "surface": "all",
       "when": "Building the app shell, header, sidebar, tabs, breadcrumbs or page header; adding a new page or route; deciding where a page's title and main actions go."
     },
     {
@@ -139,6 +158,7 @@
       "topic": "icons",
       "title": "Icons",
       "file": "20-icons.md",
+      "surface": "all",
       "when": "Adding, choosing or sizing an icon; building icon buttons, navigation items, badges, empty states or status messages with icons; importing an icon library or inline SVG."
     },
     {
@@ -146,7 +166,24 @@
       "topic": "internationalisation",
       "title": "Internationalisation and right-to-left",
       "file": "21-internationalisation.md",
+      "surface": "all",
       "when": "The product is or will be translated, supports right-to-left languages (Arabic, Hebrew, Persian, Urdu), shows dates, numbers, currencies or plurals, or sets fixed widths on text."
+    },
+    {
+      "prefix": "UX",
+      "topic": "ux-laws",
+      "title": "UX laws",
+      "file": "22-ux-laws.md",
+      "surface": "all",
+      "when": "Designing any screen, flow or navigation; placing primary actions; deciding how many options, steps or fields to show; building multi-step forms, checkouts or onboarding; reviewing a page for usability before calling it done."
+    },
+    {
+      "prefix": "VH",
+      "topic": "visual-hierarchy",
+      "title": "Visual hierarchy",
+      "file": "23-visual-hierarchy.md",
+      "surface": "all",
+      "when": "Laying out any page, section, card, dashboard or detail view; styling headings, labels, values and secondary text; deciding what a screen should draw the eye to first; reviewing a screen that looks flat, busy or \"all the same\"."
     }
   ],
   "rules": {
@@ -155,6 +192,7 @@
       "severity": "error",
       "check": "static",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "NC-02": {
@@ -162,6 +200,7 @@
       "severity": "error",
       "check": "static",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "NC-03": {
@@ -169,6 +208,7 @@
       "severity": "error",
       "check": "static",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "NC-04": {
@@ -176,6 +216,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "NC-05": {
@@ -183,6 +224,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "NC-06": {
@@ -190,6 +232,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "NC-07": {
@@ -197,6 +240,7 @@
       "severity": "error",
       "check": "static",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "NC-08": {
@@ -204,6 +248,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "NC-09": {
@@ -211,6 +256,7 @@
       "severity": "info",
       "check": "static",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "NC-10": {
@@ -218,6 +264,7 @@
       "severity": "info",
       "check": "static",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "NC-11": {
@@ -225,6 +272,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "NC-12": {
@@ -232,6 +280,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "NC-13": {
@@ -239,6 +288,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "native-controls",
+      "surface": "all",
       "file": "01-native-controls.md"
     },
     "TK-01": {
@@ -246,6 +296,7 @@
       "severity": "error",
       "check": "static",
       "topic": "design-tokens",
+      "surface": "all",
       "file": "02-design-tokens.md"
     },
     "TK-02": {
@@ -253,6 +304,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "design-tokens",
+      "surface": "all",
       "file": "02-design-tokens.md"
     },
     "TK-03": {
@@ -260,6 +312,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "design-tokens",
+      "surface": "all",
       "file": "02-design-tokens.md"
     },
     "TK-04": {
@@ -267,6 +320,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "design-tokens",
+      "surface": "all",
       "file": "02-design-tokens.md"
     },
     "TK-05": {
@@ -274,6 +328,7 @@
       "severity": "error",
       "check": "static",
       "topic": "design-tokens",
+      "surface": "all",
       "file": "02-design-tokens.md"
     },
     "TK-06": {
@@ -281,6 +336,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "design-tokens",
+      "surface": "all",
       "file": "02-design-tokens.md"
     },
     "TK-07": {
@@ -288,6 +344,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "design-tokens",
+      "surface": "all",
       "file": "02-design-tokens.md"
     },
     "TK-08": {
@@ -295,6 +352,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "design-tokens",
+      "surface": "all",
       "file": "02-design-tokens.md"
     },
     "TY-01": {
@@ -302,6 +360,7 @@
       "severity": "error",
       "check": "static",
       "topic": "typography",
+      "surface": "all",
       "file": "03-typography.md"
     },
     "TY-02": {
@@ -309,6 +368,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "typography",
+      "surface": "all",
       "file": "03-typography.md"
     },
     "TY-03": {
@@ -316,6 +376,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "typography",
+      "surface": "all",
       "file": "03-typography.md"
     },
     "TY-04": {
@@ -323,6 +384,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "typography",
+      "surface": "all",
       "file": "03-typography.md"
     },
     "TY-05": {
@@ -330,6 +392,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "typography",
+      "surface": "all",
       "file": "03-typography.md"
     },
     "TY-06": {
@@ -337,6 +400,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "typography",
+      "surface": "all",
       "file": "03-typography.md"
     },
     "TY-07": {
@@ -344,6 +408,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "typography",
+      "surface": "all",
       "file": "03-typography.md"
     },
     "TY-08": {
@@ -351,6 +416,7 @@
       "severity": "info",
       "check": "visual",
       "topic": "typography",
+      "surface": "all",
       "file": "03-typography.md"
     },
     "SP-01": {
@@ -358,6 +424,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "spacing-layout",
+      "surface": "all",
       "file": "04-spacing-layout.md"
     },
     "SP-02": {
@@ -365,6 +432,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "spacing-layout",
+      "surface": "all",
       "file": "04-spacing-layout.md"
     },
     "SP-03": {
@@ -372,6 +440,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "spacing-layout",
+      "surface": "all",
       "file": "04-spacing-layout.md"
     },
     "SP-04": {
@@ -379,6 +448,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "spacing-layout",
+      "surface": "all",
       "file": "04-spacing-layout.md"
     },
     "SP-05": {
@@ -386,6 +456,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "spacing-layout",
+      "surface": "all",
       "file": "04-spacing-layout.md"
     },
     "SP-06": {
@@ -393,6 +464,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "spacing-layout",
+      "surface": "all",
       "file": "04-spacing-layout.md"
     },
     "SP-07": {
@@ -400,6 +472,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "spacing-layout",
+      "surface": "all",
       "file": "04-spacing-layout.md"
     },
     "SL-01": {
@@ -407,6 +480,7 @@
       "severity": "error",
       "check": "static",
       "topic": "ai-slop",
+      "surface": "all",
       "file": "05-ai-slop.md"
     },
     "SL-02": {
@@ -414,6 +488,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "ai-slop",
+      "surface": "all",
       "file": "05-ai-slop.md"
     },
     "SL-03": {
@@ -421,6 +496,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "ai-slop",
+      "surface": "all",
       "file": "05-ai-slop.md"
     },
     "SL-04": {
@@ -428,6 +504,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "ai-slop",
+      "surface": "all",
       "file": "05-ai-slop.md"
     },
     "SL-05": {
@@ -435,6 +512,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "ai-slop",
+      "surface": "all",
       "file": "05-ai-slop.md"
     },
     "SL-06": {
@@ -442,6 +520,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "ai-slop",
+      "surface": "all",
       "file": "05-ai-slop.md"
     },
     "SL-07": {
@@ -449,6 +528,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "ai-slop",
+      "surface": "all",
       "file": "05-ai-slop.md"
     },
     "SL-08": {
@@ -456,6 +536,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "ai-slop",
+      "surface": "all",
       "file": "05-ai-slop.md"
     },
     "SL-09": {
@@ -463,6 +544,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "ai-slop",
+      "surface": "all",
       "file": "05-ai-slop.md"
     },
     "SL-10": {
@@ -470,6 +552,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "ai-slop",
+      "surface": "all",
       "file": "05-ai-slop.md"
     },
     "SL-11": {
@@ -477,6 +560,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "ai-slop",
+      "surface": "all",
       "file": "05-ai-slop.md"
     },
     "SL-12": {
@@ -484,6 +568,7 @@
       "severity": "info",
       "check": "visual",
       "topic": "ai-slop",
+      "surface": "all",
       "file": "05-ai-slop.md"
     },
     "ST-01": {
@@ -491,6 +576,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "component-states",
+      "surface": "all",
       "file": "06-component-states.md"
     },
     "ST-02": {
@@ -498,6 +584,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "component-states",
+      "surface": "all",
       "file": "06-component-states.md"
     },
     "ST-03": {
@@ -505,6 +592,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "component-states",
+      "surface": "all",
       "file": "06-component-states.md"
     },
     "ST-04": {
@@ -512,6 +600,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "component-states",
+      "surface": "all",
       "file": "06-component-states.md"
     },
     "ST-05": {
@@ -519,6 +608,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "component-states",
+      "surface": "all",
       "file": "06-component-states.md"
     },
     "ST-06": {
@@ -526,6 +616,7 @@
       "severity": "info",
       "check": "visual",
       "topic": "component-states",
+      "surface": "all",
       "file": "06-component-states.md"
     },
     "ST-07": {
@@ -533,6 +624,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "component-states",
+      "surface": "all",
       "file": "06-component-states.md"
     },
     "FM-01": {
@@ -540,6 +632,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "forms",
+      "surface": "all",
       "file": "07-forms.md"
     },
     "FM-02": {
@@ -547,6 +640,7 @@
       "severity": "info",
       "check": "static",
       "topic": "forms",
+      "surface": "all",
       "file": "07-forms.md"
     },
     "FM-03": {
@@ -554,6 +648,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "forms",
+      "surface": "all",
       "file": "07-forms.md"
     },
     "FM-04": {
@@ -561,6 +656,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "forms",
+      "surface": "all",
       "file": "07-forms.md"
     },
     "FM-05": {
@@ -568,6 +664,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "forms",
+      "surface": "all",
       "file": "07-forms.md"
     },
     "FM-06": {
@@ -575,6 +672,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "forms",
+      "surface": "all",
       "file": "07-forms.md"
     },
     "FM-07": {
@@ -582,6 +680,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "forms",
+      "surface": "all",
       "file": "07-forms.md"
     },
     "FM-08": {
@@ -589,6 +688,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "forms",
+      "surface": "all",
       "file": "07-forms.md"
     },
     "FM-09": {
@@ -596,6 +696,7 @@
       "severity": "info",
       "check": "visual",
       "topic": "forms",
+      "surface": "all",
       "file": "07-forms.md"
     },
     "RS-01": {
@@ -603,6 +704,7 @@
       "severity": "error",
       "check": "static",
       "topic": "responsive",
+      "surface": "all",
       "file": "08-responsive.md"
     },
     "RS-02": {
@@ -610,6 +712,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "responsive",
+      "surface": "all",
       "file": "08-responsive.md"
     },
     "RS-03": {
@@ -617,6 +720,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "responsive",
+      "surface": "all",
       "file": "08-responsive.md"
     },
     "RS-04": {
@@ -624,6 +728,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "responsive",
+      "surface": "all",
       "file": "08-responsive.md"
     },
     "RS-05": {
@@ -631,6 +736,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "responsive",
+      "surface": "all",
       "file": "08-responsive.md"
     },
     "RS-06": {
@@ -638,6 +744,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "responsive",
+      "surface": "all",
       "file": "08-responsive.md"
     },
     "RS-07": {
@@ -645,6 +752,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "responsive",
+      "surface": "all",
       "file": "08-responsive.md"
     },
     "RS-08": {
@@ -652,6 +760,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "responsive",
+      "surface": "all",
       "file": "08-responsive.md"
     },
     "RS-09": {
@@ -659,6 +768,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "responsive",
+      "surface": "all",
       "file": "08-responsive.md"
     },
     "DM-01": {
@@ -666,6 +776,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "dark-mode",
+      "surface": "all",
       "file": "09-dark-mode.md"
     },
     "DM-02": {
@@ -673,6 +784,7 @@
       "severity": "info",
       "check": "static",
       "topic": "dark-mode",
+      "surface": "all",
       "file": "09-dark-mode.md"
     },
     "DM-03": {
@@ -680,6 +792,7 @@
       "severity": "error",
       "check": "static",
       "topic": "dark-mode",
+      "surface": "all",
       "file": "09-dark-mode.md"
     },
     "DM-04": {
@@ -687,6 +800,7 @@
       "severity": "info",
       "check": "static",
       "topic": "dark-mode",
+      "surface": "all",
       "file": "09-dark-mode.md"
     },
     "DM-05": {
@@ -694,6 +808,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "dark-mode",
+      "surface": "all",
       "file": "09-dark-mode.md"
     },
     "DM-06": {
@@ -701,6 +816,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "dark-mode",
+      "surface": "all",
       "file": "09-dark-mode.md"
     },
     "AX-01": {
@@ -708,6 +824,7 @@
       "severity": "error",
       "check": "static",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "AX-02": {
@@ -715,6 +832,7 @@
       "severity": "error",
       "check": "static",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "AX-03": {
@@ -722,6 +840,7 @@
       "severity": "error",
       "check": "static",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "AX-04": {
@@ -729,6 +848,7 @@
       "severity": "error",
       "check": "static",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "AX-05": {
@@ -736,6 +856,7 @@
       "severity": "error",
       "check": "static",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "AX-06": {
@@ -743,6 +864,7 @@
       "severity": "error",
       "check": "static",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "AX-07": {
@@ -750,6 +872,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "AX-08": {
@@ -757,6 +880,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "AX-09": {
@@ -764,6 +888,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "AX-10": {
@@ -771,6 +896,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "AX-11": {
@@ -778,6 +904,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "AX-12": {
@@ -785,6 +912,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "AX-13": {
@@ -792,6 +920,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "accessibility",
+      "surface": "all",
       "file": "10-accessibility.md"
     },
     "MO-01": {
@@ -799,6 +928,7 @@
       "severity": "info",
       "check": "static",
       "topic": "motion",
+      "surface": "all",
       "file": "11-motion.md"
     },
     "MO-02": {
@@ -806,6 +936,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "motion",
+      "surface": "all",
       "file": "11-motion.md"
     },
     "MO-03": {
@@ -813,6 +944,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "motion",
+      "surface": "all",
       "file": "11-motion.md"
     },
     "MO-04": {
@@ -820,6 +952,7 @@
       "severity": "info",
       "check": "static",
       "topic": "motion",
+      "surface": "all",
       "file": "11-motion.md"
     },
     "MO-05": {
@@ -827,6 +960,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "motion",
+      "surface": "all",
       "file": "11-motion.md"
     },
     "MO-06": {
@@ -834,6 +968,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "motion",
+      "surface": "all",
       "file": "11-motion.md"
     },
     "MO-07": {
@@ -841,6 +976,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "motion",
+      "surface": "all",
       "file": "11-motion.md"
     },
     "MO-08": {
@@ -848,6 +984,7 @@
       "severity": "info",
       "check": "visual",
       "topic": "motion",
+      "surface": "all",
       "file": "11-motion.md"
     },
     "CO-01": {
@@ -855,6 +992,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "colour",
+      "surface": "all",
       "file": "12-colour.md"
     },
     "CO-02": {
@@ -862,6 +1000,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "colour",
+      "surface": "all",
       "file": "12-colour.md"
     },
     "CO-03": {
@@ -869,6 +1008,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "colour",
+      "surface": "all",
       "file": "12-colour.md"
     },
     "CO-04": {
@@ -876,6 +1016,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "colour",
+      "surface": "all",
       "file": "12-colour.md"
     },
     "CO-05": {
@@ -883,6 +1024,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "colour",
+      "surface": "all",
       "file": "12-colour.md"
     },
     "CO-06": {
@@ -890,6 +1032,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "colour",
+      "surface": "all",
       "file": "12-colour.md"
     },
     "FD-01": {
@@ -897,6 +1040,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "finishing-details",
+      "surface": "all",
       "file": "13-finishing-details.md"
     },
     "FD-02": {
@@ -904,6 +1048,7 @@
       "severity": "error",
       "check": "static",
       "topic": "finishing-details",
+      "surface": "all",
       "file": "13-finishing-details.md"
     },
     "FD-03": {
@@ -911,6 +1056,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "finishing-details",
+      "surface": "all",
       "file": "13-finishing-details.md"
     },
     "FD-04": {
@@ -918,6 +1064,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "finishing-details",
+      "surface": "all",
       "file": "13-finishing-details.md"
     },
     "FD-05": {
@@ -925,6 +1072,7 @@
       "severity": "info",
       "check": "static",
       "topic": "finishing-details",
+      "surface": "all",
       "file": "13-finishing-details.md"
     },
     "FD-06": {
@@ -932,6 +1080,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "finishing-details",
+      "surface": "all",
       "file": "13-finishing-details.md"
     },
     "FD-07": {
@@ -939,6 +1088,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "finishing-details",
+      "surface": "all",
       "file": "13-finishing-details.md"
     },
     "FD-08": {
@@ -946,6 +1096,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "finishing-details",
+      "surface": "all",
       "file": "13-finishing-details.md"
     },
     "FD-09": {
@@ -953,6 +1104,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "finishing-details",
+      "surface": "all",
       "file": "13-finishing-details.md"
     },
     "FD-10": {
@@ -960,6 +1112,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "finishing-details",
+      "surface": "all",
       "file": "13-finishing-details.md"
     },
     "FD-11": {
@@ -967,6 +1120,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "finishing-details",
+      "surface": "all",
       "file": "13-finishing-details.md"
     },
     "CP-01": {
@@ -974,6 +1128,7 @@
       "severity": "error",
       "check": "static",
       "topic": "copy",
+      "surface": "all",
       "file": "14-copy.md"
     },
     "CP-02": {
@@ -981,6 +1136,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "copy",
+      "surface": "all",
       "file": "14-copy.md"
     },
     "CP-03": {
@@ -988,6 +1144,7 @@
       "severity": "info",
       "check": "static",
       "topic": "copy",
+      "surface": "all",
       "file": "14-copy.md"
     },
     "CP-04": {
@@ -995,6 +1152,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "copy",
+      "surface": "all",
       "file": "14-copy.md"
     },
     "CP-05": {
@@ -1002,6 +1160,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "copy",
+      "surface": "all",
       "file": "14-copy.md"
     },
     "CP-06": {
@@ -1009,6 +1168,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "copy",
+      "surface": "all",
       "file": "14-copy.md"
     },
     "CP-07": {
@@ -1016,6 +1176,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "copy",
+      "surface": "all",
       "file": "14-copy.md"
     },
     "BR-01": {
@@ -1023,6 +1184,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "brand-intake",
+      "surface": "all",
       "file": "15-brand-intake.md"
     },
     "BR-02": {
@@ -1030,6 +1192,7 @@
       "severity": "error",
       "check": "process",
       "topic": "brand-intake",
+      "surface": "all",
       "file": "15-brand-intake.md"
     },
     "BR-03": {
@@ -1037,6 +1200,7 @@
       "severity": "error",
       "check": "process",
       "topic": "brand-intake",
+      "surface": "all",
       "file": "15-brand-intake.md"
     },
     "BR-04": {
@@ -1044,6 +1208,7 @@
       "severity": "warning",
       "check": "process",
       "topic": "brand-intake",
+      "surface": "all",
       "file": "15-brand-intake.md"
     },
     "BR-05": {
@@ -1051,6 +1216,15 @@
       "severity": "error",
       "check": "process",
       "topic": "brand-intake",
+      "surface": "all",
+      "file": "15-brand-intake.md"
+    },
+    "BR-06": {
+      "title": "Record what kind of product it is",
+      "severity": "info",
+      "check": "static",
+      "topic": "brand-intake",
+      "surface": "all",
       "file": "15-brand-intake.md"
     },
     "SA-01": {
@@ -1058,6 +1232,7 @@
       "severity": "error",
       "check": "process",
       "topic": "self-audit",
+      "surface": "all",
       "file": "16-self-audit.md"
     },
     "SA-02": {
@@ -1065,6 +1240,7 @@
       "severity": "error",
       "check": "process",
       "topic": "self-audit",
+      "surface": "all",
       "file": "16-self-audit.md"
     },
     "SA-03": {
@@ -1072,6 +1248,7 @@
       "severity": "error",
       "check": "process",
       "topic": "self-audit",
+      "surface": "all",
       "file": "16-self-audit.md"
     },
     "SA-04": {
@@ -1079,6 +1256,7 @@
       "severity": "error",
       "check": "process",
       "topic": "self-audit",
+      "surface": "all",
       "file": "16-self-audit.md"
     },
     "SA-05": {
@@ -1086,6 +1264,7 @@
       "severity": "warning",
       "check": "process",
       "topic": "self-audit",
+      "surface": "all",
       "file": "16-self-audit.md"
     },
     "DT-01": {
@@ -1093,6 +1272,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "data-tables",
+      "surface": "all",
       "file": "17-data-tables.md"
     },
     "DT-02": {
@@ -1100,6 +1280,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "data-tables",
+      "surface": "all",
       "file": "17-data-tables.md"
     },
     "DT-03": {
@@ -1107,6 +1288,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "data-tables",
+      "surface": "all",
       "file": "17-data-tables.md"
     },
     "DT-04": {
@@ -1114,6 +1296,7 @@
       "severity": "info",
       "check": "visual",
       "topic": "data-tables",
+      "surface": "all",
       "file": "17-data-tables.md"
     },
     "DT-05": {
@@ -1121,6 +1304,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "data-tables",
+      "surface": "all",
       "file": "17-data-tables.md"
     },
     "DT-06": {
@@ -1128,6 +1312,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "data-tables",
+      "surface": "all",
       "file": "17-data-tables.md"
     },
     "DT-07": {
@@ -1135,6 +1320,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "data-tables",
+      "surface": "all",
       "file": "17-data-tables.md"
     },
     "DT-08": {
@@ -1142,6 +1328,7 @@
       "severity": "info",
       "check": "visual",
       "topic": "data-tables",
+      "surface": "all",
       "file": "17-data-tables.md"
     },
     "CH-01": {
@@ -1149,6 +1336,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "charts",
+      "surface": "all",
       "file": "18-charts.md"
     },
     "CH-02": {
@@ -1156,6 +1344,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "charts",
+      "surface": "all",
       "file": "18-charts.md"
     },
     "CH-03": {
@@ -1163,6 +1352,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "charts",
+      "surface": "all",
       "file": "18-charts.md"
     },
     "CH-04": {
@@ -1170,6 +1360,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "charts",
+      "surface": "all",
       "file": "18-charts.md"
     },
     "CH-05": {
@@ -1177,6 +1368,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "charts",
+      "surface": "all",
       "file": "18-charts.md"
     },
     "CH-06": {
@@ -1184,6 +1376,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "charts",
+      "surface": "all",
       "file": "18-charts.md"
     },
     "CH-07": {
@@ -1191,6 +1384,7 @@
       "severity": "info",
       "check": "visual",
       "topic": "charts",
+      "surface": "all",
       "file": "18-charts.md"
     },
     "NV-01": {
@@ -1198,6 +1392,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "navigation",
+      "surface": "all",
       "file": "19-navigation.md"
     },
     "NV-02": {
@@ -1205,6 +1400,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "navigation",
+      "surface": "all",
       "file": "19-navigation.md"
     },
     "NV-03": {
@@ -1212,6 +1408,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "navigation",
+      "surface": "all",
       "file": "19-navigation.md"
     },
     "NV-04": {
@@ -1219,6 +1416,7 @@
       "severity": "info",
       "check": "visual",
       "topic": "navigation",
+      "surface": "all",
       "file": "19-navigation.md"
     },
     "NV-05": {
@@ -1226,6 +1424,7 @@
       "severity": "error",
       "check": "static",
       "topic": "navigation",
+      "surface": "all",
       "file": "19-navigation.md"
     },
     "NV-06": {
@@ -1233,6 +1432,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "navigation",
+      "surface": "all",
       "file": "19-navigation.md"
     },
     "NV-07": {
@@ -1240,6 +1440,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "navigation",
+      "surface": "all",
       "file": "19-navigation.md"
     },
     "IC-01": {
@@ -1247,6 +1448,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "icons",
+      "surface": "all",
       "file": "20-icons.md"
     },
     "IC-02": {
@@ -1254,6 +1456,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "icons",
+      "surface": "all",
       "file": "20-icons.md"
     },
     "IC-03": {
@@ -1261,6 +1464,7 @@
       "severity": "warning",
       "check": "static",
       "topic": "icons",
+      "surface": "all",
       "file": "20-icons.md"
     },
     "IC-04": {
@@ -1268,6 +1472,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "icons",
+      "surface": "all",
       "file": "20-icons.md"
     },
     "IC-05": {
@@ -1275,6 +1480,7 @@
       "severity": "info",
       "check": "visual",
       "topic": "icons",
+      "surface": "all",
       "file": "20-icons.md"
     },
     "IC-06": {
@@ -1282,6 +1488,7 @@
       "severity": "info",
       "check": "visual",
       "topic": "icons",
+      "surface": "all",
       "file": "20-icons.md"
     },
     "IN-01": {
@@ -1289,6 +1496,7 @@
       "severity": "info",
       "check": "static",
       "topic": "internationalisation",
+      "surface": "all",
       "file": "21-internationalisation.md"
     },
     "IN-02": {
@@ -1296,6 +1504,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "internationalisation",
+      "surface": "all",
       "file": "21-internationalisation.md"
     },
     "IN-03": {
@@ -1303,6 +1512,7 @@
       "severity": "warning",
       "check": "visual",
       "topic": "internationalisation",
+      "surface": "all",
       "file": "21-internationalisation.md"
     },
     "IN-04": {
@@ -1310,6 +1520,7 @@
       "severity": "error",
       "check": "visual",
       "topic": "internationalisation",
+      "surface": "all",
       "file": "21-internationalisation.md"
     },
     "IN-05": {
@@ -1317,6 +1528,7 @@
       "severity": "info",
       "check": "process",
       "topic": "internationalisation",
+      "surface": "all",
       "file": "21-internationalisation.md"
     },
     "IN-06": {
@@ -1324,7 +1536,160 @@
       "severity": "warning",
       "check": "visual",
       "topic": "internationalisation",
+      "surface": "all",
       "file": "21-internationalisation.md"
+    },
+    "UX-01": {
+      "title": "Fitts's law: important targets are big and close",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "ux-laws",
+      "surface": "all",
+      "file": "22-ux-laws.md"
+    },
+    "UX-02": {
+      "title": "Hick's law: fewer, grouped choices",
+      "severity": "warning",
+      "check": "static",
+      "topic": "ux-laws",
+      "surface": "all",
+      "file": "22-ux-laws.md"
+    },
+    "UX-03": {
+      "title": "Jakob's law: follow the conventions people already know",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "ux-laws",
+      "surface": "all",
+      "file": "22-ux-laws.md"
+    },
+    "UX-04": {
+      "title": "Miller's law: chunk information",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "ux-laws",
+      "surface": "all",
+      "file": "22-ux-laws.md"
+    },
+    "UX-05": {
+      "title": "Von Restorff effect: one thing stands out",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "ux-laws",
+      "surface": "all",
+      "file": "22-ux-laws.md"
+    },
+    "UX-06": {
+      "title": "Gestalt: things that look alike behave alike",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "ux-laws",
+      "surface": "all",
+      "file": "22-ux-laws.md"
+    },
+    "UX-07": {
+      "title": "Serial position: first and last are remembered",
+      "severity": "info",
+      "check": "visual",
+      "topic": "ux-laws",
+      "surface": "all",
+      "file": "22-ux-laws.md"
+    },
+    "UX-08": {
+      "title": "Doherty threshold: respond within 400 ms",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "ux-laws",
+      "surface": "all",
+      "file": "22-ux-laws.md"
+    },
+    "UX-09": {
+      "title": "Goal-gradient and Zeigarnik: show progress toward the goal",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "ux-laws",
+      "surface": "all",
+      "file": "22-ux-laws.md"
+    },
+    "UX-10": {
+      "title": "Postel's law: accept input the way people type it",
+      "severity": "warning",
+      "check": "static",
+      "topic": "ux-laws",
+      "surface": "all",
+      "file": "22-ux-laws.md"
+    },
+    "UX-11": {
+      "title": "Tesler's law: the product absorbs the complexity",
+      "severity": "info",
+      "check": "visual",
+      "topic": "ux-laws",
+      "surface": "all",
+      "file": "22-ux-laws.md"
+    },
+    "UX-12": {
+      "title": "Peak-end rule: design the best moment and the ending",
+      "severity": "info",
+      "check": "visual",
+      "topic": "ux-laws",
+      "surface": "all",
+      "file": "22-ux-laws.md"
+    },
+    "VH-01": {
+      "title": "Each view has one focal point",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "visual-hierarchy",
+      "surface": "all",
+      "file": "23-visual-hierarchy.md"
+    },
+    "VH-02": {
+      "title": "Levels differ enough to be seen",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "visual-hierarchy",
+      "surface": "all",
+      "file": "23-visual-hierarchy.md"
+    },
+    "VH-03": {
+      "title": "Three levels of text emphasis",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "visual-hierarchy",
+      "surface": "all",
+      "file": "23-visual-hierarchy.md"
+    },
+    "VH-04": {
+      "title": "Values are louder than their labels",
+      "severity": "info",
+      "check": "visual",
+      "topic": "visual-hierarchy",
+      "surface": "all",
+      "file": "23-visual-hierarchy.md"
+    },
+    "VH-05": {
+      "title": "Layout follows how the page is scanned",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "visual-hierarchy",
+      "surface": "all",
+      "file": "23-visual-hierarchy.md"
+    },
+    "VH-06": {
+      "title": "It passes the squint test",
+      "severity": "warning",
+      "check": "visual",
+      "topic": "visual-hierarchy",
+      "surface": "all",
+      "file": "23-visual-hierarchy.md"
+    },
+    "VH-07": {
+      "title": "Few font weights",
+      "severity": "warning",
+      "check": "static",
+      "topic": "visual-hierarchy",
+      "surface": "all",
+      "file": "23-visual-hierarchy.md"
     }
   }
 }

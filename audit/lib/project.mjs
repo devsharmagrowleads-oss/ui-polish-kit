@@ -17,7 +17,11 @@ export const DEFAULT_CONFIG = {
   allowSystemFonts: false,
   darkMode: true,
   designDoc: null,
+  surface: 'auto',
 };
+
+/** What kind of product the project is. Topics can apply to marketing sites, product apps, or both. */
+export const PROJECT_SURFACES = ['auto', 'marketing', 'app', 'both'];
 
 const CONFIG_NAMES = ['ui-polish.config.json', '.ui-polishrc.json', '.ui-polishrc'];
 
@@ -55,7 +59,9 @@ export function loadConfig(root, explicitPath) {
   const known = Object.keys(DEFAULT_CONFIG);
   const unknown = Object.keys(parsed).filter((k) => !known.includes(k) && k !== '$schema');
   if (unknown.length) throw new Error(`Unknown config key(s) in ${file}: ${unknown.join(', ')}. Known keys: ${known.join(', ')}`);
-  return { ...DEFAULT_CONFIG, ...parsed, configFile: file };
+  const merged = { ...DEFAULT_CONFIG, ...parsed, configFile: file };
+  if (!PROJECT_SURFACES.includes(merged.surface)) throw new Error(`Config "surface" in ${file} must be one of ${PROJECT_SURFACES.join(', ')} (got ${JSON.stringify(merged.surface)})`);
+  return merged;
 }
 
 /** Every file under root (relative, forward slashes), skipping build and vendor folders. */
@@ -348,7 +354,73 @@ function collectFacts(root, allFiles, files, config) {
   }
   if (!facts.localised && allFiles.some((p) => /(^|\/)(locales?|i18n|translations|messages|lang)\/[\w@.-]+\.(json|ya?ml|po|ftl|properties)$/i.test(p))) facts.localised = true;
   if (!facts.localised && files.some((f) => f.hasMarkup && /\bdir\s*=\s*["']?rtl\b/.test(f.text))) facts.localised = true;
+  facts.surface = resolveSurface(config, facts.designDocText, allFiles, files);
   return facts;
+}
+
+// ---------------------------------------------------------------------------
+// Surface: marketing site, product app, or both
+// ---------------------------------------------------------------------------
+
+const MARKETING_PATHS = /(^|\/)(landing|pricing|features|about|blog|customers|testimonials|careers|press|home)(\/|\.|-|$)/i;
+const APP_PATHS = /(^|\/)(dashboard|settings|admin|account|billing|workspace|onboarding|sign-?in|log-?in|sign-?up|projects|inbox|reports)(\/|\.|-|$)/i;
+const ID_OR_CLASS = (word) => new RegExp(`\\b(?:id|class|className)\\s*=\\s*\\{?\\s*["'\`][^"'\`]*\\b${word}\\b`, 'i');
+const MARKETING_MARKUP = [
+  ['hero', ID_OR_CLASS('hero')],
+  ['pricing', (t) => ID_OR_CLASS('pricing').test(t) || /<h[1-3][^>]*>\s*(Pricing|Plans)\b/i.test(t)],
+  ['testimonials', ID_OR_CLASS('testimonials?')],
+  ['faq', (t) => ID_OR_CLASS('faq').test(t) || /Frequently asked/i.test(t)],
+  ['call to action', /\b(Get started|Start (your )?free trial|Book a demo|Request a demo|Sign up free)\b/],
+];
+const APP_MARKUP = [
+  ['sidebar', (t) => /<(aside|Sidebar)[\s>]/.test(t) || ID_OR_CLASS('sidebar').test(t)],
+  ['data table', /<(table|DataTable)[\s>]/],
+  ['sign-in form', /type\s*=\s*["']password["']|auto[cC]omplete\s*=\s*["']current-password["']/],
+  ['app shell', /\b(AppShell|DashboardLayout|app-shell)\b/],
+];
+const hit = (test, text) => (typeof test === 'function' ? test(text) : test.test(text));
+
+/** Read "Surface: app" (or marketing / both) from design.md. */
+export function surfaceFromDesignDoc(text) {
+  const m = /^[\s>*|-]*\**surface\**\s*[:|]\s*\**\s*(marketing|app|both)\b/im.exec(text || '');
+  return m ? m[1].toLowerCase() : null;
+}
+
+/** Guess the surface from file paths and markup. Returns { value, signals }; value is marketing, app, both or unknown. */
+export function detectSurface(allFiles, files) {
+  const marketing = new Set();
+  const app = new Set();
+  for (const p of allFiles) {
+    if (/\.(md|json|lock|ya?ml|txt)$/i.test(p)) continue;
+    const mm = MARKETING_PATHS.exec(p);
+    if (mm) marketing.add(`${mm[2].toLowerCase()} page`);
+    const am = APP_PATHS.exec(p);
+    if (am) app.add(`${am[2].toLowerCase()} route`);
+  }
+  for (const f of files) {
+    if (!f.hasMarkup) continue;
+    for (const [name, test] of MARKETING_MARKUP) if (hit(test, f.text)) marketing.add(name);
+    for (const [name, test] of APP_MARKUP) if (hit(test, f.text)) app.add(name);
+  }
+  const m = marketing.size >= 2;
+  const a = app.size >= 2;
+  const value = m && a ? 'both' : m ? 'marketing' : a ? 'app' : 'unknown';
+  return { value, signals: { marketing: [...marketing], app: [...app] } };
+}
+
+function resolveSurface(config, designDocText, allFiles, files) {
+  if (config.surface && config.surface !== 'auto') return { value: config.surface, source: 'config' };
+  const fromDoc = surfaceFromDesignDoc(designDocText);
+  if (fromDoc) return { value: fromDoc, source: 'design.md' };
+  const detected = detectSurface(allFiles, files);
+  return { value: detected.value, source: 'detected', signals: detected.signals };
+}
+
+/** Does a topic written for `topicSurface` (all, marketing or app) apply to a project whose surface is `projectSurface`? */
+export function surfaceApplies(topicSurface, projectSurface) {
+  if (!topicSurface || topicSurface === 'all') return true;
+  if (projectSurface === 'both') return true;
+  return topicSurface === projectSurface;
 }
 
 export { SYSTEM_FAMILIES };

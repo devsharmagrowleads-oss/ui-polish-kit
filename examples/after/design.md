@@ -3,6 +3,7 @@
 The brand decisions the "after" page follows. In a real project the agent writes this file during brand intake (rules/15-brand-intake.md) before any UI code.
 
 ## Product and audience
+- Surface: app
 - An invoicing tool that sends payment reminders automatically.
 - Freelancers and small studios; used a few times a week, on laptop and phone.
 - Main job: send an invoice in under a minute and see who is late.

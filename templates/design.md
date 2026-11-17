@@ -3,6 +3,7 @@
 The brand and interface decisions for this project. AI agents and people building UI here must follow this file. If a decision is missing, add it here first (with a date in the decisions log), then build. Replace every `<…>`; write "none" or "assumed: <reason>" rather than leaving a blank.
 
 ## Product and audience
+- Surface: <marketing | app | both>  (marketing = website or landing page; app = signed-in product such as SaaS, dashboard, admin tool)
 - What it is, in one sentence: <…>
 - Who uses it, on what device, how often: <…>
 - The main job a user comes to do: <…>

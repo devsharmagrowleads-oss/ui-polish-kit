@@ -2,7 +2,7 @@
 // ui-polish static checker. Zero dependencies; Node 20+.
 //
 //   node audit/cli.mjs [path] [--json] [--min-score N] [--fail-on error|warning|never]
-//                      [--rules ID,ID] [--config file] [--max-per-file N] [--list-rules]
+//                      [--rules ID,ID] [--config file] [--surface S] [--max-per-file N] [--list-rules]
 
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
@@ -20,6 +20,7 @@ Options
   --fail-on <level>      error (default) | warning | never
   --rules <ids>          Only report these rule IDs (comma separated)
   --config <file>        Config file (default: ui-polish.config.json in the project root)
+  --surface <kind>       marketing | app | both | auto (default: config, then design.md, then detected)
   --max-per-file <n>     Limit findings printed per file in text output
   --list-rules           List every rule and whether the static checker covers it
   --no-color             Disable ANSI colours
@@ -34,7 +35,8 @@ Ignore comments (any comment syntax)
 Config (ui-polish.config.json)
   { "include": [], "exclude": ["legacy/**"], "tokenFiles": ["src/styles/brand.css"],
     "rules": { "TK-03": "off", "MO-01": "warning" }, "minScore": 85, "failOn": "error",
-    "allowSystemFonts": false, "darkMode": true, "designDoc": "docs/design.md" }
+    "allowSystemFonts": false, "darkMode": true, "designDoc": "docs/design.md",
+    "surface": "app" }
 `;
 
 export function parseArgs(argv) {
@@ -56,6 +58,7 @@ export function parseArgs(argv) {
     } else if (a === '--fail-on') opts.failOn = need(i++, a);
     else if (a === '--rules') opts.only = need(i++, a).split(',').map((s) => s.trim().toUpperCase()).filter(Boolean);
     else if (a === '--config') opts.config = need(i++, a);
+    else if (a === '--surface') opts.overrides = { ...opts.overrides, surface: need(i++, a) };
     else if (a === '--max-per-file') opts.maxPerFile = Number(need(i++, a)) || 0;
     else if (a.startsWith('-')) throw new Error(`Unknown option ${a}`);
     else if (!pathSet) { opts.path = a; pathSet = true; } else throw new Error(`Unexpected argument ${a}`);
@@ -76,7 +79,7 @@ export function main(argv = process.argv.slice(2)) {
   try {
     if (opts.listRules) {
       const index = loadRuleIndex();
-      const rows = Object.entries(index.rules).map(([id, r]) => `${id}  ${r.severity.padEnd(7)}  ${STATIC_RULE_IDS.includes(id) ? 'static' : 'visual'}  ${r.title}`);
+      const rows = Object.entries(index.rules).map(([id, r]) => `${id}  ${r.severity.padEnd(7)}  ${STATIC_RULE_IDS.includes(id) ? 'static' : 'visual'}  ${r.title}${r.surface && r.surface !== 'all' ? `  (${r.surface} only)` : ''}`);
       process.stdout.write(`${rows.join('\n')}\n`);
       return 0;
     }

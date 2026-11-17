@@ -29,6 +29,9 @@ export const MARK_END = '<!-- ui-polish-kit:end -->';
 const SEVERITIES = ['error', 'warning', 'info'];
 const CHECKS = ['static', 'visual', 'process'];
 const PARTS = ['Rule', 'Why', 'Bad', 'Good', 'Check'];
+/** Which kind of product a topic applies to. Projects declare theirs as marketing, app or both. */
+export const TOPIC_SURFACES = ['all', 'marketing', 'app'];
+const SURFACE_NOTE = { marketing: 'Marketing sites and landing pages only. ', app: 'Product apps (SaaS, dashboards, admin tools) only. ' };
 
 /** Size ceilings per output kind, in characters. Always-on files are loaded into every prompt. */
 export const LIMITS = { alwaysOn: 12000, windsurfFile: 6000, cursorLines: 500, codexBytes: 32 * 1024, skillDescription: 1536 };
@@ -53,6 +56,8 @@ export function parseTopic(src, file) {
   const { data, body } = parseFrontmatter(src.replace(/\r\n/g, '\n'), file);
   for (const key of ['topic', 'prefix', 'title', 'when']) if (!data[key]) throw new Error(`${file}: frontmatter needs "${key}"`);
   if (!/^[A-Z]{2}$/.test(data.prefix)) throw new Error(`${file}: prefix must be two capital letters`);
+  data.surface = data.surface || 'all';
+  if (!TOPIC_SURFACES.includes(data.surface)) throw new Error(`${file}: surface must be one of ${TOPIC_SURFACES.join(', ')}`);
 
   const rules = [];
   const errors = [];
@@ -150,8 +155,8 @@ function renderCore(root, topics, { kit, topicPath, compactTopics = false }) {
   const core = fs.readFileSync(path.join(root, 'rules', '_core.md'), 'utf8').replace(/\r\n/g, '\n').trim();
   // Compact form (Windsurf's 6,000-character budget): name the folder once.
   const table = compactTopics
-    ? [`All in \`${topicPath(topics[0]).slice(0, -topics[0].file.length)}\`:`, ...topics.map((t) => `- ${t.prefix} ${t.title}: \`${t.file}\``)].join('\n')
-    : ['| Topic | File | Read it when |', '| --- | --- | --- |', ...topics.map((t) => `| ${t.prefix} ${t.title} | \`${topicPath(t)}\` | ${t.when} |`)].join('\n');
+    ? `All in \`${topicPath(topics[0]).slice(0, -topics[0].file.length)}\`: ${topics.map((t) => `${t.prefix} \`${t.file}\`${t.surface === 'all' ? '' : ` (${t.surface} only)`}`).join(' · ')}.`
+    : ['| Topic | File | Read it when |', '| --- | --- | --- |', ...topics.map((t) => `| ${t.prefix} ${t.title} | \`${topicPath(t)}\` | ${SURFACE_NOTE[t.surface] || ''}${t.when} |`)].join('\n');
   if (!core.includes('{{TOPICS}}') || !core.includes('{{KIT}}')) throw new Error('rules/_core.md must contain {{KIT}} and {{TOPICS}}');
   return core.replace('{{TOPICS}}', table).replaceAll('{{KIT}}', kit);
 }
@@ -175,7 +180,7 @@ function auditStub(kit) {
     '',
     `1. Static check: \`node ${kit}/audit/cli.mjs .\` (add \`--json\` for machine output). Record the score.`,
     `2. Start the app and capture every page in scope at 375, 768 and 1440px, in light and dark: \`node ${kit}/audit/screenshot.mjs <url>\` or your browser tool. Capture open dropdowns, date pickers and dialogs, and the empty, loading and error states. Look at every image.`,
-    '3. Walk the 35-item visual checklist in the procedure; mark pass, fail or n/a. Blocker items fail the audit on their own.',
+    '3. Walk the 38-item visual checklist in the procedure; mark pass, fail or n/a. Blocker items fail the audit on their own.',
     '4. Keyboard pass, form pass, resize pass.',
     '5. Score: static score from the checker; visual score = passed / (passed + failed). PASS needs a passing static check, no failed blocker and a visual score of at least 90.',
     '6. Fix: design.md and tokens first, then errors and blockers, then warnings. Fix causes; do not weaken the config or add ignores without a reason.',
@@ -195,7 +200,7 @@ function checklist(topics) {
     '',
   ];
   for (const t of topics) {
-    out.push(`## ${t.prefix} · ${t.title} (\`rules/${t.file}\`)`, '');
+    out.push(`## ${t.prefix} · ${t.title} (\`rules/${t.file}\`)${t.surface === 'all' ? '' : ` · ${t.surface} surfaces only`}`, '');
     for (const r of t.rules) out.push(`- [ ] **${r.id}** (${r.severity}, ${r.check}) ${r.title}`);
     out.push('');
   }
@@ -214,8 +219,8 @@ export function buildOutputs(root = ROOT) {
   // --- machine index + checklist
   const index = {
     version: pkg.version,
-    topics: topics.map((t) => ({ prefix: t.prefix, topic: t.topic, title: t.title, file: t.file, when: t.when })),
-    rules: Object.fromEntries(topics.flatMap((t) => t.rules.map((r) => [r.id, { title: r.title, severity: r.severity, check: r.check, topic: t.topic, file: t.file }]))),
+    topics: topics.map((t) => ({ prefix: t.prefix, topic: t.topic, title: t.title, file: t.file, surface: t.surface, when: t.when })),
+    rules: Object.fromEntries(topics.flatMap((t) => t.rules.map((r) => [r.id, { title: r.title, severity: r.severity, check: r.check, topic: t.topic, surface: t.surface, file: t.file }]))),
   };
   put('audit/rules-index.json', JSON.stringify(index, null, 2));
   put('audit/CHECKLIST.md', checklist(topics));

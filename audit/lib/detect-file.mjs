@@ -610,6 +610,46 @@ function structure(f, facts, report, once) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// UX laws
+// ---------------------------------------------------------------------------
+
+const NAV_SKIP = /breadcrumb|pagination|pager|footer|sitemap|table of contents|contents|on this page|\btoc\b|\bsteps?\b|\btabs?\b/i;
+const LOOSE_FIELD = /\b(tel|phone|mobile|cc-number|card-?number|card|iban|postal-code|postcode|zip)\b/i;
+const STRICT_FIELD = /\b(cc-csc|csc|cvc|cvv|one-time-code|otp|pin)\b/i;
+
+function uxLaws(f, facts, report) {
+  if (!f.hasMarkup) return;
+  // UX-02 Hick's law: a navigation bar with too many top-level links.
+  for (const nav of findTags(f.text, 'nav')) {
+    const label = String(attr(nav.src, 'aria-label|id|class|className') ?? '');
+    if (NAV_SKIP.test(label) || isInside(f.text, nav.start, 'footer')) continue;
+    const body = contentOf(f.text, nav);
+    let depth = 0;
+    let links = 0;
+    const re = /<(ul|ol)[\s>]|<\/(ul|ol)>|<(a|Link|NavLink|NavItem)[\s>]/g;
+    let m;
+    while ((m = re.exec(body))) {
+      if (m[1]) depth++;
+      else if (m[2]) depth = Math.max(0, depth - 1);
+      else if (depth <= 1) links++;
+    }
+    if (links > 8) {
+      report('UX-02', nav.start, `Navigation with ${links} top-level links. Every extra choice slows the decision (Hick's law): keep about seven, ordered by use, and group or move the rest (settings and help into an account menu, rarely used pages into a "More" group).`);
+    }
+  }
+  // UX-10 Postel's law: patterns that reject the way people type phone and card numbers.
+  for (const tag of findTags(f.text, 'input|Input')) {
+    const pattern = attr(tag.src, 'pattern');
+    if (typeof pattern !== 'string') continue;
+    const ident = [inputType(tag.src), attr(tag.src, 'autocomplete|autoComplete'), attr(tag.src, 'name'), attr(tag.src, 'id')].filter((x) => typeof x === 'string').join(' ');
+    if (!LOOSE_FIELD.test(ident) || STRICT_FIELD.test(ident)) continue;
+    // Allowed when the pattern contains a space, \s, \x20, a dot or a negated class.
+    if (/ |\\s|\\x20|\.|\[\^/.test(pattern)) continue;
+    report('UX-10', tag.start, `pattern="${clip(pattern, 30)}" rejects spaces in a phone, card or postcode field, but people type these the way they are printed ("4242 4242 4242 4242", "+44 20 7946 0958"). Allow spaces and dashes in the pattern and strip them before validating (Postel's law).`);
+  }
+}
+
 export function runFileDetectors(f, facts, report, once) {
   nativeControls(f, facts, report);
   dialogs(f, facts, report);
@@ -621,4 +661,5 @@ export function runFileDetectors(f, facts, report, once) {
   responsive(f, facts, report);
   documentHead(f, facts, report);
   structure(f, facts, report, once);
+  uxLaws(f, facts, report);
 }

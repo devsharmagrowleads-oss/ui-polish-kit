@@ -4,9 +4,9 @@
 
 <p align="center">
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-0a1214?style=flat-square"></a>
-  <img alt="168 rules" src="https://img.shields.io/badge/rules-168-5fd0c5?style=flat-square">
-  <img alt="21 topics" src="https://img.shields.io/badge/topics-21-5fd0c5?style=flat-square">
-  <img alt="62 static checks" src="https://img.shields.io/badge/static%20checks-62-5fd0c5?style=flat-square">
+  <img alt="188 rules" src="https://img.shields.io/badge/rules-188-5fd0c5?style=flat-square">
+  <img alt="23 topics" src="https://img.shields.io/badge/topics-23-5fd0c5?style=flat-square">
+  <img alt="66 static checks" src="https://img.shields.io/badge/static%20checks-66-5fd0c5?style=flat-square">
   <img alt="27 React recipes" src="https://img.shields.io/badge/React%20recipes-27-5fd0c5?style=flat-square">
   <img alt="8 HTML and CSS recipes" src="https://img.shields.io/badge/HTML%2FCSS%20recipes-8-5fd0c5?style=flat-square">
   <img alt="No dependencies" src="https://img.shields.io/badge/dependencies-none-17603c?style=flat-square">
@@ -69,7 +69,7 @@ The same invoicing screen, built twice. Left: what an agent produces when asked 
     <td><img src="docs/images/example-after.png" alt="The same invoicing screen rebuilt: a dark themed 'New invoice' form with a real type scale, consistent spacing, one icon set, a styled select, date picker, slider and file upload, and a summary panel with real figures."></td>
   </tr>
   <tr>
-    <td align="center">Score <b>0 / 100</b> · 57 errors · 99 warnings</td>
+    <td align="center">Score <b>0 / 100</b> · 57 errors · 101 warnings</td>
     <td align="center">Score <b>100 / 100</b> · no findings</td>
   </tr>
 </table>
@@ -104,7 +104,7 @@ One run per prompt, judged by the kit's own checker, which reads code rather tha
 
 ```mermaid
 flowchart LR
-    R["rules/<br>168 rules, 21 topics<br>one source of truth"] --> B["scripts/build.mjs"]
+    R["rules/<br>188 rules, 23 topics<br>one source of truth"] --> B["scripts/build.mjs"]
     B --> A1["Claude Code<br>plugin and skills"]
     B --> A2["Codex<br>AGENTS.md"]
     B --> A3["Cursor<br>.cursor/rules"]
@@ -122,7 +122,7 @@ flowchart LR
     S3 -- "passes" --> D(["Done"])
 ```
 
-1. **Brand intake.** The agent looks for your colours, fonts, logo and tone, asks you for what is missing, and writes `design.md`. Everything later follows it.
+1. **Brand intake.** The agent looks for your colours, fonts, logo and tone, asks you for what is missing, and writes `design.md`, including whether the project is a marketing site, a product app (SaaS, dashboard, admin tool) or both. Everything later follows it, and rules written only for landing pages or only for apps apply only where they fit.
 2. **Build.** Design tokens first, then components from the recipes, mobile layout first. Before building a dialog, menu or animation it looks up [Modern Web Guidance](#works-with-modern-web-guidance) to use the browser's own feature.
 3. **Self-audit.** It runs the static checker, takes screenshots at three widths in light and dark, looks at them, fixes what fails, and only then reports the work as done, with the score.
 
@@ -130,7 +130,7 @@ Each agent gets a short entry file that is always loaded (the core checklist and
 
 ## What the rules cover
 
-168 rules in 21 topics. Each rule has the rule, why it matters, a bad example, a good example and how to check it.
+188 rules in 23 topics. Each rule has the rule, why it matters, a bad example, a good example and how to check it.
 
 **Look and feel**
 
@@ -155,6 +155,13 @@ Each agent gets a short entry file that is always loaded (the core checklist and
 | [Data tables](rules/17-data-tables.md) · DT | Div grids, left-aligned numbers, invisible sorting, headers that scroll away, blank empty tables |
 | [Charts](rules/18-charts.md) · CH | Rainbow pies, distant legends, axes without units, bar charts that do not start at zero |
 | [Navigation](rules/19-navigation.md) · NV | No current-page marker, actions that move between pages, `href="#"`, filters lost on reload |
+
+**Usability**
+
+| Topic | What it stops |
+| --- | --- |
+| [UX laws](rules/22-ux-laws.md) · UX | Breaking Fitts's, Hick's, Jakob's and Miller's laws, Von Restorff, Gestalt, serial position, the Doherty threshold, goal-gradient, Postel's and Tesler's laws and the peak-end rule: tiny far-away actions, ten nav items, three equal primary buttons, multi-step forms with no progress, phone fields that reject spaces |
+| [Visual hierarchy](rules/23-visual-hierarchy.md) · VH | Screens with no focal point, heading sizes 2px apart, labels as loud as values, layouts that ignore how pages are scanned, six font weights |
 
 **Reach**
 
@@ -197,10 +204,11 @@ node .ui-polish/audit/cli.mjs .                 # report: file:line, rule ID, se
 node .ui-polish/audit/cli.mjs . --json          # machine-readable
 node .ui-polish/audit/cli.mjs . --fail-on warning --min-score 95    # stricter, for CI
 node .ui-polish/audit/cli.mjs --list-rules      # every rule and whether it is checked statically
+node .ui-polish/audit/cli.mjs . --surface app   # treat the project as a product app (or marketing, both)
 ```
 
 <details>
-<summary><b>What the checker detects (62 rules)</b></summary>
+<summary><b>What the checker detects (66 rules)</b></summary>
 
 | Area | Detects |
 | --- | --- |
@@ -215,11 +223,14 @@ node .ui-polish/audit/cli.mjs --list-rules      # every rule and whether it is c
 | Structure | Tables without header cells; pages without `<main>`; `href="#"` and `javascript:` links; inline SVG icons that are neither hidden nor named; left/right CSS in translated projects |
 | Motion | `transition: all`; slow transitions; no reduced-motion handling; `animate-bounce` |
 | Finishing | Missing favicon, title, description, Open Graph tags, 404 page; images without dimensions |
-| Copy and brand | Lorem ipsum; filler names; vague microcopy; missing `design.md` |
+| Copy and brand | Lorem ipsum; filler names; vague microcopy; missing `design.md`; no recorded surface (marketing, app or both) when the code does not show it |
+| UX laws and hierarchy | Navigation with more than eight top-level links (Hick); phone, card and postcode patterns that reject spaces (Postel); more than four font weights |
 
 </details>
 
 Scoring: start at 100; an error costs 5, a warning 2, an info 0.5; one rule can cost at most three times its weight. Passing needs zero errors and a score of at least 85. Exit code 0 pass, 1 fail, 2 usage error.
+
+The report names the **surface** it used (marketing, app or both) and where it came from: `"surface"` in the config or `--surface`, then a `Surface:` line in `design.md`, then detection from the code (pricing, hero and FAQ sections suggest a marketing site; dashboard and settings routes, sidebars and data tables suggest an app). Topics written for one kind of product are skipped on the other, so a SaaS dashboard is never told to add social proof.
 
 It only fires on patterns that are wrong almost everywhere. When code is deliberately different, say why where it happens:
 
@@ -242,13 +253,14 @@ Also available: `ui-polish-ignore-line`, `ui-polish-disable <IDs>` … `ui-polis
   "failOn": "error",
   "allowSystemFonts": false,
   "darkMode": true,
-  "designDoc": "docs/design.md"
+  "designDoc": "docs/design.md",
+  "surface": "app"
 }
 ```
 
 </details>
 
-**2. Visual audit.** The checker cannot judge spacing rhythm, hierarchy or whether a page looks like a template, so the agent also follows [`audit/PROCEDURE.md`](audit/PROCEDURE.md): it starts the app, captures each page at 375, 768 and 1440px in light and dark (plus open dropdowns, dialogs, and the empty, loading and error states), looks at every image, walks a 35-item checklist, does a keyboard pass, fixes in priority order, re-checks, and reports what it fixed, what remains and what it could not verify.
+**2. Visual audit.** The checker cannot judge spacing rhythm, hierarchy or whether a page looks like a template, so the agent also follows [`audit/PROCEDURE.md`](audit/PROCEDURE.md): it starts the app, captures each page at 375, 768 and 1440px in light and dark (plus open dropdowns, dialogs, and the empty, loading and error states), looks at every image, walks a 38-item checklist, does a keyboard pass, fixes in priority order, re-checks, and reports what it fixed, what remains and what it could not verify.
 
 ```bash
 npm i -D playwright-core          # uses your installed Chrome or Edge
@@ -325,7 +337,7 @@ No. It runs locally, with no dependencies and no network access.
 npm run build         # regenerate skills/, dist/, .claude-plugin/, audit/rules-index.json, audit/CHECKLIST.md
 npm run build:check   # fail if generated files are stale (use in CI)
 npm test              # checker, build and installer tests
-node audit/cli.mjs examples/before    # fails: 166 findings
+node audit/cli.mjs examples/before    # fails: 169 findings
 node audit/cli.mjs examples/after     # passes: 100/100
 ```
 

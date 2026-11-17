@@ -11,7 +11,7 @@ Kit root: `.ui-polish` (contains `rules/`, `recipes/`, `audit/`).
 
 ## Workflow, in this order
 
-1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `.ui-polish/templates/design.md`. Everything later follows it. (BR)
+1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `.ui-polish/templates/design.md`, with a `Surface:` line. Everything later follows it. (BR)
 2. **Tokens.** Define colour, spacing, radius, shadow, type, z-index and motion tokens for light and dark before writing any component. Start from `.ui-polish/recipes/react-tailwind-shadcn/tokens/tokens.css`. (TK, CO, DM)
 3. **Build.** Use tokens and the recipes in `.ui-polish/recipes/` only. Design the 375px layout first. (all topics)
 4. **Self-audit.** Run the static checker, screenshot the result at 375 / 768 / 1440px in light and dark, look at the screenshots, fix what fails, re-check. Only then report the task as done, with the score. (SA)
@@ -29,7 +29,8 @@ Kit root: `.ui-polish` (contains `rules/`, `recipes/`, `audit/`).
 9. **Dark mode comes from tokens**, with `color-scheme` set; never from `filter: invert` or per-element `dark:` overrides. (DM)
 10. **Accessible by construction.** 4.5:1 text contrast, visible `:focus-visible` ring, full keyboard operation, semantic elements, labels on icon buttons, `prefers-reduced-motion` respected. (AX, MO)
 11. **Finished, not demo-ware.** Favicon, real `<title>` and description, social preview image, 404 page, images with dimensions and alt, one icon set, a z-index scale. (FD)
-12. **Real words.** No lorem ipsum or filler names; buttons say what they do; errors say what happened and what to do next. (CP)
+12. **Usable.** One focal point and one primary action per view; progress in multi-step flows. (UX, VH)
+13. **Real words.** No lorem ipsum or filler names; buttons say what they do; errors say what happened and what to do next. (CP)
 
 ## Modern Web Guidance
 
@@ -37,28 +38,7 @@ These rules set the look; Modern Web Guidance picks the browser feature. Before 
 
 ## Topic files (read on demand)
 
-All in `.ui-polish/rules/`:
-- NC Native controls: `01-native-controls.md`
-- TK Design tokens: `02-design-tokens.md`
-- TY Typography: `03-typography.md`
-- SP Spacing and layout: `04-spacing-layout.md`
-- SL AI-slop blocklist: `05-ai-slop.md`
-- ST Component states: `06-component-states.md`
-- FM Forms: `07-forms.md`
-- RS Responsive design: `08-responsive.md`
-- DM Dark mode: `09-dark-mode.md`
-- AX Accessibility: `10-accessibility.md`
-- MO Motion: `11-motion.md`
-- CO Colour: `12-colour.md`
-- FD Finishing details: `13-finishing-details.md`
-- CP Copy and microcopy: `14-copy.md`
-- BR Brand intake: `15-brand-intake.md`
-- SA Self-audit gate: `16-self-audit.md`
-- DT Data tables: `17-data-tables.md`
-- CH Charts and data visualisation: `18-charts.md`
-- NV Navigation and page structure: `19-navigation.md`
-- IC Icons: `20-icons.md`
-- IN Internationalisation and right-to-left: `21-internationalisation.md`
+All in `.ui-polish/rules/`: NC `01-native-controls.md` · TK `02-design-tokens.md` · TY `03-typography.md` · SP `04-spacing-layout.md` · SL `05-ai-slop.md` · ST `06-component-states.md` · FM `07-forms.md` · RS `08-responsive.md` · DM `09-dark-mode.md` · AX `10-accessibility.md` · MO `11-motion.md` · CO `12-colour.md` · FD `13-finishing-details.md` · CP `14-copy.md` · BR `15-brand-intake.md` · SA `16-self-audit.md` · DT `17-data-tables.md` · CH `18-charts.md` · NV `19-navigation.md` · IC `20-icons.md` · IN `21-internationalisation.md` · UX `22-ux-laws.md` · VH `23-visual-hierarchy.md`.
 
 ## Checking your work
 

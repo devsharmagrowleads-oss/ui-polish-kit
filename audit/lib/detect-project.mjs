@@ -82,8 +82,30 @@ export function runProjectDetectors(project, report) {
     }
   }
 
+  // --- visual hierarchy: number of font weights in use
+  const weights = new Map(); // weight -> first { rel, pos }
+  const WEIGHT_NAMES = { thin: 100, extralight: 200, light: 300, normal: 400, medium: 500, semibold: 600, bold: 700, extrabold: 800, black: 900, lighter: 300, bolder: 700 };
+  for (const f of files) {
+    const text = f.text.replace(/@font-face\s*\{[^}]*\}/g, (x) => ' '.repeat(x.length));
+    const css = /(?<![-\w])font-weight\s*:\s*(\d{3}|bold|bolder|normal|lighter)\b/g;
+    const tw = /(?<=["'`\s:])font-(thin|extralight|light|normal|medium|semibold|bold|extrabold|black)(?=["'`\s])/g;
+    for (const re of f.isStyle || f.cssRegions.length ? [css, tw] : [tw]) {
+      let m;
+      while ((m = re.exec(text))) {
+        const w = Number(m[1]) || WEIGHT_NAMES[m[1]];
+        if (w && !weights.has(w)) weights.set(w, { rel: f.rel, pos: m.index });
+      }
+    }
+  }
+  if (weights.size > 4) {
+    const list = [...weights.keys()].sort((a, b) => a - b);
+    report('VH-07', weights.get(list[list.length - 1]), `${weights.size} font weights in use (${list.join(', ')}). Weight is an emphasis level, so more than three or four stops meaning anything. Settle on regular, medium and semibold (or bold) and give each one role.`);
+  }
+
   // --- brand intake
   if (!facts.designDoc) {
     report('BR-01', null, 'No design.md. Before building UI, record brand colours, fonts, tone and references (templates/design.md is the template) so every later decision has something to follow.');
+  } else if (facts.surface && facts.surface.source === 'detected' && facts.surface.value === 'unknown') {
+    report('BR-06', null, 'design.md does not say what kind of product this is, and the code does not make it clear. Add a line "Surface: marketing", "Surface: app" or "Surface: both" so rules meant only for landing pages or only for apps apply where they fit.');
   }
 }
