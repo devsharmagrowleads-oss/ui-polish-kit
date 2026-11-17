@@ -7,6 +7,8 @@ All notable changes to ui-polish-kit. Versions follow [semantic versioning](http
 - `screenshot.mjs --states`: captures the first control on hover and the first three keyboard focus stops, and records each element's transition and focus-ring styles in `report.json`, so the Polish "motion" dimension can be scored from evidence. `NO RING` flags focus stops with no visible indicator.
 - `CHANGELOG.md` (this file).
 - npm package metadata, so the kit can be run as `npx ui-polish-kit`.
+- The landing page reached Polish 80 from an independent reviewer (63 → 70 → 80) without invented proof; motion was scored for the first time, from `--states` evidence.
+- Eval repeatability: a second full run moved kit results by at most 1 point (baseline runs by up to 8). A second set of independent reviewers on the React app agreed within 2 points (75, 75, 73).
 
 ## 0.3.2 (2026-11-17)
 

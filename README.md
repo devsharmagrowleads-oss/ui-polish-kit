@@ -102,6 +102,8 @@ Without the kit, the agent shipped browser-default selects and date pickers, emo
 
 **Codex too.** The same landing-page prompt in Codex CLI (installed with `install codex`, so it reads `AGENTS.md`) went from **57** without the kit to **98** with it. It wrote `design.md`, made its own favicon, touch icon and social image, ran the checker and the visual audit, and listed legal pages and a 404 page as launch items. An earlier run stopped at the brand intake to ask a question nobody could answer in a non-interactive session; the core now says to choose, mark it "assumed" and carry on.
 
+**Repeatability.** A second full run gave dashboard 53 → 94, sign-up 44 → 95 and landing 44 → 95. With the kit, results moved by at most 1 point between runs; without it, by up to 8.
+
 One run per prompt, judged by the kit's own checker, which reads code rather than pixels, so read it as a strong signal rather than a benchmark. Run it yourself with [`node scripts/eval/run.mjs`](scripts/eval/run.mjs) (needs the `claude` CLI; prompts in [`prompts.json`](scripts/eval/prompts.json)).
 
 ### Elevate on existing agent builds
@@ -111,9 +113,9 @@ We then took two pages built by plain Claude Code (the dashboard and landing pro
 | Page | Static before → after | Polish, self-scored | Polish, independent | What moved it |
 | --- | --- | --- | --- | --- |
 | Invoicing dashboard (app) | 53 → **100** | 55 → 80 (pass 2) | 48 → 73 (pass 2) → **80** (pass 4) | A brand palette instead of framework blue, a chosen typeface, one focal KPI with actions, no sideways scroll on phones (rows stack), the partial month marked on the chart, the favicon set and real routes |
-| Meal-planning landing page (marketing) | 46 → **100** | 61 → 82 | 63 → **70** | One call-to-action label instead of four, one icon set instead of emoji, an honest open-beta note instead of invented proof, real legal links, a display typeface with four weights, a solid band instead of a gradient |
+| Meal-planning landing page (marketing) | 46 → **100** | 61 → 82 (pass 2) | 63 → 70 (pass 2) → **80** (pass 3) | One call-to-action label instead of four, one icon set instead of emoji, an honest open-beta note instead of invented proof, real legal links, a display typeface with four weights, a solid band instead of a gradient |
 
-The dashboard's full before/after report is in [`docs/sample-report.html`](docs/sample-report.html). By its own scoring, the agent reached the Polish target (80) on both pages after two passes; three independent reviewers, given only [`audit/POLISH.md`](audit/POLISH.md) and the screenshots, agreed with each other within 3 points but scored the results 7 to 12 points lower, below the target. They capped the same things every time (no captured loading, empty or error states; no first-run screen; navigation clipped on phones), so the procedure now names those. Two more passes on the dashboard aimed at exactly them reached **80 from a fresh independent reviewer**. An agent elevating a multi-page React app from the docs alone reached 75 (independent) in its two allowed passes.
+The dashboard's full before/after report is in [`docs/sample-report.html`](docs/sample-report.html). By its own scoring, the agent reached the Polish target (80) on both pages after two passes; three independent reviewers, given only [`audit/POLISH.md`](audit/POLISH.md) and the screenshots, agreed with each other within 3 points but scored the results 7 to 12 points lower, below the target. They capped the same things every time (no captured loading, empty or error states; no first-run screen; navigation clipped on phones), so the procedure now names those. Two more passes on the dashboard aimed at exactly them reached **80 from a fresh independent reviewer**. A third pass on the landing page (one feature leading with a product mock, captured pricing and FAQ states, and hover and focus evidence from `--states`) also reached **80 independently**, without inventing customer proof: its journey score stayed at 2 and everything else had to carry it. An agent elevating a multi-page React app from the docs alone reached 75 (independent) in its two allowed passes.
 
 ## How it works
 
