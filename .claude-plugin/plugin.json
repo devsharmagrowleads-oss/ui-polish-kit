@@ -1,7 +1,7 @@
 {
   "name": "ui-polish-kit",
   "displayName": "UI Polish Kit",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Rules, recipes, and an audit that stop AI coding agents from shipping generic, unfinished UI.",
   "author": {
     "name": "ui-polish-kit contributors"
