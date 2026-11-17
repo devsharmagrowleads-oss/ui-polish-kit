@@ -26,7 +26,7 @@ Severity: error · Check: static
 <div className="border border-border bg-card text-card-foreground">
 ```
 
-**Check.** Static: colour literals in CSS declarations, style attributes, string literals in component code, and Tailwind arbitrary colours. Exempt: custom property declarations, `@theme` blocks, token files, inline SVG artwork, `theme-color` meta.
+**Check.** Static: colour literals in CSS declarations, style attributes, string literals in component code, and Tailwind arbitrary colours. Exempt: custom property declarations, `@theme` blocks, token files, inline SVG artwork, `.svg` files (favicons, logos), `theme-color` meta and web app manifests.
 
 ## TK-02 · No Tailwind arbitrary values for spacing, type, radius or z-index
 Severity: warning · Check: static

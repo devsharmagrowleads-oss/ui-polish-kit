@@ -69,5 +69,8 @@ Status is provided, generated (assumed), missing (owner sending by <date>) or sk
 ## Do not
 - <e.g. no gradients, no emoji, no purple, no drop shadows on cards>
 
+## Questions for the owner
+- <questions the agent could not answer from the repository, with the choice it made meanwhile (marked "assumed")>
+
 ## Decisions log
 - <YYYY-MM-DD>: <decision, who agreed>

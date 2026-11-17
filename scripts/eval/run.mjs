@@ -88,7 +88,8 @@ async function job(p, arm) {
   if (arm === 'kit') install({ agents: ['claude'], target: dir, log: () => {} });
   console.log(`start  ${p.id}/${arm}`);
   const run = await runClaude(dir, p.prompt);
-  const result = { prompt: p.id, arm, dir, run, ...score(dir) };
+  // Store the folder relative to --out: results.json is committed, and absolute paths would publish the local user's directories.
+  const result = { prompt: p.id, arm, dir: path.posix.join(p.id, arm), run, ...score(dir) };
   console.log(`done   ${p.id}/${arm}: score ${result.score}, ${result.errors} errors, ${result.warnings} warnings (${run.seconds}s)`);
   return result;
 }

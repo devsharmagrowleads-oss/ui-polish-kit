@@ -1,0 +1,264 @@
+{
+  "date": "2026-11-17",
+  "model": "default",
+  "tools": [
+    "Read",
+    "Write",
+    "Edit",
+    "Glob",
+    "Grep",
+    "Bash(node:*)"
+  ],
+  "results": [
+    {
+      "prompt": "dashboard",
+      "arm": "baseline",
+      "dir": "dashboard/baseline",
+      "run": {
+        "code": 0,
+        "seconds": 165,
+        "turns": 19,
+        "costUsd": 1.0262343999999999,
+        "isError": false
+      },
+      "score": 51,
+      "pass": false,
+      "errors": 12,
+      "warnings": 4,
+      "info": 3,
+      "rules": [
+        "AS-03",
+        "BR-01",
+        "FD-01",
+        "FD-02",
+        "FD-03",
+        "FD-05",
+        "NC-09",
+        "NV-05",
+        "TK-01",
+        "TY-01",
+        "VH-07"
+      ],
+      "byRule": {
+        "TY-01": 1,
+        "BR-01": 1,
+        "FD-01": 1,
+        "AS-03": 1,
+        "FD-05": 1,
+        "FD-02": 1,
+        "FD-03": 1,
+        "NV-05": 6,
+        "NC-09": 1,
+        "TK-01": 4,
+        "VH-07": 1
+      },
+      "files": [
+        "app.js",
+        "index.html",
+        "styles.css"
+      ]
+    },
+    {
+      "prompt": "dashboard",
+      "arm": "kit",
+      "dir": "dashboard/kit",
+      "run": {
+        "code": 0,
+        "seconds": 283,
+        "turns": 35,
+        "costUsd": 1.8002926,
+        "isError": false
+      },
+      "score": 94,
+      "pass": true,
+      "errors": 0,
+      "warnings": 3,
+      "info": 1,
+      "rules": [
+        "AS-02",
+        "BR-01",
+        "FD-03",
+        "FD-05"
+      ],
+      "byRule": {
+        "BR-01": 1,
+        "AS-02": 1,
+        "FD-05": 1,
+        "FD-03": 1
+      },
+      "files": [
+        "app.js",
+        "index.html",
+        "styles.css"
+      ]
+    },
+    {
+      "prompt": "landing",
+      "arm": "baseline",
+      "dir": "landing/baseline",
+      "run": {
+        "code": 0,
+        "seconds": 123,
+        "turns": 6,
+        "costUsd": 0.7112740000000001,
+        "isError": false
+      },
+      "score": 46,
+      "pass": false,
+      "errors": 15,
+      "warnings": 12,
+      "info": 2,
+      "rules": [
+        "AS-03",
+        "BR-01",
+        "FD-01",
+        "FD-03",
+        "FD-05",
+        "LP-07",
+        "NC-08",
+        "NV-05",
+        "SL-03",
+        "TK-01",
+        "TK-06",
+        "TY-01"
+      ],
+      "byRule": {
+        "TY-01": 1,
+        "BR-01": 1,
+        "FD-01": 1,
+        "LP-07": 1,
+        "AS-03": 1,
+        "FD-05": 1,
+        "FD-03": 1,
+        "NC-08": 1,
+        "SL-03": 6,
+        "NV-05": 9,
+        "TK-06": 1,
+        "TK-01": 5
+      },
+      "files": [
+        "app.js",
+        "index.html",
+        "styles.css"
+      ]
+    },
+    {
+      "prompt": "landing",
+      "arm": "kit",
+      "dir": "landing/kit",
+      "run": {
+        "code": 0,
+        "seconds": 325,
+        "turns": 34,
+        "costUsd": 2.0214502000000003,
+        "isError": false
+      },
+      "score": 96,
+      "pass": true,
+      "errors": 0,
+      "warnings": 2,
+      "info": 1,
+      "rules": [
+        "AS-02",
+        "FD-03",
+        "FD-05"
+      ],
+      "byRule": {
+        "AS-02": 1,
+        "FD-05": 1,
+        "FD-03": 1
+      },
+      "files": [
+        "app.js",
+        "index.html",
+        "styles.css"
+      ]
+    },
+    {
+      "prompt": "signup",
+      "arm": "baseline",
+      "dir": "signup/baseline",
+      "run": {
+        "code": 0,
+        "seconds": 110,
+        "turns": 11,
+        "costUsd": 0.6564128,
+        "isError": false
+      },
+      "score": 36,
+      "pass": false,
+      "errors": 15,
+      "warnings": 4,
+      "info": 3,
+      "rules": [
+        "AS-03",
+        "BR-01",
+        "FD-01",
+        "FD-02",
+        "FD-03",
+        "FD-05",
+        "NC-01",
+        "NC-02",
+        "NC-10",
+        "NV-05",
+        "SL-01",
+        "TK-01",
+        "TY-01",
+        "TY-04"
+      ],
+      "byRule": {
+        "TY-01": 1,
+        "BR-01": 1,
+        "FD-01": 1,
+        "AS-03": 1,
+        "FD-05": 1,
+        "FD-02": 1,
+        "FD-03": 1,
+        "NC-10": 1,
+        "NC-01": 1,
+        "NC-02": 1,
+        "NV-05": 3,
+        "TY-04": 1,
+        "TK-01": 7,
+        "SL-01": 1
+      },
+      "files": [
+        "app.js",
+        "index.html",
+        "styles.css"
+      ]
+    },
+    {
+      "prompt": "signup",
+      "arm": "kit",
+      "dir": "signup/kit",
+      "run": {
+        "code": 0,
+        "seconds": 380,
+        "turns": 35,
+        "costUsd": 2.2184766,
+        "isError": false
+      },
+      "score": 96,
+      "pass": true,
+      "errors": 0,
+      "warnings": 2,
+      "info": 1,
+      "rules": [
+        "AS-02",
+        "FD-03",
+        "FD-05"
+      ],
+      "byRule": {
+        "AS-02": 1,
+        "FD-05": 1,
+        "FD-03": 1
+      },
+      "files": [
+        "app.js",
+        "index.html",
+        "styles.css"
+      ]
+    }
+  ]
+}

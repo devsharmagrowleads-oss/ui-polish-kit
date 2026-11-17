@@ -153,7 +153,7 @@ Severity: warning · Check: static
 <footer><nav aria-label="Legal"><a href="/privacy">Privacy</a> <a href="/terms">Terms</a> <a href="/contact">Contact</a></nav><p>© 2026 Ledgerly Ltd</p></footer>
 ```
 
-**Check.** Static: on a marketing surface, no privacy route or file and no link mentioning privacy anywhere in the project. Visual: the footer has privacy, terms and contact links on every page, and they lead to real pages.
+**Check.** Static: on a marketing surface, no privacy route or file and no link mentioning privacy anywhere in the project. Visual: the footer has privacy, terms and contact links on every page, and they lead to real pages. If the owner has not supplied the legal text yet, the page may say so plainly ("Our privacy policy is being finalised; email privacy@… with questions") and the Assets table lists it as missing; never fill it with invented terms.
 
 ## LP-08 · Lead forms ask for as little as possible
 Severity: warning · Check: visual

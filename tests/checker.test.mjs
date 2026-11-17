@@ -442,7 +442,7 @@ test('Polish score: computed, banded and validated', async () => {
   assert.throws(() => scorePolish({ dimensions: { ...polishData(Array(11).fill(3)).dimensions, vibes: { score: 4 } } }), /unknown dimension "vibes"/);
   const noReason = polishData(Array(11).fill(3));
   noReason.dimensions.imagery = { score: null };
-  assert.throws(() => scorePolish(noReason), /say why/);
+  assert.throws(() => scorePolish(noReason), /is not scored/);
 });
 
 test('CLI --polish and --html write a self-contained report with before/after', () => {
@@ -516,4 +516,31 @@ test('dogfood fixes: noindex pages, hidden icon wrappers, dead privacy links, si
   const { detectSurface } = await import('../audit/lib/project.mjs');
   const dash = '<title>Dashboard · Ledgerly</title><ul class="stats"></ul><div class="chart" id="chart"></div><table></table>';
   assert.equal(detectSurface(['index.html'], [{ rel: 'index.html', hasMarkup: true, text: dash }]).value, 'app');
+});
+
+test('GitHub output: annotations are escaped and the summary carries the score', async () => {
+  const { annotations, summary } = await import('../audit/github.mjs');
+  const result = clean({ 'p.html': '<a href="#">x</a>' });
+  result.findings[0].message = 'Line one\nwith 100% and a: colon';
+  const [line] = annotations(result, { base: 'web/' });
+  assert.match(line, /^::error file=web\/p\.html,line=1,col=\d+,title=NV-05 Links go places%2C buttons do things::/);
+  assert.match(line, /::Line one%0Awith 100%25 and a: colon$/);
+  const md = summary(result, { reportName: 'ui-polish-report' });
+  assert.match(md, /ui-polish audit: /);
+  assert.ok(md.includes(`**${result.score}**/100`), md);
+  assert.match(md, /ui-polish-report/);
+});
+
+test('Polish scorer label is validated and shown in the report', async () => {
+  const { scorePolish } = await import('../audit/lib/polish.mjs');
+  const { renderHtml } = await import('../audit/lib/report-html.mjs');
+  const data = { ...polishData(Array(11).fill(3)), scorer: 'independent' };
+  const p = scorePolish(data);
+  assert.equal(p.scorer, 'independent');
+  assert.throws(() => scorePolish({ ...data, scorer: 'me' }), /scorer/);
+  const result = clean({});
+  result.polish = p;
+  const page = renderHtml(result, { before: { score: 50, polish: { score: 60, scorer: 'self' } } });
+  assert.match(page, /Polish score \(independent reviewer\)/);
+  assert.match(page, /the before score was self-scored/);
 });

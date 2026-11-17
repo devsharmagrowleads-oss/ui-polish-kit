@@ -44,7 +44,7 @@ function linesAround(f, pos, n = 4) {
 
 function svgRegions(text) {
   const out = [];
-  const re = /<svg\b[\s\S]*?<\/svg\s*>/g;
+  const re = /<(?:\w+\.)?svg\b[\s\S]*?<\/(?:\w+\.)?svg\s*>/g;
   let m;
   while ((m = re.exec(text))) out.push([m.index, m.index + m[0].length]);
   return out;
@@ -194,7 +194,7 @@ function tokens(f, facts, report, once) {
       }
     }
 
-    const raw = new RegExp(`(?<![\\w-])((?:[\\w\\[\\]&=>-]+:)*)(?:bg|text|border|ring|outline|fill|stroke|from|via|to|divide|decoration|placeholder|caret|accent|shadow|ring-offset)-(?:${PALETTE})-(?:50|[1-9]00|950)(?:\\/\\d+)?(?![\\w-])`, 'g');
+    const raw = new RegExp(`(?<![\\w-])((?:[\\w\\[\\].&=>-]+:)*)(?:bg|text|border|ring|outline|fill|stroke|from|via|to|divide|decoration|placeholder|caret|accent|shadow|ring-offset)-(?:${PALETTE})-(?:50|[1-9]00|950)(?:\\/\\d+)?(?![\\w-])`, 'g');
     let m;
     while ((m = raw.exec(f.text))) {
       once('TK-03', m.index, m[0], (n, first) => `${n} raw Tailwind palette ${n === 1 ? 'utility' : 'utilities'} (first: \`${first}\`). Use semantic tokens (bg-primary, text-muted-foreground, border-border) so brand and dark mode come from one place.`);
@@ -232,7 +232,9 @@ function typography(f, facts, report) {
   if (!f.hasMarkup) return;
   const headings = [...findTags(f.text, 'h[1-6]')];
   const h1s = headings.filter((h) => h.name === 'h1');
-  if (h1s.length > 1) {
+  // Two <h1>s in mutually exclusive branches (an early `return` for not-found or loading, then the page) are one per screen.
+  const exclusive = h1s.length === 2 && /\breturn\b/.test(f.text.slice(h1s[0].end, h1s[1].start)) && !f.isHtmlDoc;
+  if (h1s.length > 1 && !exclusive) {
     report('TY-04', h1s[1].start, `${h1s.length} <h1> elements in one file. A page has one <h1>; use <h2>–<h4> for sections and style size separately from level.`);
   }
   if (f.isHtmlDoc) {
@@ -339,7 +341,9 @@ function slop(f, facts, report, once) {
       const fill = FILLER.exec(m[0]);
       if (fill && !(/doe$/i.test(fill[0]) && /placeholder/i.test(m[0]))) report('CP-02', m.index + fill.index, `Placeholder copy "${fill[0]}". Write the real text, or realistic sample data that matches the product's domain.`);
       const vague = VAGUE.exec(m[0]);
-      if (vague) report('CP-03', m.index + vague.index, `Vague microcopy "${clip(vague[0].replace(/<\/?\w*|[<>"'\`]/g, '').trim())}". Name the action or the problem and the next step ("Save changes", "Couldn't save: check your connection and retry").`);
+      // A toast whose title is generic but whose description names the object and the next step is fine.
+      const explained = vague && /^\s*title\s*:/.test(m[0]) && /^\s*description\s*:\s*["'`][^"'`]{12,}/m.test(f.text.slice(m.index + m[0].length, m.index + m[0].length + 200));
+      if (vague && !explained) report('CP-03', m.index + vague.index, `Vague microcopy "${clip(vague[0].replace(/<\/?\w*|[<>"'\`]/g, '').trim())}". Name the action or the problem and the next step ("Save changes", "Couldn't save: check your connection and retry").`);
     }
   }
 
@@ -387,8 +391,16 @@ function accessibility(f, facts, report) {
   const tw = /(?<![\w-])((?:[\w-]+:)*)outline-(?:none|hidden|0)(?![\w-])/g;
   while ((m = tw.exec(f.text))) {
     // The replacement may sit on a wrapper a few lines up (focus-within) or in a sibling cn() string.
-    const near = `${stringAround(f, m.index)}\n${linesAround(f, m.index, 8)}`;
-    if (/focus-visible:(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus:(ring|outline-(?!none|hidden|0)|border|shadow)|focus-within:|has-\[:focus-visible\]/.test(near)) continue;
+    const own = stringAround(f, m.index);
+    const near = `${own}\n${linesAround(f, m.index, 8)}`;
+    // Replacements may also be drawn on a pseudo-element: focus-visible:after:outline-2.
+    if (/focus-visible:(?:after:|before:)?(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus:(?:after:|before:)?(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus-within:|has-\[:focus-visible\]/.test(near)) continue;
+    // Menu/listbox/combobox items mark the active item with a background (AX-02 rule text allows this).
+    if (/(?:aria-selected|data-\[(?:selected|highlighted)[^\]]*\]|data-highlighted|data-selected):bg-/.test(own)) continue;
+    // Popover / menu content panels receive programmatic focus; they are containers, not controls.
+    if (/(?<![\w-])bg-popover(?![\w-])/.test(own)) continue;
+    // A focus-within ring on an enclosing wrapper further up the same component.
+    if (/focus-within:(ring|outline-(?!none|hidden|0)|border)/.test(f.text.slice(Math.max(0, m.index - 3000), m.index))) continue;
     report('AX-02', m.index, `\`${m[0]}\` removes the focus indicator with no replacement in the same class list. Add \`focus-visible:ring-2 focus-visible:ring-ring\` (or an equivalent visible state).`);
   }
 
@@ -463,6 +475,8 @@ function forms(f, facts, report) {
     if (typeof id === 'string') {
       const esc = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       if (new RegExp(`(?:for|htmlFor)\\s*=\\s*(?:\\{\\s*)?["'\`]${esc}["'\`]`).test(f.text)) continue;
+      // A field wrapper component that takes the same id and a label prop, e.g. <Field id="company" label="Company">.
+      if (new RegExp(`<[A-Z][\\w.]*(?=[^<>]*\\b(?:id|htmlFor|inputId)\\s*=\\s*(?:\\{\\s*)?["'\`]${esc}["'\`])(?=[^<>]*\\blabel\\s*=)`).test(f.text)) continue;
     }
     const ph = hasAttr(tag.src, 'placeholder');
     report('FM-01', tag.start, `<${tag.name}> has no label${ph ? ' (a placeholder is not a label: it disappears on input and is skipped by many screen readers)' : ''}. Add a visible <label for> or use the Field recipe.`);
@@ -492,7 +506,7 @@ function responsive(f, facts, report) {
     }
   }
   const vw = /(?<![\w-])(?:[\w-]+:)*w-screen(?![\w-])/g;
-  while ((m = vw.exec(f.text))) report('RS-03', m.index, '`w-screen` (100vw) includes the scrollbar width and causes horizontal overflow. Use `w-full`.');
+  while ((m = vw.exec(f.text))) if (!/(?<![\w-])fixed(?![\w-])/.test(stringAround(f, m.index))) report('RS-03', m.index, '`w-screen` (100vw) includes the scrollbar width and causes horizontal overflow. Use `w-full`.');
 }
 
 const DEFAULT_TITLES = /^(vite( \+ \w+)*( \+ ts)?|create next app|react app|document|untitled( document)?|my app|app|home|title|welcome|page title|new project|next\.js|astro|sveltekit|nuxt app|vite app)$/i;
@@ -510,6 +524,15 @@ function documentHead(f, facts, report) {
     const missing = ['og:title', 'og:description', 'og:image'].filter((p) => !new RegExp(`<meta[^>]+(property|name)=["']?${p}`, 'i').test(f.text));
     // Pages kept out of search (404s, error pages, previews) are not shared, so they need no social card.
     const noindex = /<meta[^>]+name=["']?robots["']?[^>]+content=["'][^"']*noindex/i.test(f.text);
+    // A root-relative og:image must exist: Vite, Next.js and Astro serve /x from public/x.
+    const og = /<meta[^>]+(?:property|name)=["']?og:image["']?[^>]+content=["']([^"']+)["']|<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']?og:image["']?/i.exec(f.text);
+    const ogPath = og ? (og[1] || og[2]).split(/[?#]/)[0] : '';
+    if (ogPath.startsWith('/') && !ogPath.startsWith('//') && facts.allFiles.some((p) => p.startsWith('public/'))) {
+      const rel = ogPath.slice(1);
+      if (!facts.allFiles.includes(`public/${rel}`) && !facts.allFiles.includes(rel)) {
+        report('FD-03', og.index, `og:image points to ${ogPath}, but there is no public/${rel}. Shared links will show a broken image. Add the 1200×630 image, or list it as missing in the Assets table of design.md.`);
+      }
+    }
     if (missing.length && !noindex) report('FD-03', headAt, `Missing social preview tags: ${missing.join(', ')}. Shared links show a blank card. Add Open Graph tags and a 1200×630 image.`);
   }
 
@@ -667,7 +690,10 @@ function uxLaws(f, facts, report) {
   }
 }
 
+const OG_ROUTE = /(^|\/)(opengraph-image|twitter-image)\.[jt]sx?$/;
 export function runFileDetectors(f, facts, report, once) {
+  // ImageResponse JSX is rasterised by satori: no DOM, no CSS variables, no assistive tech, no layout shift.
+  if (OG_ROUTE.test(f.rel) || (/from\s*["'](?:next\/og|@vercel\/og)["']/.test(f.text) && /\bnew ImageResponse\(/.test(f.text))) return;
   nativeControls(f, facts, report);
   dialogs(f, facts, report);
   tokens(f, facts, report, once);
