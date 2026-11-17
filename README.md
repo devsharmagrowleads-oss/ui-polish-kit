@@ -7,8 +7,8 @@
   <img alt="208 rules" src="https://img.shields.io/badge/rules-208-5fd0c5?style=flat-square">
   <img alt="26 topics" src="https://img.shields.io/badge/topics-26-5fd0c5?style=flat-square">
   <img alt="70 static checks" src="https://img.shields.io/badge/static%20checks-70-5fd0c5?style=flat-square">
-  <img alt="27 React recipes" src="https://img.shields.io/badge/React%20recipes-27-5fd0c5?style=flat-square">
-  <img alt="8 HTML and CSS recipes" src="https://img.shields.io/badge/HTML%2FCSS%20recipes-8-5fd0c5?style=flat-square">
+  <img alt="41 React recipes" src="https://img.shields.io/badge/React%20recipes-41-5fd0c5?style=flat-square">
+  <img alt="10 HTML and CSS recipes" src="https://img.shields.io/badge/HTML%2FCSS%20recipes-10-5fd0c5?style=flat-square">
   <img alt="No dependencies" src="https://img.shields.io/badge/dependencies-none-17603c?style=flat-square">
   <img alt="Node 20 or newer" src="https://img.shields.io/badge/node-%E2%89%A5%2020-17603c?style=flat-square">
   <a href="CONTRIBUTING.md"><img alt="Pull requests welcome" src="https://img.shields.io/badge/PRs-welcome-0a1214?style=flat-square"></a>
@@ -195,8 +195,8 @@ Ready-to-copy code that follows the rules, so the agent does not have to reinven
 
 | Folder | For | What is in it |
 | --- | --- | --- |
-| [`recipes/react-tailwind-shadcn/`](recipes/react-tailwind-shadcn) | React with Tailwind and shadcn/ui | Design tokens (Tailwind v4, with a v3 config) and 27 components that replace every native control: Select, Combobox, DatePicker, TimePicker, FileUpload, Slider, ColorPicker, Checkbox, RadioGroup, Switch, Tooltip, ConfirmDialog, Toaster, DataTable, EmptyState and more |
-| [`recipes/html-css/`](recipes/html-css) | Everything else: plain HTML, server-rendered pages, Vue, Svelte, Astro | The same tokens in plain CSS, and 8 copy-paste components (dialog, select, form field, data table, menu, tooltip, toasts, navigation) built on the browser's own `<dialog>`, popover and customizable `<select>`, with small fallbacks for browsers that lag |
+| [`recipes/react-tailwind-shadcn/`](recipes/react-tailwind-shadcn) | React with Tailwind and shadcn/ui | Design tokens (Tailwind v4, with a v3 config) and 27 components that replace every native control: Select, Combobox, DatePicker, TimePicker, FileUpload, Slider, ColorPicker, Checkbox, RadioGroup, Switch, Tooltip, ConfirmDialog, Toaster, DataTable, EmptyState and more. Plus 7 marketing sections (hero, feature showcase, social proof, pricing, FAQ, closing call to action, footer) and 7 app building blocks (app shell, page header, KPI cards, settings section, setup checklist, first run, command palette) |
+| [`recipes/html-css/`](recipes/html-css) | Everything else: plain HTML, server-rendered pages, Vue, Svelte, Astro | The same tokens in plain CSS, and 8 copy-paste components (dialog, select, form field, data table, menu, tooltip, toasts, navigation) built on the browser's own `<dialog>`, popover and customizable `<select>`, with small fallbacks for browsers that lag. Plus a full marketing page of sections and an app shell with sidebar, command palette, KPIs, first run, setup checklist and settings |
 
 ## The audit
 

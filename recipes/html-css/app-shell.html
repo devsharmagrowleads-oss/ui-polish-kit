@@ -1,0 +1,332 @@
+<!--
+  Product app shell (app surfaces only, BR-06): skip link, a short grouped
+  sidebar (NV-07, UX-02) that becomes a drawer on narrow screens (RS-07), a
+  top bar with a command palette (Ctrl/Cmd+K), one page-header pattern
+  (NV-03), KPI tiles whose values are louder than their labels (VH-04), the
+  first-run state for a new account (AC-01), a setup checklist (AC-03,
+  UX-09) and a two-column settings section (FM-09).
+
+  The first-run block and the KPI row are two states of the same page:
+  set data-account="new" on .app-main for a workspace with no invoices yet,
+  and "active" once there is data. Never show a new account a row of zeros.
+
+  The drawer reuses the sidebar's links (cloned by the script on first open)
+  so there is one list to maintain. Below 60rem the sidebar is hidden and the
+  Menu button opens the drawer.
+
+  Needs: tokens.css, base.css, components.css, app.css.
+-->
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="app">
+  <aside class="app-sidebar">
+    <a class="app-brand" href="/home">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+      Ledgerly
+    </a>
+    <nav class="app-nav" aria-label="Primary">
+      <p class="app-nav-label" id="nav-work">Work</p>
+      <ul aria-labelledby="nav-work">
+        <li><a href="/home" aria-current="page"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a></li>
+        <li><a href="/invoices"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Invoices</a></li>
+        <li><a href="/clients"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M16 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/></svg>Clients</a></li>
+        <li><a href="/reports"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Reports</a></li>
+      </ul>
+      <p class="app-nav-label" id="nav-workspace">Workspace</p>
+      <ul aria-labelledby="nav-workspace">
+        <li><a href="/settings"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</a></li>
+        <li><a href="/help"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg>Help</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="app-body">
+    <header class="app-topbar">
+      <button type="button" class="button ghost app-menu-button" command="show-modal" commandfor="nav-drawer" aria-controls="nav-drawer" aria-expanded="false">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        Menu
+      </button>
+      <button type="button" class="app-search" command="show-modal" commandfor="palette" aria-keyshortcuts="Control+K Meta+K">
+        <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <span>Search or jump to…</span>
+        <kbd>Ctrl K</kbd>
+      </button>
+      <!-- Opens the account menu: see menu.html. -->
+      <button type="button" class="button ghost icon-only app-account" aria-label="Account menu for Dana Okafor">
+        <span class="app-avatar" aria-hidden="true">DO</span>
+      </button>
+    </header>
+
+    <main id="main" class="app-main" tabindex="-1" data-account="new">
+      <!-- NV-03: the same header on every page: title, one line, one primary action. -->
+      <div class="page-header">
+        <div>
+          <h1>Home</h1>
+          <p>What needs your attention today.</p>
+        </div>
+        <div class="actions">
+          <a class="button" href="/invoices/new">Create invoice</a>
+        </div>
+      </div>
+
+      <!-- AC-01: a designed first screen for a new workspace. -->
+      <section class="app-first-run" aria-labelledby="first-run-title">
+        <svg class="icon app-first-run-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 11v6M9 14h6"/></svg>
+        <h2 id="first-run-title">Send your first invoice</h2>
+        <p>Most people send one in under a minute. Ledgerly then reminds the client until it is paid.</p>
+        <div class="app-first-run-actions">
+          <a class="button" href="/invoices/new">Create invoice</a>
+          <a class="button outline" href="/import">Import from CSV</a>
+        </div>
+      </section>
+
+      <!-- VH-04: the value is the loud part; the change says its direction in words. -->
+      <section class="app-kpis" aria-label="This month">
+        <article class="app-kpi">
+          <h2>Outstanding</h2>
+          <p class="app-kpi-value">$48,210</p>
+          <p class="app-kpi-delta up"><span aria-hidden="true">▲</span> Up $3,400 from last month</p>
+        </article>
+        <article class="app-kpi">
+          <h2>Overdue</h2>
+          <p class="app-kpi-value">$6,930</p>
+          <p class="app-kpi-delta down"><span aria-hidden="true">▼</span> Down $1,120 from last month</p>
+        </article>
+        <article class="app-kpi">
+          <h2>Average days to pay</h2>
+          <p class="app-kpi-value">19</p>
+          <p class="app-kpi-delta down"><span aria-hidden="true">▼</span> Down 4 days from last month</p>
+        </article>
+      </section>
+
+      <!-- AC-03, UX-09: deferred setup, ticked by the product when done, dismissible for good. -->
+      <section class="app-checklist" id="setup-checklist" aria-labelledby="checklist-title">
+        <div class="app-checklist-head">
+          <div>
+            <h2 id="checklist-title">Get paid faster</h2>
+            <p id="checklist-progress-label">2 of 5 done</p>
+          </div>
+          <button type="button" class="button ghost icon-only app-checklist-dismiss" aria-label="Dismiss the setup checklist">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <progress max="5" value="2" aria-labelledby="checklist-title checklist-progress-label"></progress>
+        <ol class="app-checklist-items">
+          <li data-done>
+            <a href="/settings/business">
+              <span class="app-check" aria-hidden="true"></span>
+              <span><strong>Add your business details</strong> They appear on every invoice.</span>
+              <span class="visually-hidden">(done)</span>
+            </a>
+          </li>
+          <li data-done>
+            <a href="/invoices/new">
+              <span class="app-check" aria-hidden="true"></span>
+              <span><strong>Send your first invoice</strong> Reminders start from the due date.</span>
+              <span class="visually-hidden">(done)</span>
+            </a>
+          </li>
+          <li>
+            <a href="/settings/bank">
+              <span class="app-check" aria-hidden="true"></span>
+              <span><strong>Connect your bank</strong> Payments then mark invoices paid by themselves.</span>
+            </a>
+          </li>
+          <li>
+            <a href="/settings/payments">
+              <span class="app-check" aria-hidden="true"></span>
+              <span><strong>Turn on card payments</strong> Clients who can pay by card pay sooner.</span>
+            </a>
+          </li>
+          <li>
+            <a href="/settings/team">
+              <span class="app-check" aria-hidden="true"></span>
+              <span><strong>Invite your accountant</strong> They see invoices and exports, nothing else.</span>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <!-- FM-09: settings grouped in sections; what it is on the left, the fields on the right. -->
+      <form class="app-settings" aria-labelledby="settings-title">
+        <h2 id="settings-title" class="visually-hidden">Workspace settings</h2>
+        <section class="app-settings-section" aria-labelledby="business-title">
+          <div class="app-settings-intro">
+            <h3 id="business-title">Business details</h3>
+            <p>Shown at the top of every invoice and reminder email.</p>
+          </div>
+          <div class="app-settings-fields">
+            <div class="field">
+              <label for="business-name">Business name</label>
+              <input class="input" id="business-name" name="business-name" type="text" autocomplete="organization" value="Northwind Studio">
+            </div>
+            <div class="field">
+              <label for="billing-email">Billing email</label>
+              <p class="hint" id="billing-email-hint">Clients reply to this address.</p>
+              <input class="input" id="billing-email" name="billing-email" type="email" autocomplete="email" aria-describedby="billing-email-hint" value="accounts@northwind.studio">
+            </div>
+          </div>
+        </section>
+        <section class="app-settings-section" aria-labelledby="reminders-title">
+          <div class="app-settings-intro">
+            <h3 id="reminders-title">Reminders</h3>
+            <p>When late clients get an email, in days after the due date.</p>
+          </div>
+          <div class="app-settings-fields">
+            <div class="field">
+              <label for="reminder-days">Send reminders after</label>
+              <p class="hint" id="reminder-days-hint">Separate the days with commas, for example 3, 7, 14.</p>
+              <input class="input" id="reminder-days" name="reminder-days" type="text" inputmode="numeric" autocomplete="off" aria-describedby="reminder-days-hint" value="3, 7, 14">
+            </div>
+          </div>
+        </section>
+        <div class="app-settings-actions">
+          <button type="submit" class="button">Save changes</button>
+        </div>
+      </form>
+    </main>
+  </div>
+</div>
+
+<!-- RS-07: the navigation drawer for narrow screens. A modal dialog: the page is inert while it is open. -->
+<dialog class="app-drawer" id="nav-drawer" aria-label="Navigation" closedby="any">
+  <div class="app-drawer-sheet">
+    <button type="button" class="button ghost icon-only app-drawer-close" command="close" commandfor="nav-drawer" aria-label="Close navigation" autofocus>
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+</dialog>
+
+<!-- The command palette: a modal dialog holding a combobox and its listbox. -->
+<dialog class="app-palette" id="palette" aria-label="Command palette" closedby="any">
+  <div class="app-palette-search">
+    <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <label class="visually-hidden" for="palette-input">Search pages and actions</label>
+    <input id="palette-input" type="text" role="combobox" aria-expanded="true" aria-controls="palette-list" aria-autocomplete="list" autocomplete="off" placeholder="Search pages and actions" autofocus>
+  </div>
+  <ul class="app-palette-list" id="palette-list" role="listbox" aria-label="Results">
+    <li role="presentation" class="app-palette-group">
+      <span id="palette-actions" class="app-palette-group-label" aria-hidden="true">Actions</span>
+      <ul role="group" aria-labelledby="palette-actions">
+        <li role="option" id="opt-new-invoice" data-href="/invoices/new">Create invoice</li>
+        <li role="option" id="opt-new-client" data-href="/clients/new">Add client</li>
+        <li role="option" id="opt-export" data-href="/reports/export">Export invoices as CSV</li>
+      </ul>
+    </li>
+    <li role="presentation" class="app-palette-group">
+      <span id="palette-pages" class="app-palette-group-label" aria-hidden="true">Pages</span>
+      <ul role="group" aria-labelledby="palette-pages">
+        <li role="option" id="opt-invoices" data-href="/invoices">Invoices</li>
+        <li role="option" id="opt-clients" data-href="/clients">Clients</li>
+        <li role="option" id="opt-reports" data-href="/reports">Reports</li>
+        <li role="option" id="opt-settings" data-href="/settings">Settings</li>
+      </ul>
+    </li>
+  </ul>
+  <p class="app-palette-empty" role="status" hidden>No pages or actions match. Try “invoice” or “client”.</p>
+  <p class="app-palette-hint" aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> to move, <kbd>Enter</kbd> to open, <kbd>Esc</kbd> to close</p>
+</dialog>
+
+<script type="module">
+  // --- Drawer: reuse the sidebar's links, keep aria-expanded in step.
+  const drawer = document.getElementById("nav-drawer");
+  const menuButton = document.querySelector(".app-menu-button");
+  const sheet = drawer.querySelector(".app-drawer-sheet");
+  const fillDrawer = () => {
+    if (sheet.querySelector("nav")) return;
+    const nav = document.querySelector(".app-nav").cloneNode(true);
+    nav.setAttribute("aria-label", "Primary (menu)");
+    for (const el of nav.querySelectorAll("[id]")) {
+      const id = el.id;
+      el.id = `drawer-${id}`;
+      nav.querySelector(`[aria-labelledby="${id}"]`)?.setAttribute("aria-labelledby", `drawer-${id}`);
+    }
+    sheet.append(nav);
+  };
+  fillDrawer();
+  drawer.addEventListener("toggle", (event) => menuButton.setAttribute("aria-expanded", String(event.newState === "open")));
+  // Close the drawer when a link is chosen, so it is not open on the next page (bfcache).
+  sheet.addEventListener("click", (event) => { if (event.target.closest("a")) drawer.close(); });
+
+  // --- Command palette: filter, arrow keys, Enter, Ctrl/Cmd+K.
+  const palette = document.getElementById("palette");
+  const input = document.getElementById("palette-input");
+  const options = [...palette.querySelectorAll('[role="option"]')];
+  const empty = palette.querySelector(".app-palette-empty");
+  let active = null;
+  const visible = () => options.filter((o) => !o.hidden);
+  const setActive = (option) => {
+    active?.removeAttribute("aria-selected");
+    active = option;
+    if (option) {
+      option.setAttribute("aria-selected", "true");
+      input.setAttribute("aria-activedescendant", option.id);
+      option.scrollIntoView({ block: "nearest" });
+    } else {
+      input.removeAttribute("aria-activedescendant");
+    }
+  };
+  const filter = () => {
+    const q = input.value.trim().toLowerCase();
+    for (const o of options) o.hidden = q !== "" && !o.textContent.toLowerCase().includes(q);
+    for (const g of palette.querySelectorAll(".app-palette-group")) g.hidden = !g.querySelector('[role="option"]:not([hidden])');
+    empty.hidden = visible().length > 0;
+    setActive(visible()[0] ?? null);
+  };
+  const go = (option) => { if (option) window.location.assign(option.dataset.href); };
+  input.addEventListener("input", filter);
+  input.addEventListener("keydown", (event) => {
+    const list = visible();
+    const i = list.indexOf(active);
+    if (event.key === "ArrowDown") { event.preventDefault(); setActive(list[(i + 1) % list.length] ?? null); }
+    else if (event.key === "ArrowUp") { event.preventDefault(); setActive(list[(i - 1 + list.length) % list.length] ?? null); }
+    else if (event.key === "Enter") { event.preventDefault(); go(active); }
+  });
+  for (const o of options) {
+    o.addEventListener("click", () => go(o));
+    o.addEventListener("pointermove", () => { if (active !== o) setActive(o); });
+  }
+  palette.addEventListener("close", () => { input.value = ""; filter(); });
+  document.addEventListener("keydown", (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k" && !palette.open) {
+      event.preventDefault();
+      palette.showModal();
+    }
+  });
+  filter();
+
+  // --- Setup checklist: dismiss for good (AC-03). Storage can be unavailable; the page still works.
+  const checklist = document.getElementById("setup-checklist");
+  try {
+    if (localStorage.getItem("setup-checklist-dismissed") === "1") checklist.hidden = true;
+  } catch { /* private mode or blocked storage: keep it visible */ }
+  checklist.querySelector(".app-checklist-dismiss").addEventListener("click", () => {
+    checklist.hidden = true;
+    try { localStorage.setItem("setup-checklist-dismissed", "1"); } catch { /* not persisted */ }
+    // Focus would otherwise be lost with the removed button.
+    document.getElementById("main").focus();
+  });
+
+  // --- Fallbacks. Invoker commands (command / commandfor) where unsupported.
+  if (!("commandForElement" in HTMLButtonElement.prototype)) {
+    for (const button of document.querySelectorAll("[commandfor]")) {
+      button.addEventListener("click", () => {
+        const target = document.getElementById(button.getAttribute("commandfor"));
+        if (button.getAttribute("command") === "show-modal") target?.showModal();
+        else if (button.getAttribute("command") === "close") target?.close();
+      });
+    }
+  }
+  // closedby="any" where unsupported: close when both press and release land outside the box.
+  if (!("closedBy" in HTMLDialogElement.prototype)) {
+    for (const dialog of document.querySelectorAll('dialog[closedby="any"]')) {
+      const outside = (e) => {
+        const r = dialog.getBoundingClientRect();
+        return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+      };
+      let pressedOutside = false;
+      dialog.addEventListener("pointerdown", (e) => { pressedOutside = outside(e); });
+      dialog.addEventListener("pointerup", (e) => { if (pressedOutside && outside(e)) dialog.close(); });
+    }
+  }
+</script>

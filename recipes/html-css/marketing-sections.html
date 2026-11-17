@@ -1,0 +1,228 @@
+<!--
+  Marketing page sections, in reading order (marketing surfaces only, BR-06):
+  hero (LP-01), proof (LP-03), feature showcase (LP-04, SL-08), pricing
+  (LP-05, UX-05), FAQ (LP-06), closing call to action (LP-02) and footer with
+  legal links (LP-07). One conversion goal: every primary button says
+  "Start free trial" and goes to /signup.
+
+  Replace every example string, figure and image with the owner's real ones
+  (AS-01). Images are local files you add; never placeholder services (AS-05).
+  Logo wordmarks in the proof strip are text stand-ins: replace them with the
+  customers' real logo files, used with permission (AS-04).
+
+  Needs: tokens.css, base.css, components.css, sections.css.
+-->
+<header class="mk-header">
+  <div class="mk-container mk-header-inner">
+    <a class="brand" href="/">Ledgerly</a>
+    <nav aria-label="Primary">
+      <ul class="mk-nav">
+        <li><a href="/features">Features</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/customers">Customers</a></li>
+        <li><a href="/login">Sign in</a></li>
+      </ul>
+    </nav>
+    <a class="button" href="/signup">Start free trial</a>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <!-- LP-01: what it is, for whom, what to do; the real product beside it. -->
+  <section class="mk-hero" aria-labelledby="hero-title">
+    <div class="mk-container mk-hero-grid">
+      <div class="mk-hero-copy">
+        <h1 id="hero-title">Invoicing that chases late payments for you</h1>
+        <p class="mk-lede">For freelancers and small studios: send an invoice in a minute, and Ledgerly sends the reminders until it is paid.</p>
+        <div class="mk-actions">
+          <a class="button button-lg" href="/signup">Start free trial</a>
+          <a class="button button-lg outline" href="/demo">See a 2-minute demo</a>
+        </div>
+        <p class="mk-fineprint">14-day free trial. No card needed.</p>
+      </div>
+      <!-- The LCP image: fetchpriority="high", never loading="lazy". -->
+      <figure class="mk-shot mk-hero-shot">
+        <img src="/images/app-invoice.webp" alt="The Ledgerly invoice editor with a client, line items and a reminder schedule" width="1200" height="800" fetchpriority="high" decoding="async">
+      </figure>
+    </div>
+  </section>
+
+  <!-- LP-03: proof beside the claim, every quote attributed. -->
+  <section class="mk-proof" aria-labelledby="proof-title">
+    <div class="mk-container">
+      <h2 id="proof-title" class="mk-eyebrow">Used by 4,200 studios to get paid sooner</h2>
+      <!-- Text stand-ins: replace with the customers' real logos (AS-04). -->
+      <ul class="mk-logos" aria-label="Customers">
+        <li>Northwind Studio</li>
+        <li>Halden &amp; Pike</li>
+        <li>Oakbridge</li>
+        <li>Marrow Works</li>
+        <li>Fieldnote</li>
+      </ul>
+      <figure class="mk-quote">
+        <blockquote>
+          <p>“Our average time to payment went from 34 days to 19. The reminders do the awkward part for us.”</p>
+        </blockquote>
+        <figcaption>
+          <img src="/images/people/dana-okafor.webp" alt="" width="48" height="48" loading="lazy" decoding="async">
+          <span><strong>Dana Okafor</strong> Studio lead, Northwind Studio</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- LP-04, SL-08: one claim per row, shown in the product; rows alternate sides. -->
+  <section class="mk-features" aria-labelledby="features-title">
+    <div class="mk-container">
+      <h2 id="features-title" class="mk-section-title">From sent to paid without the follow-up emails</h2>
+      <div class="mk-feature">
+        <div class="mk-feature-copy">
+          <h3>Reminders send themselves</h3>
+          <p>Set the schedule once. Ledgerly emails late clients 3, 7 and 14 days after the due date, and stops the moment they pay.</p>
+        </div>
+        <figure class="mk-shot">
+          <img src="/images/reminder-schedule.webp" alt="Reminder schedule with three emails at 3, 7 and 14 days after the due date" width="1100" height="720" loading="lazy" decoding="async">
+        </figure>
+      </div>
+      <div class="mk-feature">
+        <div class="mk-feature-copy">
+          <h3>Payments match themselves</h3>
+          <p>Connect your bank and incoming payments are matched to invoices automatically, so the overdue list is always true.</p>
+        </div>
+        <figure class="mk-shot">
+          <img src="/images/payment-matching.webp" alt="Bank transactions matched to three invoices, each marked paid" width="1100" height="720" loading="lazy" decoding="async">
+        </figure>
+      </div>
+      <div class="mk-feature">
+        <div class="mk-feature-copy">
+          <h3>See who is late at a glance</h3>
+          <p>One list, sorted by how overdue each invoice is, with the next reminder date beside it.</p>
+        </div>
+        <figure class="mk-shot">
+          <img src="/images/overdue-list.webp" alt="Overdue invoices sorted by days late, with the next reminder date" width="1100" height="720" loading="lazy" decoding="async">
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- LP-05: three plans, one recommended (badge, border and position, not colour alone). -->
+  <section class="mk-pricing" id="pricing" aria-labelledby="pricing-title">
+    <div class="mk-container">
+      <h2 id="pricing-title" class="mk-section-title">Simple pricing, billed per workspace</h2>
+      <div class="mk-billing" role="group" aria-label="Billing period">
+        <button type="button" class="mk-billing-option" data-period="monthly" aria-pressed="false">Monthly</button>
+        <button type="button" class="mk-billing-option" data-period="yearly" aria-pressed="true">Yearly <span class="mk-saving">save $72</span></button>
+      </div>
+      <div class="mk-plans">
+        <article class="mk-plan" aria-labelledby="plan-solo">
+          <h3 id="plan-solo">Solo</h3>
+          <p class="mk-plan-for">For one freelancer</p>
+          <p class="mk-price"><span class="mk-amount" data-monthly="$12" data-yearly="$9">$9</span> <span class="mk-period" data-monthly="per month" data-yearly="per month, billed yearly ($108)">per month, billed yearly ($108)</span></p>
+          <ul class="mk-plan-features">
+            <li>Unlimited invoices</li>
+            <li>Automatic reminders</li>
+            <li>Card and bank payments</li>
+          </ul>
+          <a class="button outline" href="/signup?plan=solo">Start free trial</a>
+        </article>
+        <article class="mk-plan mk-plan-recommended" aria-labelledby="plan-studio">
+          <p class="mk-badge">Most popular</p>
+          <h3 id="plan-studio">Studio</h3>
+          <p class="mk-plan-for">For teams of up to 10</p>
+          <p class="mk-price"><span class="mk-amount" data-monthly="$29" data-yearly="$23">$23</span> <span class="mk-period" data-monthly="per month" data-yearly="per month, billed yearly ($276)">per month, billed yearly ($276)</span></p>
+          <ul class="mk-plan-features">
+            <li>Everything in Solo</li>
+            <li>Bank payment matching</li>
+            <li>Shared clients and templates</li>
+            <li>Accountant access</li>
+          </ul>
+          <a class="button" href="/signup?plan=studio">Start free trial</a>
+        </article>
+        <article class="mk-plan" aria-labelledby="plan-agency">
+          <h3 id="plan-agency">Agency</h3>
+          <p class="mk-plan-for">For larger teams and several brands</p>
+          <p class="mk-price"><span class="mk-amount">From $79</span> <span class="mk-period">per month</span></p>
+          <ul class="mk-plan-features">
+            <li>Everything in Studio</li>
+            <li>Multiple brands and currencies</li>
+            <li>Priority support</li>
+          </ul>
+          <a class="button outline" href="/demo">Book a call</a>
+        </article>
+      </div>
+      <p class="mk-fineprint">14-day free trial on every plan. No card needed. Cancel any time; export everything as CSV or PDF.</p>
+    </div>
+  </section>
+
+  <!-- LP-06: real objections, short answers. Not exclusive: people compare answers. -->
+  <section class="mk-faq" aria-labelledby="faq-title">
+    <div class="mk-container mk-narrow">
+      <h2 id="faq-title" class="mk-section-title">Questions before you start</h2>
+      <details class="mk-disclosure">
+        <summary>Do my clients need an account to pay?</summary>
+        <p>No. They get an email with the invoice and can pay by card or bank transfer without signing up.</p>
+      </details>
+      <details class="mk-disclosure">
+        <summary>Can I export my invoices if I leave?</summary>
+        <p>Yes. Export everything as CSV or PDF at any time, including after you cancel.</p>
+      </details>
+      <details class="mk-disclosure">
+        <summary>What happens when the trial ends?</summary>
+        <p>Nothing is charged until you choose a plan. Your invoices stay readable, and reminders pause until you do.</p>
+      </details>
+      <details class="mk-disclosure">
+        <summary>Where is my data stored?</summary>
+        <p>In the EU, encrypted at rest and in transit. Read the <a href="/security">security overview</a> for details.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- LP-02: the same goal, asked for again at the end. -->
+  <section class="mk-cta" aria-labelledby="cta-title">
+    <div class="mk-container mk-cta-inner">
+      <div>
+        <h2 id="cta-title">Send your first invoice in a minute</h2>
+        <p>Free for 14 days. No card needed.</p>
+      </div>
+      <a class="button button-lg" href="/signup">Start free trial</a>
+    </div>
+  </section>
+</main>
+
+<!-- LP-07: privacy, terms and contact on every page. -->
+<footer class="mk-footer">
+  <div class="mk-container mk-footer-grid">
+    <div>
+      <a class="brand" href="/">Ledgerly</a>
+      <p>Invoicing for freelancers and small studios.</p>
+    </div>
+    <nav aria-label="Product">
+      <h2>Product</h2>
+      <ul>
+        <li><a href="/features">Features</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/security">Security</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Legal">
+      <h2>Legal</h2>
+      <ul>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+  <p class="mk-container mk-copyright">© 2026 Ledgerly Ltd</p>
+</footer>
+
+<script type="module">
+  // Billing period toggle: two buttons with aria-pressed; the prices change in place.
+  // No live announcement: the pressed state already tells assistive technology what changed.
+  const options = document.querySelectorAll(".mk-billing-option");
+  const setPeriod = (period) => {
+    for (const option of options) option.setAttribute("aria-pressed", String(option.dataset.period === period));
+    for (const el of document.querySelectorAll(".mk-plans [data-monthly]")) el.textContent = el.dataset[period];
+  };
+  for (const option of options) option.addEventListener("click", () => setPeriod(option.dataset.period));
+</script>
