@@ -508,7 +508,9 @@ function documentHead(f, facts, report) {
     else if (DEFAULT_TITLES.test(title[1].trim())) report('FD-02', title.index, `<title> is still the scaffold default ("${title[1].trim()}"). Write a specific title: "Page · Product".`);
     if (!/<meta[^>]+name=["']?description/i.test(f.text)) report('FD-02', headAt, 'No meta description. Search and link previews fall back to arbitrary page text. Add a one-sentence description.');
     const missing = ['og:title', 'og:description', 'og:image'].filter((p) => !new RegExp(`<meta[^>]+(property|name)=["']?${p}`, 'i').test(f.text));
-    if (missing.length) report('FD-03', headAt, `Missing social preview tags: ${missing.join(', ')}. Shared links show a blank card. Add Open Graph tags and a 1200×630 image.`);
+    // Pages kept out of search (404s, error pages, previews) are not shared, so they need no social card.
+    const noindex = /<meta[^>]+name=["']?robots["']?[^>]+content=["'][^"']*noindex/i.test(f.text);
+    if (missing.length && !noindex) report('FD-03', headAt, `Missing social preview tags: ${missing.join(', ')}. Shared links show a blank card. Add Open Graph tags and a 1200×630 image.`);
   }
 
   // Next.js App Router root layout.
@@ -575,6 +577,9 @@ function structure(f, facts, report, once) {
         if (/\saria-hidden\s*=\s*(\{\s*)?["']?true|\saria-hidden(?=[\s/>])|\srole\s*=\s*["']?(img|presentation|none)|\saria-label(ledby)?\s*=/.test(tag.src)) continue;
         if (/width=["']?0["']?/.test(tag.src) && /height=["']?0["']?/.test(tag.src)) continue; // a hidden sprite sheet
         if (/<title[\s>]/.test(contentOf(f.text, tag))) continue;
+        // Already hidden by its wrapper: <span class="icon" aria-hidden="true"><svg …>
+        const parent = /<([A-Za-z][\w-]*)\b[^<>]*>\s*$/.exec(f.text.slice(Math.max(0, tag.start - 400), tag.start));
+        if (parent && /\saria-hidden\s*=\s*(\{\s*)?["']?true/.test(parent[0])) continue;
         report('IC-03', tag.start, 'Inline <svg> with no aria-hidden and no accessible name. Add aria-hidden="true" when it sits next to a text label, or role="img" with aria-label when the icon carries meaning on its own.');
       }
     }

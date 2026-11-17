@@ -7,7 +7,7 @@ Use it in `/ui-elevate` (`audit/ELEVATE.md`) before and after, and optionally at
 ## How to score
 
 1. Capture every page in scope at 375, 768 and 1440px in light and dark, plus the open overlays and the empty, loading and error states.
-2. For each dimension, compare the screenshots with the anchors. Score the **weakest important screen**, not the best one: a polished home page does not lift a generic settings page. Use 1 and 3 for "between the anchors".
+2. For each dimension, compare the screenshots with the anchors. Motion and feedback cannot be seen in a still image: judge it by operating the page (hover, press, open and close every overlay, submit a form under network throttling) and by reading the transitions in the CSS, and say what you did in `note`. Score the **weakest important screen**, not the best one: a polished home page does not lift a generic settings page. Use 1 and 3 for "between the anchors".
 3. Score a dimension `null` only when it truly cannot apply (no images anywhere, for example). The journey dimension uses the anchors for the project's surface (BR-06); for `both`, score the weaker of the two.
 4. Write the result to `.ui-polish-audit/polish.json` (format below) and pass it to the checker: `node <kit>/audit/cli.mjs . --polish .ui-polish-audit/polish.json`. The checker validates it and prints the Polish score next to the static score.
 

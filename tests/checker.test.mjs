@@ -493,3 +493,27 @@ test('HTML report escapes finding text', async () => {
   assert.doesNotMatch(page, /<img src=x onerror/);
   assert.match(page, /&lt;img src=x onerror=alert\(1\)&gt;/);
 });
+
+// ---------------------------------------------------------------------------
+// Fixes from running /ui-elevate on two plain-agent builds
+// ---------------------------------------------------------------------------
+
+test('dogfood fixes: noindex pages, hidden icon wrappers, dead privacy links, single-page dashboards', async () => {
+  const head = (extra = '') => `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found · Ledgerly</title><meta name="description" content="Not found.">${extra}<link rel="icon" href="/favicon.svg"><link rel="apple-touch-icon" href="/a.png"><meta name="theme-color" content="white"></head><body><main><h1>Not found</h1></main></body></html>`;
+  // FD-03: a noindex page needs no social card; an indexable one still does.
+  assert.deepEqual(clean({ '404.html': head('<meta name="robots" content="noindex">') }).ids, []);
+  assert.ok(clean({ '404.html': head() }).ids.includes('FD-03'));
+  // IC-03: an icon inside an aria-hidden wrapper is already hidden.
+  assert.deepEqual(clean({ 'p.html': '<span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M0 0"/></svg></span> Weekly plans' }).ids, []);
+  assert.deepEqual(clean({ 'p.html': '<span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M0 0"/></svg></span> Weekly plans' }).ids, ['IC-03']);
+  // LP-07: a dead "Privacy" link gets the specific message.
+  const page = (body) => `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sprig · Meal plans</title><meta name="description" content="x"><meta property="og:title" content="x"><meta property="og:description" content="x"><meta property="og:image" content="/og.png"><link rel="icon" href="/favicon.svg"><link rel="apple-touch-icon" href="/a.png"><meta name="theme-color" content="white"></head><body><main><h1>Sprig</h1></main>${body}</body></html>`;
+  const r = clean({ 'index.html': page('<footer><a href="#">Privacy</a></footer>'), '404.html': page(''), 'design.md': '# Design\nSurface: marketing\nFonts: Figtree.\n' });
+  const lp = r.findings.find((f) => f.ruleId === 'LP-07');
+  assert.ok(lp, 'LP-07 should fire');
+  assert.match(lp.message, /points nowhere/);
+  // Surface: a single-page dashboard (title, KPI tiles, chart, table) is an app.
+  const { detectSurface } = await import('../audit/lib/project.mjs');
+  const dash = '<title>Dashboard · Ledgerly</title><ul class="stats"></ul><div class="chart" id="chart"></div><table></table>';
+  assert.equal(detectSurface(['index.html'], [{ rel: 'index.html', hasMarkup: true, text: dash }]).value, 'app');
+});

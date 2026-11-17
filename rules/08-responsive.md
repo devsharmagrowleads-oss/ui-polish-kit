@@ -129,7 +129,7 @@ Severity: error · Check: visual
 </div>
 ```
 
-**Check.** Visual: every table at 375px. The page does not scroll sideways, and the key column stays readable.
+**Check.** Visual: every table at 375px. The page does not scroll sideways, and the key column stays readable. In a stacked or card form, sorting and filtering are still reachable (a sort menu above the list when the header row is hidden).
 
 ## RS-07 · Navigation has a small-screen form
 Severity: error · Check: visual

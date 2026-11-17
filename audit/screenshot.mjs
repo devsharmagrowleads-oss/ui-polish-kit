@@ -118,7 +118,7 @@ async function main() {
           const overflow = metrics.scrollWidth > metrics.innerWidth + 1;
           if (overflow || consoleErrors.length) problems++;
           report.push({ url, theme, width, file, title: metrics.title, horizontalOverflow: overflow, scrollWidth: metrics.scrollWidth, loadedFonts: metrics.fonts, consoleErrors });
-          console.log(`${overflow ? 'OVERFLOW' : 'ok      '}  ${String(width).padStart(4)}px ${theme.padEnd(5)}  ${file}${overflow ? `  (content is ${metrics.scrollWidth}px wide: RS-03)` : ''}${consoleErrors.length ? `  ${consoleErrors.length} console error(s)` : ''}`);
+          console.log(`${overflow ? 'OVERFLOW' : 'ok      '}  ${String(width).padStart(4)}px ${theme.padEnd(5)}  ${file}${overflow ? `  (content is ${metrics.scrollWidth}px wide: RS-03)` : ''}${consoleErrors.length ? `  ${consoleErrors.length} console error(s)${url.startsWith('file:') && consoleErrors.some((e) => /ERR_FILE_NOT_FOUND/.test(e)) ? ' (a root-relative path such as /favicon.svg cannot load from a file: URL; serve the folder to check it)' : ''}` : ''}`);
           await context.close();
         }
       }
