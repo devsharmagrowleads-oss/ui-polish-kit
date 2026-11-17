@@ -94,4 +94,6 @@ What would have reached 4: a single lead number with everything else clearly sec
 }
 ```
 
-Every dimension must be present. `score` is an integer from 0 to 4, or `null` for "does not apply" (give the reason in `note`). `evidence` lists screenshot file names from `.ui-polish-audit/`.
+Every dimension must be present. `score` is an integer from 0 to 4, or `null` for "does not apply" or "could not be observed" (give the reason in `note`). `evidence` lists screenshot file names from `.ui-polish-audit/`, as the screenshot tool names them. `pages` lists the URLs or routes in scope. Optional `scorer` is `"self"` or `"independent"`; the HTML report labels the score with it, so a before/after pair from different scorers is visible.
+
+**What the screenshots cannot show.** Score only what you can see. If loading, empty or error states, overlays or a social image were not captured, do not guess: give at most 3 on the dimension that needs them and say what was missing. For a surface of `both`, write the marketing and app journey scores in `note` and score the weaker. Very tall full-page captures are hard to read; add `--viewport-only` captures for the first screen.

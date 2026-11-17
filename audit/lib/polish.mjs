@@ -46,6 +46,7 @@ export function scorePolish(data, source = 'polish.json') {
     if (d.evidence !== undefined && !Array.isArray(d.evidence)) problems.push(`"${id}".evidence must be an array of screenshot file names`);
     dimensions.push({ id, title, score: s, note: typeof d.note === 'string' ? d.note : '', evidence: Array.isArray(d.evidence) ? d.evidence.map(String) : [] });
   }
+  if (data.scorer !== undefined && data.scorer !== 'self' && data.scorer !== 'independent') problems.push('"scorer" must be "self" or "independent"');
   if (problems.length) throw new Error(`${source}:\n  - ${problems.join('\n  - ')}`);
   const scored = dimensions.filter((d) => d.score !== null);
   if (!scored.length) throw new Error(`${source}: every dimension is null; score at least one`);
@@ -57,6 +58,7 @@ export function scorePolish(data, source = 'polish.json') {
     target: POLISH_TARGET,
     meetsTarget: score >= POLISH_TARGET.score && weakest >= POLISH_TARGET.dimension,
     assessedAt: typeof data.assessedAt === 'string' ? data.assessedAt : null,
+    scorer: data.scorer === 'self' || data.scorer === 'independent' ? data.scorer : null,
     pages: Array.isArray(data.pages) ? data.pages.map(String) : [],
     dimensions,
   };

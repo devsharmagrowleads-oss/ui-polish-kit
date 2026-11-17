@@ -8,8 +8,12 @@ type FirstRunPath = {
   /** A faster way in: "Import from CSV", "Start from a template", "Explore with sample data". */
   title: string;
   description: string;
-  href: string;
-};
+} & (
+  /** A place to go, e.g. "/import". */
+  | { href: string; onSelect?: never }
+  /** An action that stays on the page, e.g. loading sample data; also avoids a full reload in a single-page app. */
+  | { onSelect: () => void; href?: never }
+);
 
 type FirstRunProps = Omit<React.ComponentProps<"section">, "title"> & {
   /** Greets by name when known, then names the first success: "Welcome, Dana. Send your first invoice." */
@@ -30,6 +34,9 @@ type FirstRunProps = Omit<React.ComponentProps<"section">, "title"> & {
  * sample data) as quieter cards, and nothing that needs data to make sense.
  * Render it while the account has no data; the normal home takes over after.
  */
+const pathClass =
+  "flex h-full gap-4 rounded-lg border bg-card p-5 text-card-foreground transition-[border-color,background-color] duration-(--duration-fast) ease-out hover:border-primary hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
+
 function FirstRun({ title, description, primaryAction, paths = [], media, className, ...props }: FirstRunProps) {
   const headingId = React.useId();
   return (
@@ -48,20 +55,30 @@ function FirstRun({ title, description, primaryAction, paths = [], media, classN
         <div className="flex flex-col gap-4">
           <h2 className="text-sm font-medium text-muted-foreground">Or start another way</h2>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {paths.map((path) => (
-              <li key={path.href}>
-                <a
-                  href={path.href}
-                  className="flex h-full gap-4 rounded-lg border bg-card p-5 text-card-foreground transition-[border-color,background-color] duration-(--duration-fast) ease-out hover:border-primary hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                >
+            {paths.map((path) => {
+              const content = (
+                <>
                   <path.icon className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
                   <span className="flex flex-col gap-1">
                     <span className="font-medium">{path.title}</span>
                     <span className="text-sm text-muted-foreground">{path.description}</span>
                   </span>
-                </a>
-              </li>
-            ))}
+                </>
+              );
+              return (
+                <li key={path.title}>
+                  {path.onSelect ? (
+                    <button type="button" onClick={path.onSelect} className={cn(pathClass, "w-full text-start")}>
+                      {content}
+                    </button>
+                  ) : (
+                    <a href={path.href} className={pathClass}>
+                      {content}
+                    </a>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       ) : null}

@@ -62,3 +62,23 @@ test('VH-07 allows one display weight on marketing pages; TK-03 keeps the full v
   const f = r.findings.find((x) => x.ruleId === 'TK-03');
   assert.ok(f && f.message.includes('group-[.destructive]:text-red-300'), f && f.message);
 });
+
+// Found by an independent agent running /ui-elevate on a Vite + React Router app.
+test('elevate-run fixes: wrapper labels, early-return h1, pseudo-element focus, catch-all 404, missing og:image', () => {
+  // FM-01: <Field id label> wrapper labels the input with the same id.
+  assert.ok(!clean({ 'f.tsx': 'export const F = () => <Field id="company" label="Company"><input id="company" type="text" /></Field>;' }).ids.includes('FM-01'));
+  assert.ok(clean({ 'f.tsx': 'export const F = () => <div><input id="company" type="text" /></div>;' }).ids.includes('FM-01'));
+  // TY-04: an early return and the page each have one h1.
+  const page = 'export function P({ x }) {\n  if (!x) return <main><h1>Invoice not found</h1></main>;\n  return <main><h1>Invoice {x.id}</h1></main>;\n}';
+  assert.ok(!clean({ 'p.tsx': page }).ids.includes('TY-04'));
+  assert.ok(clean({ 'p.tsx': 'export const P = () => <main><h1>A</h1><h1>B</h1></main>;' }).ids.includes('TY-04'));
+  // AX-02: replacement drawn on ::after.
+  assert.ok(!clean({ 'b.tsx': 'export const B = () => <button className="focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-ring">Bar</button>;' }).ids.includes('AX-02'));
+  // FD-05 and FD-03 in an app with public/ and a router catch-all.
+  const head = '<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ledgerly · Invoices</title><meta name="description" content="x"><meta property="og:title" content="x"><meta property="og:description" content="x"><meta property="og:image" content="/og-image.png"><link rel="icon" href="/favicon.svg"><link rel="apple-touch-icon" href="/a.png"><meta name="theme-color" content="white"></head><body><div id="root"></div></body></html>';
+  const routes = { 'src/routes.tsx': 'export const routes = [{ path: "/", element: <Home /> }, { path: "*", element: <NotFound /> }];', 'public/favicon.svg': '<svg/>' };
+  const r = clean({ 'index.html': head, ...routes });
+  assert.ok(!r.ids.includes('FD-05'), 'catch-all route counts as a 404 page');
+  assert.ok(r.findings.some((f) => f.ruleId === 'FD-03' && /public\/og-image\.png/.test(f.message)), 'missing og:image file');
+  assert.ok(!clean({ 'index.html': head, ...routes, 'public/og-image.png': 'png' }).ids.includes('FD-03'));
+});

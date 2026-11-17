@@ -17,7 +17,7 @@ Keep the shadcn CLI as the source of components (`npx shadcn@latest add select c
 npm install radix-ui class-variance-authority clsx tailwind-merge lucide-react react-day-picker cmdk sonner
 ```
 
-Requires React 19 (components take `ref` as a prop, no `forwardRef`), Tailwind CSS 4, and the `@/` import alias pointing at `src/`. `react-day-picker` 9 or later.
+Requires React 19 (components take `ref` as a prop, no `forwardRef`), Tailwind CSS 4, and the `@/` import alias pointing at `src/`. `react-day-picker` 9 or later. For the alias, set `resolve.alias` in the bundler and `"paths": { "@/*": ["./src/*"] }` in `tsconfig.json` (relative to the tsconfig; recent TypeScript versions no longer need, or accept, `baseUrl`).
 
 ## Files
 
@@ -69,7 +69,7 @@ Composable page sections for landing pages and marketing sites. Each takes the c
 | `app/kpi-card.tsx` | `KpiCard` (value louder than label, change with icon, sign, words and period, loading skeleton, optional featured size) and `KpiGrid` | VH-04, AX-12, ST-02, SL-11 |
 | `app/settings-section.tsx` | Title and description beside the fields, one form per section, a save bar that appears only when something changed, a danger tone | FM-08, FM-09, UX-04 |
 | `app/setup-checklist.tsx` | Deferred setup with progress, items that link to the place to do them and tick themselves, permanent dismissal | AC-03, UX-09 |
-| `app/first-run.tsx` | What a new account sees instead of zeros: the first success as the primary action plus import, template or sample-data paths | AC-01, AC-02 |
+| `app/first-run.tsx` | What a new account sees instead of zeros: the first success as the primary action plus import, template or sample-data paths (each a link or an in-page action) | AC-01, AC-02 |
 | `app/command-palette.tsx` | `CommandPalette` (Dialog + cmdk, grouped results, a specific empty message), `CommandPaletteTrigger` and `useCommandPaletteShortcut` (Ctrl/⌘ K, IME-safe) | UX-08, AX-10 |
 
 The section and app files import the base components as `@/components/ui/*`; copy them into `src/components/sections/` and `src/components/app/` (or anywhere) and keep that alias.
@@ -83,7 +83,7 @@ The section and app files import the base components as `@/components/ui/*`; cop
 
 Replace every value marked `EXAMPLE` in `tokens.css` with the colours and fonts recorded in the project's `design.md`. Keep the token names.
 
-Dark mode is switched by `class="dark"` or `data-theme="dark"` on `<html>`. Mount `<TooltipProvider>`, `<ConfirmProvider>` and `<Toaster />` once in the root layout.
+Dark mode is switched by `class="dark"` or `data-theme="dark"` on `<html>`. To follow the OS, add `<meta name="color-scheme" content="light dark">` and a small script before the app that sets the class from `matchMedia("(prefers-color-scheme: dark)")` and listens for its `change` event (a saved user choice wins); `next-themes` does this for Next.js. Mount `<TooltipProvider>`, `<ConfirmProvider>` and `<Toaster />` once in the root layout.
 
 ## Wire the fonts
 

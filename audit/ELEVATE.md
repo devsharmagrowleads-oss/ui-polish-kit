@@ -11,13 +11,17 @@ Work in this order. Do not skip the baseline: the before/after comparison is how
 - **Respect the surface** (BR-06). Marketing pages are judged on conversion (LP); product apps on activation (AC). Do not give a dashboard a hero or a landing page a setup checklist.
 - **Nothing from the slop list** (SL). "Premium" is restraint and precision, not gradients, glass, glow and bigger shadows.
 - **Ask about missing assets** (AS-01). A premium page needs the real logo, product screenshots and photos. Ask the owner once, with options, before designing around their absence.
+- **No owner to ask?** Write each question under "Questions for the owner" in `design.md`, make a deliberate choice, mark it "assumed", and list the open questions in the report.
+- **Light-only products.** If the product has no dark theme, adding one is a brand change: propose it, or mark it "assumed". If `design.md` says light-only, skip the dark captures and score the light theme.
 
 ## 1. Intake
 
 1. Read `design.md`. If it is missing, or has no `Surface:` line or Assets table, do the brand intake (BR-01 to BR-06, AS-01): gather the answers and ask the owner now, but write `design.md` after the baseline in step 2, so the baseline measures the interface exactly as you found it.
-2. Agree the scope with the owner: which pages or flows, and whether to apply the plan straight away or to show it first. Default: show the plan (step 4) and apply after a yes; if the owner asked for a full elevation without review, apply it and report.
+2. Agree the scope with the owner: which pages or flows, and whether to apply the plan straight away or to show it first. The static check covers the whole project; if out-of-scope pages would block it, either fix their errors too or agree to scope the check with `include` in `ui-polish.config.json`, and report the whole-project score beside the scoped one. Default: show the plan (step 4) and apply after a yes; if the owner asked for a full elevation without review, apply it and report.
 
 ## 2. Baseline
+
+Pages behind a sign-in: pass `--storage-state auth.json` (cookies and storage of a signed-in session) or `--init seed.js` (a script that runs before the app, e.g. to seed localStorage) to `screenshot.mjs`. The tool reports `REDIRECTED` when a capture landed on another page, such as the sign-in screen. For an app, capture a brand-new account as well as a populated one (a separate `--init` script, or a query such as `?first-run` that the file names keep), because the journey dimension needs both.
 
 ```bash
 mkdir -p .ui-polish-audit/before
@@ -72,13 +76,14 @@ Show the plan to the owner as a numbered list (move, why, screens affected, dime
 ## 5. Apply
 
 1. Tokens and `design.md` first (approved brand changes, type scale, spacing, colour, radius, shadows).
+   Recipes need their dependencies and an `@/` import alias: see `recipes/react-tailwind-shadcn/README.md` (Install), or use the plain HTML/CSS recipes, which need none.
 2. Shared components next (page header, card, button variants, form field, table, empty state), using the recipes in `<kit>/recipes/`.
 3. Then each page, in the plan's order.
 4. After each group of moves, run the static checker; never trade a Polish gain for a static regression.
 
 ## 6. Re-measure
 
-Re-capture the same pages, widths and themes into `.ui-polish-audit/` (same file names as the baseline, so the report can pair them), re-score the Polish dimensions into `.ui-polish-audit/polish.json`, and build the report:
+Before a second pass, move the previous captures to `.ui-polish-audit/pass-1/` so they are not overwritten. Re-capture the same pages, widths and themes into `.ui-polish-audit/` (same file names as the baseline, so the report can pair them), re-score the Polish dimensions into `.ui-polish-audit/polish.json`, and build the report:
 
 ```bash
 node <kit>/audit/cli.mjs . --polish .ui-polish-audit/polish.json \

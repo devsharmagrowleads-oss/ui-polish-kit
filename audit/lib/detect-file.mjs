@@ -232,7 +232,9 @@ function typography(f, facts, report) {
   if (!f.hasMarkup) return;
   const headings = [...findTags(f.text, 'h[1-6]')];
   const h1s = headings.filter((h) => h.name === 'h1');
-  if (h1s.length > 1) {
+  // Two <h1>s in mutually exclusive branches (an early `return` for not-found or loading, then the page) are one per screen.
+  const exclusive = h1s.length === 2 && /\breturn\b/.test(f.text.slice(h1s[0].end, h1s[1].start)) && !f.isHtmlDoc;
+  if (h1s.length > 1 && !exclusive) {
     report('TY-04', h1s[1].start, `${h1s.length} <h1> elements in one file. A page has one <h1>; use <h2>–<h4> for sections and style size separately from level.`);
   }
   if (f.isHtmlDoc) {
@@ -391,7 +393,8 @@ function accessibility(f, facts, report) {
     // The replacement may sit on a wrapper a few lines up (focus-within) or in a sibling cn() string.
     const own = stringAround(f, m.index);
     const near = `${own}\n${linesAround(f, m.index, 8)}`;
-    if (/focus-visible:(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus:(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus-within:|has-\[:focus-visible\]/.test(near)) continue;
+    // Replacements may also be drawn on a pseudo-element: focus-visible:after:outline-2.
+    if (/focus-visible:(?:after:|before:)?(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus:(?:after:|before:)?(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus-within:|has-\[:focus-visible\]/.test(near)) continue;
     // Menu/listbox/combobox items mark the active item with a background (AX-02 rule text allows this).
     if (/(?:aria-selected|data-\[(?:selected|highlighted)[^\]]*\]|data-highlighted|data-selected):bg-/.test(own)) continue;
     // Popover / menu content panels receive programmatic focus; they are containers, not controls.
@@ -472,6 +475,8 @@ function forms(f, facts, report) {
     if (typeof id === 'string') {
       const esc = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       if (new RegExp(`(?:for|htmlFor)\\s*=\\s*(?:\\{\\s*)?["'\`]${esc}["'\`]`).test(f.text)) continue;
+      // A field wrapper component that takes the same id and a label prop, e.g. <Field id="company" label="Company">.
+      if (new RegExp(`<[A-Z][\\w.]*(?=[^<>]*\\b(?:id|htmlFor|inputId)\\s*=\\s*(?:\\{\\s*)?["'\`]${esc}["'\`])(?=[^<>]*\\blabel\\s*=)`).test(f.text)) continue;
     }
     const ph = hasAttr(tag.src, 'placeholder');
     report('FM-01', tag.start, `<${tag.name}> has no label${ph ? ' (a placeholder is not a label: it disappears on input and is skipped by many screen readers)' : ''}. Add a visible <label for> or use the Field recipe.`);
@@ -519,6 +524,15 @@ function documentHead(f, facts, report) {
     const missing = ['og:title', 'og:description', 'og:image'].filter((p) => !new RegExp(`<meta[^>]+(property|name)=["']?${p}`, 'i').test(f.text));
     // Pages kept out of search (404s, error pages, previews) are not shared, so they need no social card.
     const noindex = /<meta[^>]+name=["']?robots["']?[^>]+content=["'][^"']*noindex/i.test(f.text);
+    // A root-relative og:image must exist: Vite, Next.js and Astro serve /x from public/x.
+    const og = /<meta[^>]+(?:property|name)=["']?og:image["']?[^>]+content=["']([^"']+)["']|<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']?og:image["']?/i.exec(f.text);
+    const ogPath = og ? (og[1] || og[2]).split(/[?#]/)[0] : '';
+    if (ogPath.startsWith('/') && !ogPath.startsWith('//') && facts.allFiles.some((p) => p.startsWith('public/'))) {
+      const rel = ogPath.slice(1);
+      if (!facts.allFiles.includes(`public/${rel}`) && !facts.allFiles.includes(rel)) {
+        report('FD-03', og.index, `og:image points to ${ogPath}, but there is no public/${rel}. Shared links will show a broken image. Add the 1200×630 image, or list it as missing in the Assets table of design.md.`);
+      }
+    }
     if (missing.length && !noindex) report('FD-03', headAt, `Missing social preview tags: ${missing.join(', ')}. Shared links show a blank card. Add Open Graph tags and a 1200×630 image.`);
   }
 

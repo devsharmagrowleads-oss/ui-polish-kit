@@ -36,6 +36,8 @@ function delta(now, then) {
   return `<span class="delta ${d > 0 ? 'up' : 'down'}">${d > 0 ? '+' : '−'}${Math.abs(d)} from ${then}</span>`;
 }
 
+const scorerName = (s) => (s === 'independent' ? 'independent reviewer' : 'self-scored');
+
 function segments(score) {
   if (score === null) return '<span class="na">n/a</span>';
   const bar = [0, 1, 2, 3].map((i) => `<span class="seg${i < score ? ' on' : ''}"></span>`).join('');
@@ -131,8 +133,8 @@ export function renderHtml(result, { before = null, screenshots = [], generatedA
     `<div class="card"><p class="label">Static score</p><p class="value">${result.score}<small> / 100</small></p>
       <p>${error} errors · ${warning} warnings · ${info} info</p><p>${delta(result.score, before?.score)}</p></div>`,
     polish
-      ? `<div class="card"><p class="label">Polish score</p><p class="value">${polish.score}<small> / 100</small></p>
-      <p><span class="band">${esc(polish.band)}</span>${polish.meetsTarget ? '' : ` · target ${polish.target.score}, no dimension below ${polish.target.dimension}`}</p><p>${delta(polish.score, before?.polish?.score)}</p></div>`
+      ? `<div class="card"><p class="label">Polish score${polish.scorer ? ` (${scorerName(polish.scorer)})` : ''}</p><p class="value">${polish.score}<small> / 100</small></p>
+      <p><span class="band">${esc(polish.band)}</span>${polish.meetsTarget ? '' : ` · target ${polish.target.score}, no dimension below ${polish.target.dimension}`}</p><p>${delta(polish.score, before?.polish?.score)}${before?.polish?.scorer && polish.scorer && before.polish.scorer !== polish.scorer ? ` <span class="delta">(the before score was ${scorerName(before.polish.scorer)})</span>` : ''}</p></div>`
       : '<div class="card"><p class="label">Polish score</p><p class="value"><small>not assessed</small></p><p>Score the screenshots with audit/POLISH.md and pass <code>--polish polish.json</code>.</p></div>',
     `<div class="card"><p class="label">Scope</p><p class="value"><small>${result.filesScanned} files</small></p><p>Surface: ${esc(surface)}</p>${polish?.pages?.length ? `<p>Pages: ${esc(polish.pages.join(', '))}</p>` : ''}</div>`,
   ].join('\n');

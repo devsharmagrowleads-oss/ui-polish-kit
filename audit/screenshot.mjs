@@ -22,6 +22,13 @@ const HELP = `Usage: node audit/screenshot.mjs <url|file> [...] [options]
   --height <px>        Viewport height (default 900)
   --wait <ms>          Extra wait after load (default 400)
   --viewport-only      Capture only the visible viewport instead of the full page
+  --storage-state <f>  Playwright storage state (cookies, localStorage) for pages behind a sign-in;
+                       save one with: npx playwright codegen --save-storage=auth.json <login url>
+  --init <file.js>     A script run in every page before the app loads, e.g. to seed localStorage
+                       for a signed-in or brand-new account
+
+A screenshot whose final URL differs from the requested one is reported as
+REDIRECTED (usually a sign-in page): the capture shows that page, not yours.
 
 Dark theme is applied three ways so it works with most apps: prefers-color-scheme
 is emulated, and class "dark" plus data-theme="dark" are set on <html>.
@@ -38,6 +45,8 @@ function parse(argv) {
     else if (a === '--height') o.height = Number(val()) || 900;
     else if (a === '--wait') o.wait = Number(val()) || 0;
     else if (a === '--viewport-only') o.fullPage = false;
+    else if (a === '--storage-state') o.storageState = val();
+    else if (a === '--init') o.init = val();
     else if (a === '-h' || a === '--help') o.help = true;
     else if (a.startsWith('--')) throw new Error(`Unknown option ${a}`);
     else o.targets.push(a);
@@ -90,7 +99,8 @@ async function main() {
     for (const url of urls) {
       for (const theme of o.themes) {
         for (const width of o.widths) {
-          const context = await browser.newContext({ viewport: { width, height: o.height }, colorScheme: theme, deviceScaleFactor: 1 });
+          const context = await browser.newContext({ viewport: { width, height: o.height }, colorScheme: theme, deviceScaleFactor: 1, ...(o.storageState ? { storageState: o.storageState } : {}) });
+          if (o.init) await context.addInitScript({ path: path.resolve(o.init) });
           const page = await context.newPage();
           const consoleErrors = [];
           page.on('console', (msg) => { if (msg.type() === 'error') consoleErrors.push(msg.text().slice(0, 300)); });
@@ -112,6 +122,7 @@ async function main() {
           if (o.wait) await page.waitForTimeout(o.wait);
           const metrics = await page.evaluate(() => ({
             title: document.title,
+            finalUrl: location.href,
             scrollWidth: document.documentElement.scrollWidth,
             innerWidth: window.innerWidth,
             fonts: [...new Set([...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/["']/g, '')))],
@@ -119,8 +130,11 @@ async function main() {
           const file = path.join(o.out, `${slug(url)}-${width}-${theme}.png`);
           await page.screenshot({ path: file, fullPage: o.fullPage });
           const overflow = metrics.scrollWidth > metrics.innerWidth + 1;
-          if (overflow || consoleErrors.length) problems++;
-          report.push({ url, theme, width, file, title: metrics.title, horizontalOverflow: overflow, scrollWidth: metrics.scrollWidth, loadedFonts: metrics.fonts, consoleErrors });
+          const strip = (u) => u.replace(/[?#].*$/, '').replace(/\/$/, '');
+          const redirected = strip(metrics.finalUrl) !== strip(url) ? metrics.finalUrl : null;
+          if (overflow || consoleErrors.length || redirected) problems++;
+          if (redirected) console.log(`REDIRECTED ${url} -> ${redirected}: this capture shows the page it was sent to (often a sign-in). Use --storage-state or --init to reach the real page.`);
+          report.push({ url, finalUrl: metrics.finalUrl, redirected: Boolean(redirected), theme, width, file, title: metrics.title, horizontalOverflow: overflow, scrollWidth: metrics.scrollWidth, loadedFonts: metrics.fonts, consoleErrors });
           console.log(`${overflow ? 'OVERFLOW' : 'ok      '}  ${String(width).padStart(4)}px ${theme.padEnd(5)}  ${file}${overflow ? `  (content is ${metrics.scrollWidth}px wide: RS-03)` : ''}${consoleErrors.length ? `  ${consoleErrors.length} console error(s)${url.startsWith('file:') && consoleErrors.some((e) => /ERR_FILE_NOT_FOUND/.test(e)) ? ' (a root-relative path such as /favicon.svg cannot load from a file: URL; serve the folder to check it)' : ''}` : ''}`);
           await context.close();
         }
@@ -128,6 +142,14 @@ async function main() {
     }
   } finally {
     await browser.close();
+  }
+  // Dark captures identical to light ones mean the app has no dark theme the tool could switch on.
+  for (const r of report.filter((x) => x.theme === 'dark')) {
+    const light = report.find((x) => x.url === r.url && x.width === r.width && x.theme === 'light');
+    if (light && fs.readFileSync(light.file).equals(fs.readFileSync(r.file))) {
+      r.sameAsLight = true;
+      console.log(`DARK = LIGHT  ${path.basename(r.file)}: no dark theme was applied. If the product is light-only, record that in design.md (DM rules); otherwise check how the theme is switched.`);
+    }
   }
   fs.writeFileSync(path.join(o.out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
   // An empty Polish scorecard listing every dimension and the screenshots just taken. Never overwrites a filled one.

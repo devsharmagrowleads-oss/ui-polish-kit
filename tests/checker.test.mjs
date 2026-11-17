@@ -530,3 +530,17 @@ test('GitHub output: annotations are escaped and the summary carries the score',
   assert.ok(md.includes(`**${result.score}**/100`), md);
   assert.match(md, /ui-polish-report/);
 });
+
+test('Polish scorer label is validated and shown in the report', async () => {
+  const { scorePolish } = await import('../audit/lib/polish.mjs');
+  const { renderHtml } = await import('../audit/lib/report-html.mjs');
+  const data = { ...polishData(Array(11).fill(3)), scorer: 'independent' };
+  const p = scorePolish(data);
+  assert.equal(p.scorer, 'independent');
+  assert.throws(() => scorePolish({ ...data, scorer: 'me' }), /scorer/);
+  const result = clean({});
+  result.polish = p;
+  const page = renderHtml(result, { before: { score: 50, polish: { score: 60, scorer: 'self' } } });
+  assert.match(page, /Polish score \(independent reviewer\)/);
+  assert.match(page, /the before score was self-scored/);
+});

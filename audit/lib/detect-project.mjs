@@ -99,7 +99,9 @@ export function runProjectDetectors(project, report) {
         report('LP-07', at(entry), 'Marketing site with no privacy policy page or link. Link privacy, terms and contact from the footer of every page, and next to forms that collect personal data. Ask the owner for the legal text; do not invent it.');
       }
     }
-    if (!has(/(^|\/)(404\.(html?|tsx|jsx|js|astro|vue|svelte|md)|not-found\.(tsx|jsx|js)|\+error\.svelte|error\.vue|\[\.\.\.[\w]+\]\.\w+)$/)) {
+    // Client-side routers declare the not-found page as a catch-all route instead of a file.
+    const catchAll = files.some((f) => /\bpath\s*[=:]\s*\{?\s*["'`]\*["'`]|\berrorElement\s*[=:]|\bnotFoundComponent\s*[=:]/.test(f.text));
+    if (!catchAll && !has(/(^|\/)(404\.(html?|tsx|jsx|js|astro|vue|svelte|md)|not-found\.(tsx|jsx|js)|\+error\.svelte|error\.vue|\[\.\.\.[\w]+\]\.\w+)$/)) {
       report('FD-05', at(entry), 'No 404 page. Mistyped URLs land on the host\'s default error screen. Add a not-found page with the site navigation and a way back.');
     }
   }
