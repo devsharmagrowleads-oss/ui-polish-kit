@@ -216,7 +216,7 @@ Two halves, because they catch different things.
 **1. Static checker.** Reads your source, no browser, no dependencies. Reports `file:line`, rule ID, severity and a score.
 
 <p align="center">
-  <img src="docs/images/audit.svg" alt="Audit output: the before example fails with 57 errors and 99 warnings, score 0 of 100; the after example passes with a score of 100." width="92%">
+  <img src="docs/images/audit.svg" alt="Audit output: the before example fails with 58 errors and 101 warnings, score 0 of 100; the after example passes with a score of 100." width="92%">
 </p>
 
 ```bash
