@@ -394,13 +394,18 @@ function accessibility(f, facts, report) {
     const own = stringAround(f, m.index);
     const near = `${own}\n${linesAround(f, m.index, 8)}`;
     // Replacements may also be drawn on a pseudo-element: focus-visible:after:outline-2.
-    if (/focus-visible:(?:after:|before:)?(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus:(?:after:|before:)?(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus-within:|has-\[:focus-visible\]/.test(near)) continue;
+    if (/focus-visible:(?:after:|before:)?(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus:(?:after:|before:)?(ring|outline-(?!none|hidden|0)|border|shadow|bg)|has-\[:focus-visible\]/.test(near)) continue;
+    if (/focus-within:/.test(own)) continue; // the same class list shows focus through focus-within
     // Menu/listbox/combobox items mark the active item with a background (AX-02 rule text allows this).
     if (/(?:aria-selected|data-\[(?:selected|highlighted)[^\]]*\]|data-highlighted|data-selected):bg-/.test(own)) continue;
     // Popover / menu content panels receive programmatic focus; they are containers, not controls.
     if (/(?<![\w-])bg-popover(?![\w-])/.test(own)) continue;
-    // A focus-within ring on an enclosing wrapper further up the same component.
-    if (/focus-within:(ring|outline-(?!none|hidden|0)|border)/.test(f.text.slice(Math.max(0, m.index - 3000), m.index))) continue;
+    // A focus-within ring on an enclosing wrapper further up the same component: look back to the start of the
+    // component declaration (`const Name =` / `function Name`), at most 3,000 characters, never into a previous component.
+    const before = f.text.slice(Math.max(0, m.index - 3000), m.index);
+    let componentStart = -1;
+    for (const d of before.matchAll(/^(?:export\s+)?(?:default\s+)?(?:const|let|function)\s+[A-Z]\w*/gm)) componentStart = d.index;
+    if (/focus-within:(ring|outline-(?!none|hidden|0)|border)/.test(componentStart >= 0 ? before.slice(componentStart) : before)) continue;
     report('AX-02', m.index, `\`${m[0]}\` removes the focus indicator with no replacement in the same class list. Add \`focus-visible:ring-2 focus-visible:ring-ring\` (or an equivalent visible state).`);
   }
 

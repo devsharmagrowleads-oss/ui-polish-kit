@@ -15,6 +15,7 @@ export function formatText(result, { color = false, maxPerFile = 0 } = {}) {
       ? 'Surface: unknown, so marketing-only and app-only rules were skipped. Add "Surface: marketing | app | both" to design.md.'
       : `Surface: ${value} (${source}${why})`));
   }
+  if (result.unusedStylesheets?.length) out.push(c('dim', `Skipped ${result.unusedStylesheets.length} stylesheet${result.unusedStylesheets.length === 1 ? '' : 's'} nothing references: ${result.unusedStylesheets.join(', ')}. Delete ${result.unusedStylesheets.length === 1 ? 'it' : 'them'}, or import ${result.unusedStylesheets.length === 1 ? 'it' : 'them'} if they should apply.`));
   out.push('');
 
   const groups = new Map();

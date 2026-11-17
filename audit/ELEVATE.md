@@ -71,6 +71,8 @@ Moves that reliably lift each dimension:
 | `consistency` | Extract repeated patterns into shared components; one page-header pattern (NV-03); the same component with the same padding everywhere (SP-02); one voice (CP-07) |
 | `journey` | Marketing: a hero that passes the five-second test, proof beside each claim, a repeated single call to action, a clear pricing choice (LP-01 to LP-05). App: a designed first run, a setup checklist, teaching empty states, a returning-user home (AC-01 to AC-07) |
 
+Before showing the plan, check it against "What usually holds a page below 80" in `audit/POLISH.md`: the plan must include capturing (and, where missing, designing) loading, empty and error states, a first-run screen for apps, real proof for marketing pages, and navigation that fits at 375px. Independent reviewers cap those dimensions when the evidence is missing.
+
 Show the plan to the owner as a numbered list (move, why, screens affected, dimension), plus any brand changes that need their approval and any assets you still need from them.
 
 ## 5. Apply
