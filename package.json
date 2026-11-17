@@ -1,6 +1,6 @@
 {
   "name": "ui-polish-kit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Rules, recipes, and an audit that stop AI coding agents from shipping generic, unfinished UI.",
   "license": "MIT",
   "type": "module",
