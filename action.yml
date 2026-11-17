@@ -1,0 +1,72 @@
+name: ui-polish audit
+description: Run the ui-polish-kit static checker on a pull request, annotate findings on the changed lines, and attach the HTML report.
+author: ui-polish-kit contributors
+branding:
+  icon: check-square
+  color: green
+
+inputs:
+  path:
+    description: Folder to audit, relative to the repository root.
+    default: .
+  min-score:
+    description: Score required to pass (0-100). Defaults to the project's config, then 85.
+    default: ""
+  fail-on:
+    description: error, warning or never.
+    default: error
+  polish:
+    description: Optional path to a polish.json to include the Polish score.
+    default: ""
+  report-name:
+    description: Name of the uploaded HTML report artifact.
+    default: ui-polish-report
+
+outputs:
+  score:
+    description: The static score.
+    value: ${{ steps.audit.outputs.score }}
+  pass:
+    description: true when the audit passed.
+    value: ${{ steps.audit.outputs.pass }}
+
+runs:
+  using: composite
+  steps:
+    - id: audit
+      shell: bash
+      env:
+        KIT: ${{ github.action_path }}
+        AUDIT_PATH: ${{ inputs.path }}
+        MIN_SCORE: ${{ inputs.min-score }}
+        FAIL_ON: ${{ inputs.fail-on }}
+        POLISH: ${{ inputs.polish }}
+        REPORT_NAME: ${{ inputs.report-name }}
+      run: |
+        set +e
+        out="$RUNNER_TEMP/ui-polish"
+        mkdir -p "$out"
+        args=("$AUDIT_PATH" --fail-on "$FAIL_ON" --json --html "$out/report.html")
+        [ -n "$MIN_SCORE" ] && args+=(--min-score "$MIN_SCORE")
+        [ -n "$POLISH" ] && args+=(--polish "$POLISH")
+        node "$KIT/audit/cli.mjs" "${args[@]}" > "$out/result.json"
+        code=$?
+        if [ "$code" -eq 2 ]; then echo "::error title=ui-polish::The checker could not run (usage or configuration error)."; exit 2; fi
+        prefix=""
+        [ "$AUDIT_PATH" != "." ] && prefix="${AUDIT_PATH%/}/"
+        node "$KIT/audit/github.mjs" "$out/result.json" --report-name "$REPORT_NAME" --path-prefix "$prefix"
+        echo "score=$(node -p "require('$out/result.json').score")" >> "$GITHUB_OUTPUT"
+        echo "pass=$(node -p "require('$out/result.json').pass")" >> "$GITHUB_OUTPUT"
+        echo "code=$code" >> "$GITHUB_OUTPUT"
+        echo "dir=$out" >> "$GITHUB_OUTPUT"
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: ${{ inputs.report-name }}
+        path: ${{ steps.audit.outputs.dir }}/report.html
+        if-no-files-found: ignore
+    - shell: bash
+      if: steps.audit.outputs.code == '1'
+      run: |
+        echo "::error title=ui-polish::Audit failed with score ${{ steps.audit.outputs.score }}. See the annotations and the report artifact."
+        exit 1

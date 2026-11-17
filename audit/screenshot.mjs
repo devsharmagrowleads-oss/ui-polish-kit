@@ -12,6 +12,7 @@ import path from 'node:path';
 import process from 'node:process';
 import { createRequire } from 'node:module';
 import { pathToFileURL } from 'node:url';
+import { POLISH_DIMENSIONS } from './lib/polish.mjs';
 
 const HELP = `Usage: node audit/screenshot.mjs <url|file> [...] [options]
 
@@ -54,7 +55,9 @@ function toUrl(target) {
 function slug(url) {
   const u = new URL(url);
   const base = u.protocol === 'file:' ? path.basename(path.dirname(u.pathname)) + '-' + path.basename(u.pathname) : `${u.hostname}${u.pathname}`;
-  return base.replace(/\.html?$/i, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '').toLowerCase() || 'page';
+  // Keep the query in the name: ?view=app and ?view=settings are different screens and must not overwrite each other.
+  const query = u.search ? `-${u.search.slice(1)}` : '';
+  return (base.replace(/\.html?$/i, '') + query).replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '').toLowerCase() || 'page';
 }
 
 function loadPlaywright() {
@@ -127,7 +130,17 @@ async function main() {
     await browser.close();
   }
   fs.writeFileSync(path.join(o.out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
+  // An empty Polish scorecard listing every dimension and the screenshots just taken. Never overwrites a filled one.
+  const template = path.join(o.out, 'polish.template.json');
+  const shots = report.map((r) => path.basename(r.file));
+  fs.writeFileSync(template, `${JSON.stringify({
+    assessedAt: new Date().toISOString().slice(0, 10),
+    pages: urls,
+    screenshots: shots,
+    dimensions: Object.fromEntries(POLISH_DIMENSIONS.map((d) => [d.id, { score: null, note: '', evidence: [] }])),
+  }, null, 2)}\n`);
   console.log(`\n${report.length} screenshots in ${o.out}/ (details in report.json). Open each image and walk audit/PROCEDURE.md step 3.`);
+  console.log(`To score Polish: copy ${path.join(o.out, 'polish.template.json')} to polish.json, give every dimension a score from 0 to 4 (audit/POLISH.md) with a note and evidence, then pass it with --polish.`);
   return problems ? 1 : 0;
 }
 

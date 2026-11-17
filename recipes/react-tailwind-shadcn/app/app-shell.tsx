@@ -77,11 +77,14 @@ function AppShell({ brand, nav, footerNav, currentPath, topBar, children }: AppS
         Skip to content
       </a>
 
-      <aside className="hidden border-e bg-card lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col lg:gap-6 lg:p-4">
-        <div className="px-3 pt-1">{brand}</div>
-        <nav aria-label="Primary" className="min-h-0 flex-1 overflow-y-auto">
-          <NavLinks groups={nav} footer={footerNav} currentPath={currentPath} />
-        </nav>
+      {/* The column carries the background and border so they run the full page height; only the inner panel is sticky. */}
+      <aside className="hidden border-e bg-card lg:block">
+        <div className="flex flex-col gap-6 p-4 lg:sticky lg:top-0 lg:h-dvh">
+          <div className="px-3 pt-1">{brand}</div>
+          <nav aria-label="Primary" className="min-h-0 flex-1 overflow-y-auto">
+            <NavLinks groups={nav} footer={footerNav} currentPath={currentPath} />
+          </nav>
+        </div>
       </aside>
 
       <div className="flex min-w-0 flex-col">
@@ -100,8 +103,8 @@ function AppShell({ brand, nav, footerNav, currentPath, topBar, children }: AppS
               </nav>
             </DialogContent>
           </Dialog>
-          <div className="lg:hidden">{brand}</div>
-          <div className="ms-auto flex items-center gap-2">{topBar}</div>
+          <div className="min-w-0 shrink-0 lg:hidden">{brand}</div>
+          <div className="ms-auto flex min-w-0 items-center gap-2">{topBar}</div>
         </header>
         <main id="main" tabIndex={-1} className="mx-auto w-full max-w-6xl flex-1 px-(--space-gutter) py-8">
           {children}

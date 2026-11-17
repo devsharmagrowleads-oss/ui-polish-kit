@@ -1,6 +1,6 @@
 # UI elevate procedure
 
-The audit (`audit/PROCEDURE.md`) makes an interface correct. Elevation makes it look and feel like a professional designer made it: the same product and content, remapped into a premium interface. Run it on a UI that already works, typically one a coding agent produced. It uses two scores: the static score from the checker, and the Polish score, judged from screenshots against `audit/POLISH.md`. Elevation is done when the static check passes, the Polish score is at least 80 and no Polish dimension scores below 2.
+The audit (`audit/PROCEDURE.md`) makes an interface correct. Elevation makes it look and feel like a professional designer made it: the same product and content, remapped into a premium interface. Run it on a UI that already works, typically one a coding agent produced. It uses two scores: the static score from the checker, and the Polish score, judged from screenshots against `audit/POLISH.md`. Elevation is done when the static check passes, the Polish score is at least 80 and no Polish dimension scores below 2, as scored by an independent reviewer (`audit/POLISH.md`, Independent check).
 
 Work in this order. Do not skip the baseline: the before/after comparison is how the owner sees what changed.
 
@@ -85,7 +85,9 @@ node <kit>/audit/cli.mjs . --polish .ui-polish-audit/polish.json \
   --before .ui-polish-audit/before.json --html .ui-polish-audit/report.html
 ```
 
-If the target is not met (static check failing, Polish score under 80, or any dimension under 2), go back to step 4 with the weakest dimensions. Stop when it is met or when what remains needs the owner (assets, a brand decision, product data).
+Then get the independent score: hand only `audit/POLISH.md` and the screenshot folder to a reviewer that did not do the work (a fresh agent or session, or a person), without your scores or plan, and keep their result as `.ui-polish-audit/polish-independent.json`. Build the report with `--polish .ui-polish-audit/polish-independent.json` and quote your own score beside it.
+
+If the target is not met by the independent score (static check failing, Polish score under 80, or any dimension under 2), go back to step 4 with the weakest dimensions. Stop when it is met or when what remains needs the owner (assets, a brand decision, product data).
 
 ## 7. Report
 

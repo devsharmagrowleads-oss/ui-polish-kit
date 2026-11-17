@@ -14,6 +14,6 @@ Raise a working interface to a premium one. Follow `.ui-polish/audit/ELEVATE.md`
 4. Plan: rank moves by the weakest Polish dimensions, system-level first (tokens, type scale, spacing, shared components). Show the plan, any brand changes and any missing assets to the owner.
 5. Apply: tokens, then shared components (recipes), then pages. Keep the static check passing. No slop: premium means restraint.
 6. Re-measure into `.ui-polish-audit/` (same file names), re-score into `polish.json`, then `node .ui-polish/audit/cli.mjs . --polish .ui-polish-audit/polish.json --before .ui-polish-audit/before.json --html .ui-polish-audit/report.html`.
-7. Done when the static check passes, Polish is at least 80 and no dimension is below 2. Report both scores before and after, what changed, what needs the owner, and the HTML report.
+7. Get an independent Polish score: a fresh agent or session that did not do the work scores the after screenshots from POLISH.md alone. Done when the static check passes and the independent Polish score is at least 80 with no dimension below 2. Report both your and the independent scores, before and after, what changed, what needs the owner, and the HTML report.
 
 If arguments were given, they name the scope: $ARGUMENTS

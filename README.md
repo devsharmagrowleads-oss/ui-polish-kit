@@ -90,14 +90,15 @@ Ask an agent for a SaaS screen and the result usually works, and usually has the
 
 ## Does it work?
 
-We gave Claude Code the same three prompts twice, in empty folders: once as it is, once with the kit installed. Same tools, no other plugins. Each result was scored by the kit's static checker (85 passes).
+We gave Claude Code the same three prompts twice, in empty folders: once as it is, once with the kit (0.3.0) installed. Same tools, no other plugins. Each result was scored by the kit's static checker (85 passes).
 
 | Prompt | Without the kit | With the kit |
 | --- | --- | --- |
-| Invoicing dashboard: navigation, summary numbers, revenue chart, sortable invoice table | **53** / 100 · 13 errors | **100** / 100 · 0 errors |
-| Landing page: hero, features, pricing, FAQ, dark mode toggle | **47** / 100 · 11 errors | **96** / 100 · 0 errors |
+| Invoicing dashboard: navigation, summary numbers, revenue chart, sortable invoice table | **51** / 100 · 12 errors | **94** / 100 · 0 errors |
+| Sign-up page: name, email, password, team size, start date, terms, validation | **36** / 100 · 15 errors | **96** / 100 · 0 errors |
+| Landing page: hero, features, pricing, FAQ, dark mode toggle | **46** / 100 · 15 errors | **96** / 100 · 0 errors |
 
-Without the kit, the agent shipped browser-default selects and date pickers, emoji as icons, hard-coded colours, no favicon or social preview, `href="#"` links and unlabelled icons. With the kit all of those were gone; what remained was a missing 404 page on one and incomplete social-preview tags on the other.
+Without the kit, the agent shipped browser-default selects and date pickers, emoji as icons, a purple-to-blue gradient, hard-coded colours, no favicon or social preview, `href="#"` links and no privacy link on the landing page. With the kit every error was gone. What remained were warnings the agents left unfixed in all three runs: no home-screen icon (AS-02), incomplete social-preview tags (FD-03) and no 404 page (FD-05), plus no `design.md` in the dashboard run. The core rules now say to fix or explain every warning. Details per rule: [`docs/eval/README.md`](docs/eval/README.md).
 
 One run per prompt, judged by the kit's own checker, which reads code rather than pixels, so read it as a strong signal rather than a benchmark. Run it yourself with [`node scripts/eval/run.mjs`](scripts/eval/run.mjs) (needs the `claude` CLI; prompts in [`prompts.json`](scripts/eval/prompts.json)).
 
@@ -105,12 +106,12 @@ One run per prompt, judged by the kit's own checker, which reads code rather tha
 
 We then took two pages built by plain Claude Code (the dashboard and landing prompts above, no kit) and ran the [elevate procedure](#elevate-from-correct-to-premium) on them as written: intake, baseline, critique, plan, apply, re-measure.
 
-| Page | Static before → after | Polish before → after | What moved it |
-| --- | --- | --- | --- |
-| Invoicing dashboard (app) | 53 → **100** | 55 → **80** | A brand palette instead of framework blue, a chosen typeface, one focal KPI with actions, no sideways scroll on phones (rows stack), the partial month marked on the chart, the favicon set and real routes |
-| Meal-planning landing page (marketing) | 46 → **100** | 61 → **82** | One call-to-action label instead of four, one icon set instead of emoji, an honest open-beta note instead of invented proof, real legal links, a display typeface with four weights, a solid band instead of a gradient |
+| Page | Static before → after | Polish, self-scored | Polish, independent | What moved it |
+| --- | --- | --- | --- | --- |
+| Invoicing dashboard (app) | 53 → **100** | 55 → 80 | 48 → **73** | A brand palette instead of framework blue, a chosen typeface, one focal KPI with actions, no sideways scroll on phones (rows stack), the partial month marked on the chart, the favicon set and real routes |
+| Meal-planning landing page (marketing) | 46 → **100** | 61 → 82 | 63 → **70** | One call-to-action label instead of four, one icon set instead of emoji, an honest open-beta note instead of invented proof, real legal links, a display typeface with four weights, a solid band instead of a gradient |
 
-The dashboard's full before/after report is in [`docs/sample-report.html`](docs/sample-report.html). Both needed a second pass to reach the Polish target, which is how the procedure is meant to work. The Polish scores are a judgement from screenshots against [`audit/POLISH.md`](audit/POLISH.md), made by the same agent that did the work, so treat them as indicative. The run also found five problems in the kit itself, fixed in the same change: a single-page dashboard was not recognised as an app, `noindex` 404 pages were asked for social cards, icons inside an `aria-hidden` wrapper were flagged, a dead "Privacy" link got a misleading message, and the procedure took its baseline after writing `design.md`.
+The dashboard's full before/after report is in [`docs/sample-report.html`](docs/sample-report.html). By its own scoring, the agent that did the work reached the Polish target (80) on both pages after a second pass. A second agent, given only [`audit/POLISH.md`](audit/POLISH.md) and the screenshots, agreed that both pages improved, but scored the results 7 and 12 points lower, below the target. The procedure now requires that independent score before calling the target met. The run also found five problems in the kit itself, fixed in the same change: a single-page dashboard was not recognised as an app, `noindex` 404 pages were asked for social cards, icons inside an `aria-hidden` wrapper were flagged, a dead "Privacy" link got a misleading message, and the procedure took its baseline after writing `design.md`.
 
 ## How it works
 
@@ -306,7 +307,7 @@ Progress is measured with two scores:
 | **Static** (0–100) | Defects in the code: default controls, hard-coded colours, missing states, UX-law violations | The checker, automatically |
 | **Polish** (0–100) | Whether it looks designed: hierarchy, typography, spacing, colour, surfaces, components, imagery, motion, copy, consistency, and the conversion or activation journey | Eleven dimensions scored 0–4 from the screenshots against the anchors in [`audit/POLISH.md`](audit/POLISH.md), each with evidence |
 
-Elevation is done when the static check passes, Polish is at least 80 ("polished"; 90 and over is "premium") and no dimension is below 2. The result is a **shareable HTML report**: both scores with before/after changes, Polish by dimension, findings by file, and before/after screenshot pairs, all in one self-contained file you can send to a client or a teammate. See [`docs/sample-report.html`](docs/sample-report.html), the report from the dashboard run described under [Does it work?](#does-it-work) (download it and open it in a browser; GitHub shows HTML files as source).
+Elevation is done when the static check passes, Polish is at least 80 ("polished"; 90 and over is "premium") and no dimension is below 2, as scored by a reviewer that did not do the work. The screenshot tool writes an empty `polish.template.json` listing every dimension, so scoring starts from a complete scorecard. The result is a **shareable HTML report**: both scores with before/after changes, Polish by dimension, findings by file, and before/after screenshot pairs, all in one self-contained file you can send to a client or a teammate. See [`docs/sample-report.html`](docs/sample-report.html), the report from the dashboard run described under [Does it work?](#does-it-work) (download it and open it in a browser; GitHub shows HTML files as source).
 
 ```bash
 node .ui-polish/audit/cli.mjs . --json --polish .ui-polish-audit/polish-before.json > .ui-polish-audit/before.json
@@ -314,6 +315,27 @@ node .ui-polish/audit/cli.mjs . --json --polish .ui-polish-audit/polish-before.j
 node .ui-polish/audit/cli.mjs . --polish .ui-polish-audit/polish.json \
   --before .ui-polish-audit/before.json --html .ui-polish-audit/report.html
 ```
+
+### In CI
+
+The repository is also a GitHub Action. It runs the checker on every pull request, puts each finding on the line it belongs to, writes a summary with the score, and attaches the HTML report:
+
+```yaml
+# .github/workflows/ui-polish.yml
+on: pull_request
+jobs:
+  ui-polish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: devsharmagrowleads-oss/ui-polish-kit@v0.3.1
+        with:
+          path: .            # folder to audit
+          min-score: "90"    # optional; defaults to the project config, then 85
+          fail-on: error     # error | warning | never
+```
+
+Outputs: `score` and `pass`. Add `polish: .ui-polish-audit/polish.json` to include a Polish score you committed.
 
 ## Install
 

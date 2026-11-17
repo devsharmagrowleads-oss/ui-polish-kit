@@ -115,13 +115,13 @@ function useCommandPaletteShortcut(setOpen: React.Dispatch<React.SetStateAction<
 
 type CommandPaletteTriggerProps = React.ComponentProps<"button">;
 
-/** The visible way in, for the top bar: looks like a search field and shows the shortcut. */
+/** The visible way in, for the top bar: looks like a search field and shows the shortcut; below `sm` it shrinks to an icon button (the label stays for screen readers). */
 function CommandPaletteTrigger({ className, ...props }: CommandPaletteTriggerProps) {
   return (
     <button
       type="button"
       className={cn(
-        "flex h-9 w-full max-w-xs items-center gap-2 rounded-md border border-input bg-background px-3 text-sm text-muted-foreground",
+        "flex h-9 min-w-0 items-center gap-2 rounded-md border border-input bg-background px-2.5 text-sm text-muted-foreground sm:w-full sm:max-w-xs sm:px-3",
         "transition-[border-color,color] duration-(--duration-fast) ease-out hover:border-ring hover:text-foreground",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         className,
@@ -129,8 +129,8 @@ function CommandPaletteTrigger({ className, ...props }: CommandPaletteTriggerPro
       {...props}
     >
       <SearchIcon className="size-4" aria-hidden="true" />
-      <span className="flex-1 text-start">Search</span>
-      <kbd className="font-mono text-xs" aria-label="Control K">
+      <span className="flex-1 text-start max-sm:sr-only">Search</span>
+      <kbd className="font-mono text-xs whitespace-nowrap max-sm:hidden" aria-label="Control K">
         Ctrl K
       </kbd>
     </button>
