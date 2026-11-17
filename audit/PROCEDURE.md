@@ -24,7 +24,7 @@ How the static score works: start at 100; each error costs 5, each warning 2, ea
 Start the dev server (or open the built files). For each page in scope capture six screenshots: widths 375, 768 and 1440, each in light and dark.
 
 ```bash
-node <kit>/audit/screenshot.mjs http://localhost:3000/ http://localhost:3000/settings
+node <kit>/audit/screenshot.mjs http://localhost:3000/ http://localhost:3000/settings --states
 # writes .ui-polish-audit/<page>-<width>-<theme>.png and report.json
 # (horizontal overflow per viewport, console errors). Needs `playwright` or `playwright-core`
 # in the project: npm i -D playwright-core  (uses installed Chrome or Edge).

@@ -26,7 +26,7 @@ Pages behind a sign-in: pass `--storage-state auth.json` (cookies and storage of
 ```bash
 mkdir -p .ui-polish-audit/before
 node <kit>/audit/cli.mjs . --json > .ui-polish-audit/before.json
-node <kit>/audit/screenshot.mjs <urls…> --out .ui-polish-audit/before
+node <kit>/audit/screenshot.mjs <urls…> --states --out .ui-polish-audit/before
 ```
 
 Capture every page in scope at 375, 768 and 1440px, light and dark, plus overlays and the empty, loading and error states (`audit/PROCEDURE.md` step 2). Look at every image. Score each Polish dimension from these screenshots (`audit/POLISH.md`) into `.ui-polish-audit/polish-before.json`, then add it to the baseline:

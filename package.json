@@ -3,9 +3,18 @@
   "version": "0.3.2",
   "description": "Rules, recipes, and an audit that stop AI coding agents from shipping generic, unfinished UI.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devsharmagrowleads-oss/ui-polish-kit.git"
+  },
+  "homepage": "https://github.com/devsharmagrowleads-oss/ui-polish-kit#readme",
+  "bugs": {
+    "url": "https://github.com/devsharmagrowleads-oss/ui-polish-kit/issues"
+  },
   "type": "module",
   "bin": {
-    "ui-polish": "cli.mjs"
+    "ui-polish": "cli.mjs",
+    "ui-polish-kit": "cli.mjs"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
@@ -26,7 +35,10 @@
     "codex",
     "agents-md",
     "tailwind",
-    "shadcn"
+    "shadcn",
+    "ui-audit",
+    "accessibility",
+    "github-action"
   ],
   "files": [
     "cli.mjs",
@@ -37,6 +49,8 @@
     "skills",
     "templates",
     "dist",
-    ".claude-plugin"
+    ".claude-plugin",
+    "CHANGELOG.md",
+    "action.yml"
   ]
 }

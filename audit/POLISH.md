@@ -36,7 +36,7 @@ Three independent reviewers scoring the same pages agreed within 3 points, and t
 - **App journey without a first run** caps `journey` at 3: capture a brand-new account as well as a populated one.
 - **Marketing journey without proof** caps `journey` at 2: a testimonial, a sourced number or customer logos next to the claims (real ones; if there are none, the score stays at 2 and the report says why).
 - **Clipped navigation at 375px** caps `spacing` at 3: wrap it, or show that it scrolls.
-- **Motion** is scored `null` from still screenshots; that is expected and does not count against the page.
+- **Motion** needs evidence. Capture with `screenshot.mjs --states`: it adds hover and keyboard-focus images and records each element's transition and focus-ring styles in `report.json`. Score motion from those (and the CSS); without them it is `null`, which does not count against the page. `NO RING` in the tool's output is a focus defect (AX-01).
 
 A worked example with scores and reasons for one dashboard is in `audit/POLISH-EXAMPLE.md`; use it to calibrate, not when scoring that project.
 
