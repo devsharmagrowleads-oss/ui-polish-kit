@@ -44,7 +44,7 @@ function linesAround(f, pos, n = 4) {
 
 function svgRegions(text) {
   const out = [];
-  const re = /<svg\b[\s\S]*?<\/svg\s*>/g;
+  const re = /<(?:\w+\.)?svg\b[\s\S]*?<\/(?:\w+\.)?svg\s*>/g;
   let m;
   while ((m = re.exec(text))) out.push([m.index, m.index + m[0].length]);
   return out;
@@ -194,7 +194,7 @@ function tokens(f, facts, report, once) {
       }
     }
 
-    const raw = new RegExp(`(?<![\\w-])((?:[\\w\\[\\]&=>-]+:)*)(?:bg|text|border|ring|outline|fill|stroke|from|via|to|divide|decoration|placeholder|caret|accent|shadow|ring-offset)-(?:${PALETTE})-(?:50|[1-9]00|950)(?:\\/\\d+)?(?![\\w-])`, 'g');
+    const raw = new RegExp(`(?<![\\w-])((?:[\\w\\[\\].&=>-]+:)*)(?:bg|text|border|ring|outline|fill|stroke|from|via|to|divide|decoration|placeholder|caret|accent|shadow|ring-offset)-(?:${PALETTE})-(?:50|[1-9]00|950)(?:\\/\\d+)?(?![\\w-])`, 'g');
     let m;
     while ((m = raw.exec(f.text))) {
       once('TK-03', m.index, m[0], (n, first) => `${n} raw Tailwind palette ${n === 1 ? 'utility' : 'utilities'} (first: \`${first}\`). Use semantic tokens (bg-primary, text-muted-foreground, border-border) so brand and dark mode come from one place.`);
@@ -339,7 +339,9 @@ function slop(f, facts, report, once) {
       const fill = FILLER.exec(m[0]);
       if (fill && !(/doe$/i.test(fill[0]) && /placeholder/i.test(m[0]))) report('CP-02', m.index + fill.index, `Placeholder copy "${fill[0]}". Write the real text, or realistic sample data that matches the product's domain.`);
       const vague = VAGUE.exec(m[0]);
-      if (vague) report('CP-03', m.index + vague.index, `Vague microcopy "${clip(vague[0].replace(/<\/?\w*|[<>"'\`]/g, '').trim())}". Name the action or the problem and the next step ("Save changes", "Couldn't save: check your connection and retry").`);
+      // A toast whose title is generic but whose description names the object and the next step is fine.
+      const explained = vague && /^\s*title\s*:/.test(m[0]) && /^\s*description\s*:\s*["'`][^"'`]{12,}/m.test(f.text.slice(m.index + m[0].length, m.index + m[0].length + 200));
+      if (vague && !explained) report('CP-03', m.index + vague.index, `Vague microcopy "${clip(vague[0].replace(/<\/?\w*|[<>"'\`]/g, '').trim())}". Name the action or the problem and the next step ("Save changes", "Couldn't save: check your connection and retry").`);
     }
   }
 
@@ -387,8 +389,15 @@ function accessibility(f, facts, report) {
   const tw = /(?<![\w-])((?:[\w-]+:)*)outline-(?:none|hidden|0)(?![\w-])/g;
   while ((m = tw.exec(f.text))) {
     // The replacement may sit on a wrapper a few lines up (focus-within) or in a sibling cn() string.
-    const near = `${stringAround(f, m.index)}\n${linesAround(f, m.index, 8)}`;
-    if (/focus-visible:(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus:(ring|outline-(?!none|hidden|0)|border|shadow)|focus-within:|has-\[:focus-visible\]/.test(near)) continue;
+    const own = stringAround(f, m.index);
+    const near = `${own}\n${linesAround(f, m.index, 8)}`;
+    if (/focus-visible:(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus:(ring|outline-(?!none|hidden|0)|border|shadow|bg)|focus-within:|has-\[:focus-visible\]/.test(near)) continue;
+    // Menu/listbox/combobox items mark the active item with a background (AX-02 rule text allows this).
+    if (/(?:aria-selected|data-\[(?:selected|highlighted)[^\]]*\]|data-highlighted|data-selected):bg-/.test(own)) continue;
+    // Popover / menu content panels receive programmatic focus; they are containers, not controls.
+    if (/(?<![\w-])bg-popover(?![\w-])/.test(own)) continue;
+    // A focus-within ring on an enclosing wrapper further up the same component.
+    if (/focus-within:(ring|outline-(?!none|hidden|0)|border)/.test(f.text.slice(Math.max(0, m.index - 3000), m.index))) continue;
     report('AX-02', m.index, `\`${m[0]}\` removes the focus indicator with no replacement in the same class list. Add \`focus-visible:ring-2 focus-visible:ring-ring\` (or an equivalent visible state).`);
   }
 
@@ -492,7 +501,7 @@ function responsive(f, facts, report) {
     }
   }
   const vw = /(?<![\w-])(?:[\w-]+:)*w-screen(?![\w-])/g;
-  while ((m = vw.exec(f.text))) report('RS-03', m.index, '`w-screen` (100vw) includes the scrollbar width and causes horizontal overflow. Use `w-full`.');
+  while ((m = vw.exec(f.text))) if (!/(?<![\w-])fixed(?![\w-])/.test(stringAround(f, m.index))) report('RS-03', m.index, '`w-screen` (100vw) includes the scrollbar width and causes horizontal overflow. Use `w-full`.');
 }
 
 const DEFAULT_TITLES = /^(vite( \+ \w+)*( \+ ts)?|create next app|react app|document|untitled( document)?|my app|app|home|title|welcome|page title|new project|next\.js|astro|sveltekit|nuxt app|vite app)$/i;
@@ -667,7 +676,10 @@ function uxLaws(f, facts, report) {
   }
 }
 
+const OG_ROUTE = /(^|\/)(opengraph-image|twitter-image)\.[jt]sx?$/;
 export function runFileDetectors(f, facts, report, once) {
+  // ImageResponse JSX is rasterised by satori: no DOM, no CSS variables, no assistive tech, no layout shift.
+  if (OG_ROUTE.test(f.rel) || (/from\s*["'](?:next\/og|@vercel\/og)["']/.test(f.text) && /\bnew ImageResponse\(/.test(f.text))) return;
   nativeControls(f, facts, report);
   dialogs(f, facts, report);
   tokens(f, facts, report, once);

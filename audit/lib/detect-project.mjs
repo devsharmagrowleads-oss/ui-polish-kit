@@ -119,7 +119,10 @@ export function runProjectDetectors(project, report) {
       }
     }
   }
-  if (weights.size > 4) {
+  // VH-07 allows one extra display weight (800 or heavier) on marketing pages.
+  const heaviest = Math.max(0, ...weights.keys());
+  const allowance = facts.surface && ['marketing', 'both'].includes(facts.surface.value) && heaviest >= 800 ? 5 : 4;
+  if (weights.size > allowance) {
     const list = [...weights.keys()].sort((a, b) => a - b);
     report('VH-07', weights.get(list[list.length - 1]), `${weights.size} font weights in use (${list.join(', ')}). Weight is an emphasis level, so more than three or four stops meaning anything. Settle on regular, medium and semibold (or bold) and give each one role.`);
   }

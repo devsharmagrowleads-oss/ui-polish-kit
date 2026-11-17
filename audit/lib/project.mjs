@@ -216,7 +216,9 @@ function collectFacts(root, allFiles, files, config) {
     if (/accent-color\s*:|(?<![\w-])accent-(?!foreground)[a-z[(]/.test(t)) facts.accentColor = true;
     if (/::-webkit-slider-thumb|::-moz-range-thumb/.test(t)) facts.sliderThumbStyled = true;
     if (/::file-selector-button|\bfile:[a-z]/.test(t)) facts.fileButtonStyled = true;
-    if (/color-scheme\s*:|\bscheme-(light|dark|normal)\b|colorScheme/.test(t)) facts.colorScheme = true;
+    if (/(?<!prefers-)color-scheme\s*:|\bscheme-(light|dark|normal)\b|colorScheme/.test(t)) facts.colorScheme = true;
+    // next-themes writes style="color-scheme: …" on <html> unless enableColorScheme={false}.
+    if (/from\s*["']next-themes["']/.test(t) && /ThemeProvider/.test(t) && !/enableColorScheme\s*=\s*\{\s*false/.test(t)) facts.colorScheme = true;
     if (/light-dark\(/.test(t)) facts.usesLightDark = true;
 
     let m;
@@ -225,7 +227,15 @@ function collectFacts(root, allFiles, files, config) {
     if ((m = /<(input|textarea)[\s/>]/.exec(t)) && f.hasMarkup) note('firstInput', f, m.index);
 
     const blur = /\bbackdrop-blur(-\w+)?\b|backdrop-filter\s*:\s*[^;]*blur\(/g;
-    while ((m = blur.exec(t))) facts.backdropBlur.push({ rel: f.rel, pos: m.index });
+    while ((m = blur.exec(t))) {
+      if (m[0] === 'backdrop-blur-none') continue;
+      const ls = t.lastIndexOf('\n', m.index) + 1;
+      const le = t.indexOf('\n', m.index);
+      const line = t.slice(ls, le < 0 ? t.length : le);
+      if (/\b(enter|leave)(From|To)?\s*=/.test(line)) continue; // Transition state strings, not a surface
+      if (/(?<![\w-])fixed(?![\w-])/.test(line) && /(?<![\w-])inset-0(?![\w-])/.test(line)) continue; // modal scrim
+      facts.backdropBlur.push({ rel: f.rel, pos: m.index });
+    }
 
     // --- CSS facts
     for (const b of f.blocks) {
@@ -362,7 +372,7 @@ function collectFacts(root, allFiles, files, config) {
 // Surface: marketing site, product app, or both
 // ---------------------------------------------------------------------------
 
-const MARKETING_PATHS = /(^|\/)(landing|pricing|features|about|blog|customers|testimonials|careers|press|home)(\/|\.|-|$)/i;
+const MARKETING_PATHS = /(^|\/)(landing|pricing|features|about|blog|customers|testimonials|careers|press|home|product|products|collections?|shop|store|cart)(\/|\.|-|$)/i;
 const APP_PATHS = /(^|\/)(dashboard|settings|admin|account|billing|workspace|onboarding|sign-?in|log-?in|sign-?up|projects|inbox|reports)(\/|\.|-|$)/i;
 const ID_OR_CLASS = (word) => new RegExp(`\\b(?:id|class|className)\\s*=\\s*\\{?\\s*["'\`][^"'\`]*\\b${word}\\b`, 'i');
 const MARKETING_MARKUP = [
@@ -406,6 +416,9 @@ export function detectSurface(allFiles, files) {
     for (const [name, test] of MARKETING_MARKUP) if (hit(test, f.text)) marketing.add(name);
     for (const [name, test] of APP_MARKUP) if (hit(test, f.text)) app.add(name);
   }
+  // A root page that opens with an <h1> and outbound calls to action is a landing page.
+  const root = files.find((f) => /^(src\/)?(app\/page|pages\/index|index)\.(tsx|jsx|js|html|astro|vue|svelte)$/.test(f.rel));
+  if (root && /<h1[\s>]/.test(root.text) && /<a\b[^>]*target=["']_blank/.test(root.text) && !app.size) marketing.add('landing page');
   const m = marketing.size >= 2;
   const a = app.size >= 2;
   const value = m && a ? 'both' : m ? 'marketing' : a ? 'app' : 'unknown';
