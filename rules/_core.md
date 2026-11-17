@@ -6,7 +6,7 @@ Kit root: `{{KIT}}` (contains `rules/`, `recipes/`, `audit/`).
 
 ## Workflow, in this order
 
-1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `{{KIT}}/templates/design.md`. Everything later follows it. (BR)
+1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `{{KIT}}/templates/design.md`, with a `Surface:` line. Everything later follows it. (BR)
 2. **Tokens.** Define colour, spacing, radius, shadow, type, z-index and motion tokens for light and dark before writing any component. Start from `{{KIT}}/recipes/react-tailwind-shadcn/tokens/tokens.css`. (TK, CO, DM)
 3. **Build.** Use tokens and the recipes in `{{KIT}}/recipes/` only. Design the 375px layout first. (all topics)
 4. **Self-audit.** Run the static checker, screenshot the result at 375 / 768 / 1440px in light and dark, look at the screenshots, fix what fails, re-check. Only then report the task as done, with the score. (SA)
@@ -24,7 +24,8 @@ Kit root: `{{KIT}}` (contains `rules/`, `recipes/`, `audit/`).
 9. **Dark mode comes from tokens**, with `color-scheme` set; never from `filter: invert` or per-element `dark:` overrides. (DM)
 10. **Accessible by construction.** 4.5:1 text contrast, visible `:focus-visible` ring, full keyboard operation, semantic elements, labels on icon buttons, `prefers-reduced-motion` respected. (AX, MO)
 11. **Finished, not demo-ware.** Favicon, real `<title>` and description, social preview image, 404 page, images with dimensions and alt, one icon set, a z-index scale. (FD)
-12. **Real words.** No lorem ipsum or filler names; buttons say what they do; errors say what happened and what to do next. (CP)
+12. **Usable.** One focal point and one primary action per view; progress in multi-step flows. (UX, VH)
+13. **Real words.** No lorem ipsum or filler names; buttons say what they do; errors say what happened and what to do next. (CP)
 
 ## Modern Web Guidance
 

@@ -7,7 +7,7 @@ Kit root: `.ui-polish` (contains `rules/`, `recipes/`, `audit/`).
 
 ## Workflow, in this order
 
-1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `.ui-polish/templates/design.md`. Everything later follows it. (BR)
+1. **Intake.** Find `design.md` in the project. If it does not exist, look for brand colours, fonts, logo and tone in the repo, ask the owner for what is missing, and write `design.md` from `.ui-polish/templates/design.md`, with a `Surface:` line. Everything later follows it. (BR)
 2. **Tokens.** Define colour, spacing, radius, shadow, type, z-index and motion tokens for light and dark before writing any component. Start from `.ui-polish/recipes/react-tailwind-shadcn/tokens/tokens.css`. (TK, CO, DM)
 3. **Build.** Use tokens and the recipes in `.ui-polish/recipes/` only. Design the 375px layout first. (all topics)
 4. **Self-audit.** Run the static checker, screenshot the result at 375 / 768 / 1440px in light and dark, look at the screenshots, fix what fails, re-check. Only then report the task as done, with the score. (SA)
@@ -25,7 +25,8 @@ Kit root: `.ui-polish` (contains `rules/`, `recipes/`, `audit/`).
 9. **Dark mode comes from tokens**, with `color-scheme` set; never from `filter: invert` or per-element `dark:` overrides. (DM)
 10. **Accessible by construction.** 4.5:1 text contrast, visible `:focus-visible` ring, full keyboard operation, semantic elements, labels on icon buttons, `prefers-reduced-motion` respected. (AX, MO)
 11. **Finished, not demo-ware.** Favicon, real `<title>` and description, social preview image, 404 page, images with dimensions and alt, one icon set, a z-index scale. (FD)
-12. **Real words.** No lorem ipsum or filler names; buttons say what they do; errors say what happened and what to do next. (CP)
+12. **Usable.** One focal point and one primary action per view; progress in multi-step flows. (UX, VH)
+13. **Real words.** No lorem ipsum or filler names; buttons say what they do; errors say what happened and what to do next. (CP)
 
 ## Modern Web Guidance
 
@@ -56,6 +57,8 @@ These rules set the look; Modern Web Guidance picks the browser feature. Before 
 | NV Navigation and page structure | `.ui-polish/rules/19-navigation.md` | Building the app shell, header, sidebar, tabs, breadcrumbs or page header; adding a new page or route; deciding where a page's title and main actions go. |
 | IC Icons | `.ui-polish/rules/20-icons.md` | Adding, choosing or sizing an icon; building icon buttons, navigation items, badges, empty states or status messages with icons; importing an icon library or inline SVG. |
 | IN Internationalisation and right-to-left | `.ui-polish/rules/21-internationalisation.md` | The product is or will be translated, supports right-to-left languages (Arabic, Hebrew, Persian, Urdu), shows dates, numbers, currencies or plurals, or sets fixed widths on text. |
+| UX UX laws | `.ui-polish/rules/22-ux-laws.md` | Designing any screen, flow or navigation; placing primary actions; deciding how many options, steps or fields to show; building multi-step forms, checkouts or onboarding; reviewing a page for usability before calling it done. |
+| VH Visual hierarchy | `.ui-polish/rules/23-visual-hierarchy.md` | Laying out any page, section, card, dashboard or detail view; styling headings, labels, values and secondary text; deciding what a screen should draw the eye to first; reviewing a screen that looks flat, busy or "all the same". |
 
 ## Checking your work
 

@@ -9,7 +9,7 @@ Follow the procedure in `.ui-polish/audit/PROCEDURE.md` exactly. In short:
 
 1. Static check: `node .ui-polish/audit/cli.mjs .` (add `--json` for machine output). Record the score.
 2. Start the app and capture every page in scope at 375, 768 and 1440px, in light and dark: `node .ui-polish/audit/screenshot.mjs <url>` or your browser tool. Capture open dropdowns, date pickers and dialogs, and the empty, loading and error states. Look at every image.
-3. Walk the 35-item visual checklist in the procedure; mark pass, fail or n/a. Blocker items fail the audit on their own.
+3. Walk the 38-item visual checklist in the procedure; mark pass, fail or n/a. Blocker items fail the audit on their own.
 4. Keyboard pass, form pass, resize pass.
 5. Score: static score from the checker; visual score = passed / (passed + failed). PASS needs a passing static check, no failed blocker and a visual score of at least 90.
 6. Fix: design.md and tokens first, then errors and blockers, then warnings. Fix causes; do not weaken the config or add ignores without a reason.

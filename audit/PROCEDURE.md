@@ -83,19 +83,24 @@ Mark each item pass, fail or n/a. Items marked **[B]** are blockers: a fail on a
 30. Tab shows a real title and the favicon; a nonsense URL shows the designed 404. (FD-01, FD-02, FD-05)
 31. The UI matches `design.md`: colours, fonts, radius, density, tone. (BR-05)
 
+### Hierarchy and usability
+32. Blur or shrink each screenshot: one focal point per view, and it is the intended one; at most three or four visual weights; values read before their labels. (VH-01, VH-04, VH-06)
+33. One dominant action per region; about seven choices before grouping; conventions kept (logo top left links home, search and account where expected); clickable things look clickable and nothing else does. (UX-02, UX-03, UX-05, UX-06)
+34. Multi-step flows show the current step, the total and the next step; every action answers within 400 ms under throttling; the end of each flow says what happened and what to do next. (UX-08, UX-09, UX-12)
+
 ## 4. Interaction pass
 
-32. **[B]** Keyboard only: Tab through each page. Focus is always visible, order is logical, Enter/Space activate, Escape closes overlays and focus returns to the trigger; nothing is unreachable. (AX-10, AX-04)
-33. Forms: labels visible; validation on blur; submit shows progress and cannot double-submit; input preserved on failure. (FM-01, FM-03, FM-08)
-34. Reload and press back after choosing a tab, filter and sort: the same view returns. Moving between views keeps focus on the new heading. (NV-06, MO-08)
-35. Resize continuously from 320 to 1440px: nothing breaks between the three capture widths. Console shows no errors. (RS-03)
+35. **[B]** Keyboard only: Tab through each page. Focus is always visible, order is logical, Enter/Space activate, Escape closes overlays and focus returns to the trigger; nothing is unreachable. (AX-10, AX-04)
+36. Forms: labels visible; validation on blur; submit shows progress and cannot double-submit; input preserved on failure. (FM-01, FM-03, FM-08)
+37. Reload and press back after choosing a tab, filter and sort: the same view returns. Moving between views keeps focus on the new heading. (NV-06, MO-08)
+38. Resize continuously from 320 to 1440px: nothing breaks between the three capture widths. Console shows no errors. (RS-03)
 
 For contrast, measure rather than judge when in doubt: in a browser tool, read computed `color` and `background-color` of the element and compute the WCAG ratio; 4.5:1 for text, 3:1 for large text, input borders and focus rings.
 
 ## 5. Score
 
 - **Static score**: from step 1 (0 to 100).
-- **Visual score**: `round(100 × passed / (passed + failed))` over the 35 items, ignoring n/a.
+- **Visual score**: `round(100 × passed / (passed + failed))` over the 38 items, ignoring n/a.
 - **Verdict: PASS** only if the static check passes, no **[B]** item fails, and the visual score is at least 90. Otherwise **FAIL**.
 
 ## 6. Fix

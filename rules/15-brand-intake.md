@@ -53,7 +53,7 @@ fonts not specified anywhere. I need two answers before building: …
 ## BR-03 · Ask for what is missing, with options
 Severity: error · Check: process
 
-**Rule.** Ask the owner only for what the repository could not answer, in one message, as specific questions with concrete options: (a) brand colours: hex values or "pick from these three palettes"; (b) fonts: the brand typeface, or a choice of two or three pairings from the typography topic that suit the product; (c) tone: three adjectives, or choose between example sentences; (d) two or three reference sites or apps they like, and one they do not; (e) audience and primary device; (f) light, dark or both; (g) density. If the owner is unavailable or says "you decide", choose deliberately, write each choice in `design.md` marked "assumed: reason", and list the assumptions in your final report.
+**Rule.** Ask the owner only for what the repository could not answer, in one message, as specific questions with concrete options: (a) brand colours: hex values or "pick from these three palettes"; (b) fonts: the brand typeface, or a choice of two or three pairings from the typography topic that suit the product; (c) tone: three adjectives, or choose between example sentences; (d) two or three reference sites or apps they like, and one they do not; (e) audience and primary device; (f) light, dark or both; (g) density; (h) the surface: marketing site, product app or both (BR-06). If the owner is unavailable or says "you decide", choose deliberately, write each choice in `design.md` marked "assumed: reason", and list the assumptions in your final report.
 
 **Why.** Open questions ("what style do you want?") get vague answers; options get decisions. Recorded assumptions can be corrected later; silent defaults cannot be found.
 
@@ -118,3 +118,25 @@ Severity: error · Check: process
 ```
 
 **Check.** Process: diff the fonts, colours and radii used in changed files against `design.md`; any new value has a matching log entry.
+
+## BR-06 · Record what kind of product it is
+Severity: info · Check: static
+
+**Rule.** Write the surface in `design.md` as a line `Surface: marketing`, `Surface: app` or `Surface: both`. Marketing means a website or landing page whose job is to explain and convert; app means a signed-in product (SaaS, dashboard, admin tool) whose job is to get work done; both means the repository holds both. If the repository does not make it obvious, ask the owner as part of the intake (BR-03). The checker and the topics use it: rules written only for marketing pages or only for apps apply only where they fit. A config `"surface"` setting overrides the file.
+
+**Why.** A dashboard does not need a hero, social proof or a pricing table, and a landing page does not need a setup checklist. Without the surface written down, the agent either applies every rule or guesses.
+
+**Bad.**
+```md
+## Product and audience
+- What it is: invoicing for small studios
+```
+
+**Good.**
+```md
+## Product and audience
+- Surface: app
+- What it is: invoicing for small studios
+```
+
+**Check.** Static: `design.md` exists but has no `Surface:` line and the checker could not tell from the code whether the project is a marketing site or an app. The report prints the surface it used and where it came from.

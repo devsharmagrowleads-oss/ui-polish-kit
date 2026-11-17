@@ -8,6 +8,13 @@ export function formatText(result, { color = false, maxPerFile = 0 } = {}) {
   const out = [];
   out.push(c('bold', `ui-polish audit: ${result.root}`));
   out.push(c('dim', `${result.filesScanned} files scanned${result.configFile ? `, config ${result.configFile}` : ''}${result.designDoc ? `, design doc ${result.designDoc}` : ''}`));
+  if (result.surface) {
+    const { value, source, signals } = result.surface;
+    const why = source === 'detected' && signals ? ` from ${[...signals.marketing, ...signals.app].slice(0, 4).join(', ') || 'no clear signals'}` : '';
+    out.push(c('dim', value === 'unknown'
+      ? 'Surface: unknown, so marketing-only and app-only rules were skipped. Add "Surface: marketing | app | both" to design.md.'
+      : `Surface: ${value} (${source}${why})`));
+  }
   out.push('');
 
   const groups = new Map();

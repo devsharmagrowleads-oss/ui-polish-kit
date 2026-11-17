@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadConfig, loadProject } from './project.mjs';
+import { loadConfig, loadProject, surfaceApplies, PROJECT_SURFACES } from './project.mjs';
 import { runFileDetectors } from './detect-file.mjs';
 import { runProjectDetectors } from './detect-project.mjs';
 
@@ -28,11 +28,13 @@ export const STATIC_RULE_IDS = [
   'MO-01', 'MO-02', 'MO-03', 'MO-04',
   'FD-01', 'FD-02', 'FD-03', 'FD-04', 'FD-05',
   'CP-01', 'CP-02', 'CP-03',
-  'BR-01',
+  'BR-01', 'BR-06',
   'DT-01',
   'NV-02', 'NV-05',
   'IC-03',
   'IN-01',
+  'UX-02', 'UX-10',
+  'VH-07',
 ];
 
 export function loadRuleIndex() {
@@ -56,9 +58,11 @@ export function audit(root, options = {}) {
     if (!index.rules[id]) throw new Error(`Config "rules" names an unknown rule: ${id}`);
     if (level !== 'off' && !SEVERITIES.includes(level)) throw new Error(`Config "rules".${id} must be off, error, warning or info (got ${JSON.stringify(level)})`);
   }
+  if (!PROJECT_SURFACES.includes(config.surface)) throw new Error(`surface must be one of ${PROJECT_SURFACES.join(', ')} (got ${JSON.stringify(config.surface)})`);
   if (!['error', 'warning', 'never'].includes(config.failOn)) throw new Error(`failOn must be error, warning or never (got ${JSON.stringify(config.failOn)})`);
 
   const project = loadProject(root, config);
+  const surface = project.facts.surface;
   const findings = [];
   const seen = new Set();
 
@@ -67,6 +71,8 @@ export function audit(root, options = {}) {
     if (!meta) throw new Error(`Detector reported unknown rule ${ruleId}; rules-index.json is out of date (run the build).`);
     const level = config.rules[ruleId] ?? meta.severity;
     if (level === 'off') return null;
+    // Marketing-only and app-only topics stay quiet until the project says (or clearly shows) what it is.
+    if (!surfaceApplies(meta.surface, surface.value)) return null;
     if (options.only && !options.only.includes(ruleId)) return null;
     return level;
   };
@@ -111,7 +117,7 @@ export function audit(root, options = {}) {
   const order = { error: 0, warning: 1, info: 2 };
   findings.sort((a, b) => (a.file === b.file ? a.line - b.line || order[a.severity] - order[b.severity] : a.file === null ? -1 : b.file === null ? 1 : a.file.localeCompare(b.file)));
 
-  return { ...score(findings, config, index), root, configFile: config.configFile, designDoc: project.facts.designDoc, filesScanned: project.files.length, findings };
+  return { ...score(findings, config, index), root, configFile: config.configFile, surface, designDoc: project.facts.designDoc, filesScanned: project.files.length, findings };
 }
 
 export function score(findings, config, index) {

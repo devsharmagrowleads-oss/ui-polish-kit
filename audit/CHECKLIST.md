@@ -175,6 +175,7 @@ Generated from `rules/` by `scripts/build.mjs`. Do not edit. `static` rules are 
 - [ ] **BR-03** (error, process) Ask for what is missing, with options
 - [ ] **BR-04** (warning, process) `design.md` is complete and concrete
 - [ ] **BR-05** (error, process) `design.md` is binding
+- [ ] **BR-06** (info, static) Record what kind of product it is
 
 ## SA · Self-audit gate (`rules/16-self-audit.md`)
 
@@ -232,3 +233,28 @@ Generated from `rules/` by `scripts/build.mjs`. Do not edit. `static` rules are 
 - [ ] **IN-04** (error, visual) Format with Intl, pluralise with rules
 - [ ] **IN-05** (info, process) Strings live outside the components
 - [ ] **IN-06** (warning, visual) Fonts and line height cover every script
+
+## UX · UX laws (`rules/22-ux-laws.md`)
+
+- [ ] **UX-01** (warning, visual) Fitts's law: important targets are big and close
+- [ ] **UX-02** (warning, static) Hick's law: fewer, grouped choices
+- [ ] **UX-03** (warning, visual) Jakob's law: follow the conventions people already know
+- [ ] **UX-04** (warning, visual) Miller's law: chunk information
+- [ ] **UX-05** (warning, visual) Von Restorff effect: one thing stands out
+- [ ] **UX-06** (warning, visual) Gestalt: things that look alike behave alike
+- [ ] **UX-07** (info, visual) Serial position: first and last are remembered
+- [ ] **UX-08** (warning, visual) Doherty threshold: respond within 400 ms
+- [ ] **UX-09** (warning, visual) Goal-gradient and Zeigarnik: show progress toward the goal
+- [ ] **UX-10** (warning, static) Postel's law: accept input the way people type it
+- [ ] **UX-11** (info, visual) Tesler's law: the product absorbs the complexity
+- [ ] **UX-12** (info, visual) Peak-end rule: design the best moment and the ending
+
+## VH · Visual hierarchy (`rules/23-visual-hierarchy.md`)
+
+- [ ] **VH-01** (warning, visual) Each view has one focal point
+- [ ] **VH-02** (warning, visual) Levels differ enough to be seen
+- [ ] **VH-03** (warning, visual) Three levels of text emphasis
+- [ ] **VH-04** (info, visual) Values are louder than their labels
+- [ ] **VH-05** (warning, visual) Layout follows how the page is scanned
+- [ ] **VH-06** (warning, visual) It passes the squint test
+- [ ] **VH-07** (warning, static) Few font weights

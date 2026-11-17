@@ -28,7 +28,7 @@ function check(files, options = {}) {
 
 // A minimal project that passes every project-level rule, so a test can add one defect.
 const CLEAN = {
-  'design.md': '# Design\nFonts: Figtree.\n',
+  'design.md': '# Design\nSurface: app\nFonts: Figtree.\n',
   'tokens.css': `:root { color-scheme: light; --background: oklch(1 0 0); --foreground: oklch(0.2 0 0); --primary: oklch(0.4 0.1 195); --border: oklch(0.9 0 0); --ring: oklch(0.5 0.1 195); --font-sans: "Figtree", sans-serif; }
 .dark { color-scheme: dark; --background: oklch(0.2 0 0); --foreground: oklch(0.95 0 0); }
 :focus-visible { outline: 2px solid var(--ring); }
@@ -56,6 +56,7 @@ test('examples/before fails with the expected findings', () => {
     'FD-01', 'FD-02', 'FD-03', 'FD-04', 'FD-05',
     'CP-01', 'CP-02', 'CP-03', 'BR-01',
     'DT-01', 'NV-02', 'NV-05', 'IC-03',
+    'UX-10',
   ];
   const missing = expected.filter((id) => !ids.has(id));
   assert.deepEqual(missing, [], `rules that should fire on examples/before but did not: ${missing.join(', ')}`);
@@ -128,7 +129,7 @@ test('TY-02 default-prone font needs a recorded decision', () => {
   const layout = 'import { Inter } from "next/font/google";\nexport const font = Inter({ subsets: ["latin"] });';
   const tokens = CLEAN['tokens.css'].replace('--font-sans: "Figtree", sans-serif; ', '');
   assert.deepEqual(clean({ 'tokens.css': tokens, 'src/fonts.ts': layout }).ids, ['TY-02']);
-  assert.deepEqual(clean({ 'tokens.css': tokens, 'src/fonts.ts': layout, 'design.md': '# Design\nTypeface: Inter, the brand font since 2021.\n' }).ids, []);
+  assert.deepEqual(clean({ 'tokens.css': tokens, 'src/fonts.ts': layout, 'design.md': '# Design\nSurface: app\nTypeface: Inter, the brand font since 2021.\n' }).ids, []);
   assert.deepEqual(clean({ 'tokens.css': tokens, 'src/fonts.ts': layout.replaceAll('Inter', 'Figtree') }).ids, []);
 });
 
@@ -321,4 +322,58 @@ test('every static rule ID exists in the generated index with a severity', () =>
     assert.equal(index.rules[id].check, 'static');
   }
   assert.equal(new Set(STATIC_RULE_IDS).size, STATIC_RULE_IDS.length);
+});
+
+// ---------------------------------------------------------------------------
+// UX laws, visual hierarchy, surface
+// ---------------------------------------------------------------------------
+
+test('UX-02 navigation with too many top-level links', () => {
+  const links = (n) => Array.from({ length: n }, (_, i) => `<a href="/p${i}">Page ${i}</a>`).join('');
+  assert.deepEqual(clean({ 'p.html': `<nav aria-label="Primary">${links(10)}</nav>` }).ids, ['UX-02']);
+  assert.deepEqual(clean({ 'p.html': `<nav aria-label="Primary">${links(6)}</nav>` }).ids, []);
+  assert.deepEqual(clean({ 'p.html': `<footer><nav aria-label="Sitemap">${links(14)}</nav></footer>` }).ids, []);
+  assert.deepEqual(clean({ 'p.html': `<nav aria-label="Pagination">${links(12)}</nav>` }).ids, []);
+  // submenu links nested in a second list level do not count as top-level
+  assert.deepEqual(clean({ 'p.html': `<nav aria-label="Primary"><ul><li>${links(4)}<ul><li>${links(10)}</li></ul></li></ul></nav>` }).ids, []);
+});
+
+test('UX-10 patterns that reject spaces in phone and card fields', () => {
+  assert.deepEqual(clean({ 'p.html': '<label>Phone <input type="tel" name="phone" autocomplete="tel" pattern="[0-9]{10}"></label>' }).ids, ['UX-10']);
+  assert.deepEqual(clean({ 'p.html': '<label>Card <input name="card" autocomplete="cc-number" pattern="\d{16}"></label>' }).ids, ['UX-10']);
+  assert.deepEqual(clean({ 'p.html': '<label>Card <input name="card" autocomplete="cc-number" inputmode="numeric" pattern="[\d ]{13,19}"></label>' }).ids, []);
+  assert.deepEqual(clean({ 'p.html': '<label>Security code <input name="cvc" autocomplete="cc-csc" inputmode="numeric" pattern="[0-9]{3,4}"></label>' }).ids, []);
+  assert.deepEqual(clean({ 'p.html': '<label>Username <input name="username" autocomplete="username" pattern="[a-z0-9]+"></label>' }).ids, []);
+});
+
+test('VH-07 more than four font weights', () => {
+  assert.deepEqual(clean({ 'p.tsx': 'export const A = () => <div><h2 className="font-extrabold">A</h2><p className="font-light">B</p><b className="font-black">C</b><i className="font-medium">D</i><u className="font-bold">E</u></div>;' }).ids, ['VH-07']);
+  assert.deepEqual(clean({ 'p.tsx': 'export const A = () => <div><h2 className="font-semibold">A</h2><p className="font-normal">B</p><i className="font-medium">D</i></div>;' }).ids, []);
+  // @font-face weight ranges and weight tokens are not uses
+  assert.deepEqual(clean({ 'f.css': '@font-face { font-family: "Figtree"; font-weight: 300; src: url(/f.woff2); font-display: swap; } :root { --font-weight-black: 900; } h1 { font-weight: 600; }' }).ids, []);
+});
+
+test('surface: design.md, config and detection decide which topics apply', async () => {
+  const { detectSurface, surfaceFromDesignDoc, surfaceApplies } = await import('../audit/lib/project.mjs');
+  assert.equal(surfaceFromDesignDoc('# Design\n- Surface: marketing\n'), 'marketing');
+  assert.equal(surfaceFromDesignDoc('| **Surface** | both |'), 'both');
+  assert.equal(surfaceFromDesignDoc('# Design\n'), null);
+  const files = (texts) => texts.map((text, i) => ({ rel: `f${i}.html`, hasMarkup: true, text }));
+  assert.equal(detectSurface(['src/pages/pricing.tsx', 'src/pages/about.tsx'], []).value, 'marketing');
+  assert.equal(detectSurface(['app/dashboard/page.tsx', 'app/settings/page.tsx'], []).value, 'app');
+  assert.equal(detectSurface(['index.html'], files(['<section class="hero">…</section><section id="faq">…</section>'])).value, 'marketing');
+  assert.equal(detectSurface(['app/dashboard/page.tsx', 'app/settings/page.tsx', 'app/pricing/page.tsx', 'app/about/page.tsx'], []).value, 'both');
+  assert.equal(detectSurface(['index.html'], files(['<main><h1>Hi</h1></main>'])).value, 'unknown');
+  assert.equal(surfaceApplies('all', 'unknown'), true);
+  assert.equal(surfaceApplies('marketing', 'app'), false);
+  assert.equal(surfaceApplies('marketing', 'both'), true);
+  assert.equal(surfaceApplies('app', 'app'), true);
+  assert.equal(surfaceApplies('app', 'unknown'), false);
+
+  const doc = (surface) => ({ 'design.md': `# Design\n${surface ? `Surface: ${surface}\n` : ''}Fonts: Figtree.\n` });
+  assert.deepEqual(clean(doc('marketing')).surface, { value: 'marketing', source: 'design.md' });
+  assert.deepEqual(clean(doc('marketing'), { overrides: { surface: 'app' } }).surface, { value: 'app', source: 'config' });
+  // unknown surface with a design.md: BR-06 asks for the line
+  assert.deepEqual(clean(doc(null)).ids, ['BR-06']);
+  assert.throws(() => clean({}, { overrides: { surface: 'website' } }), /surface must be one of/);
 });
