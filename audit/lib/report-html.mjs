@@ -140,7 +140,7 @@ export function renderHtml(result, { before = null, screenshots = [], generatedA
   const beforeDims = new Map((before?.polish?.dimensions || []).map((d) => [d.id, d.score]));
   const dims = polish ? `<h2 id="polish">Polish, by dimension</h2>
 <ul class="dims">${polish.dimensions.map((d) => `
-  <li><span class="name">${esc(d.title)}</span><span>${segments(d.score)}${beforeDims.has(d.id) && beforeDims.get(d.id) !== d.score ? ` <span class="delta">was ${beforeDims.get(d.id) ?? 'n/a'}</span>` : ''}</span>${d.note || d.evidence.length ? `<p class="note">${esc(d.note)}${d.evidence.length ? ` <span class="where">${esc(d.evidence.join(', '))}</span>` : ''}</p>` : ''}</li>`).join('')}
+  <li><span class="name">${esc(d.title)}</span><span>${segments(d.score)}${beforeDims.has(d.id) && beforeDims.get(d.id) !== d.score ? ` <span class="delta">(was ${beforeDims.get(d.id) ?? 'n/a'})</span>` : ''}</span>${d.note || d.evidence.length ? `<p class="note">${esc(d.note)}${d.evidence.length ? ` <span class="where">${esc(d.evidence.join(', '))}</span>` : ''}</p>` : ''}</li>`).join('')}
 </ul>` : '';
 
   const topics = Object.entries(result.byTopic).filter(([, t]) => t.error + t.warning + t.info > 0);
