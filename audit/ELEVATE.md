@@ -14,7 +14,7 @@ Work in this order. Do not skip the baseline: the before/after comparison is how
 
 ## 1. Intake
 
-1. Read `design.md`. If it is missing, or has no `Surface:` line or Assets table, do the brand intake first (BR-01 to BR-06, AS-01).
+1. Read `design.md`. If it is missing, or has no `Surface:` line or Assets table, do the brand intake (BR-01 to BR-06, AS-01): gather the answers and ask the owner now, but write `design.md` after the baseline in step 2, so the baseline measures the interface exactly as you found it.
 2. Agree the scope with the owner: which pages or flows, and whether to apply the plan straight away or to show it first. Default: show the plan (step 4) and apply after a yes; if the owner asked for a full elevation without review, apply it and report.
 
 ## 2. Baseline

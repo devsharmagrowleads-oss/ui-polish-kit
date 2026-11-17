@@ -377,6 +377,10 @@ const APP_MARKUP = [
   ['data table', /<(table|DataTable)[\s>]/],
   ['sign-in form', /type\s*=\s*["']password["']|auto[cC]omplete\s*=\s*["']current-password["']/],
   ['app shell', /\b(AppShell|DashboardLayout|app-shell)\b/],
+  // Single-page dashboards have no routes or sidebar; their title, KPI tiles and charts give them away.
+  ['dashboard title', /<(title|h1)[^>]*>[^<]*\b(Dashboard|Admin|Overview)\b/i],
+  ['KPI tiles', (t) => ID_OR_CLASS('(stats?|kpis?|metrics?|stat-card|kpi-card)').test(t) || /<(KpiCard|StatCard|MetricCard)[\s>]/.test(t)],
+  ['chart', (t) => /<(canvas)[\s>]/.test(t) || ID_OR_CLASS('chart').test(t)],
 ];
 const hit = (test, text) => (typeof test === 'function' ? test(text) : test.test(text));
 

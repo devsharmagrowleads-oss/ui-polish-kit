@@ -101,6 +101,17 @@ Without the kit, the agent shipped browser-default selects and date pickers, emo
 
 One run per prompt, judged by the kit's own checker, which reads code rather than pixels, so read it as a strong signal rather than a benchmark. Run it yourself with [`node scripts/eval/run.mjs`](scripts/eval/run.mjs) (needs the `claude` CLI; prompts in [`prompts.json`](scripts/eval/prompts.json)).
 
+### Elevate on existing agent builds
+
+We then took two pages built by plain Claude Code (the dashboard and landing prompts above, no kit) and ran the [elevate procedure](#elevate-from-correct-to-premium) on them as written: intake, baseline, critique, plan, apply, re-measure.
+
+| Page | Static before → after | Polish before → after | What moved it |
+| --- | --- | --- | --- |
+| Invoicing dashboard (app) | 53 → **100** | 55 → **80** | A brand palette instead of framework blue, a chosen typeface, one focal KPI with actions, no sideways scroll on phones (rows stack), the partial month marked on the chart, the favicon set and real routes |
+| Meal-planning landing page (marketing) | 46 → **100** | 61 → **82** | One call-to-action label instead of four, one icon set instead of emoji, an honest open-beta note instead of invented proof, real legal links, a display typeface with four weights, a solid band instead of a gradient |
+
+Both needed a second pass to reach the Polish target, which is how the procedure is meant to work. The Polish scores are a judgement from screenshots against [`audit/POLISH.md`](audit/POLISH.md), made by the same agent that did the work, so treat them as indicative. The run also found five problems in the kit itself, fixed in the same change: a single-page dashboard was not recognised as an app, `noindex` 404 pages were asked for social cards, icons inside an `aria-hidden` wrapper were flagged, a dead "Privacy" link got a misleading message, and the procedure took its baseline after writing `design.md`.
+
 ## How it works
 
 ```mermaid

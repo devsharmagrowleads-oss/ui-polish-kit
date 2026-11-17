@@ -91,7 +91,11 @@ export function runProjectDetectors(project, report) {
     {
       const privacyRoute = has(/(^|\/)(privacy|privacy-policy|legal|datenschutz)(\/|\.|-|$)/i);
       const privacyLink = files.some((f) => f.hasMarkup && /href\s*=\s*\{?\s*["'`][^"'`]*(privacy|legal)/i.test(f.text));
-      if (!privacyRoute && !privacyLink) {
+      // A "Privacy" link whose href goes nowhere is the common case in agent output; say so.
+      const deadLink = files.some((f) => f.hasMarkup && /<a\b[^>]*href\s*=\s*["'](#|javascript:[^"']*)["'][^>]*>\s*Privacy\b/i.test(f.text));
+      if (!privacyRoute && !privacyLink && deadLink) {
+        report('LP-07', at(entry), 'The footer has a "Privacy" link, but it points nowhere (href="#") and there is no privacy page. Link privacy, terms and contact to real pages, and ask the owner for the legal text; do not invent it.');
+      } else if (!privacyRoute && !privacyLink) {
         report('LP-07', at(entry), 'Marketing site with no privacy policy page or link. Link privacy, terms and contact from the footer of every page, and next to forms that collect personal data. Ask the owner for the legal text; do not invent it.');
       }
     }
