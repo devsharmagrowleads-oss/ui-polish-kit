@@ -10,6 +10,8 @@ when: Building what a new user sees after signup (first run, onboarding, setup c
 
 In a product app the equivalent of a landing page's conversion is activation: a new user reaching the moment where the product proves its worth (the first invoice sent, the first report built) before they lose interest. Agent-built apps are designed for a full database: a new account lands on a dashboard of zeros and empty charts, then a ten-step modal tour. These rules apply only to app surfaces (BR-06). They build on empty states (ST-03, CP-06), progress (UX-09) and the peak-end rule (UX-12).
 
+
+Ready-made building blocks are in `recipes/react-tailwind-shadcn/app/first-run.tsx`, `recipes/react-tailwind-shadcn/app/setup-checklist.tsx` and the other files beside them, and in the HTML and CSS recipes.
 ## AC-01 · The first screen is designed for a new account
 Severity: error · Check: visual
 

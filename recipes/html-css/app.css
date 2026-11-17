@@ -1,0 +1,612 @@
+/*
+ * Product app shell (app-shell.html). Tokens only, logical properties
+ * throughout (IN-01). Dense but calm: one sidebar, one page-header pattern
+ * (NV-03), hairline borders, few weights (VH-07), values louder than labels.
+ */
+
+.app {
+  display: grid;
+  min-block-size: 100dvh;
+}
+@media (width >= 60rem) {
+  .app {
+    grid-template-columns: 15rem minmax(0, 1fr);
+  }
+}
+
+/* Sidebar (NV-07) ------------------------------------------------------- */
+.app-sidebar {
+  display: none;
+}
+@media (width >= 60rem) {
+  .app-sidebar {
+    position: sticky;
+    inset-block-start: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    block-size: 100dvh;
+    padding: var(--space-4) var(--space-3);
+    overflow-y: auto;
+    border-inline-end: 1px solid var(--border);
+    background: var(--muted);
+  }
+}
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--control-height);
+  padding-inline: var(--space-3);
+  color: var(--foreground);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  text-decoration: none;
+}
+.app-brand .icon {
+  color: var(--primary);
+}
+.app-nav-label {
+  margin: var(--space-4) 0 var(--space-1);
+  padding-inline: var(--space-3);
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+.app-nav-label:first-child {
+  margin-block-start: 0;
+}
+.app-nav ul {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.app-nav a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-block-size: var(--control-height);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+.app-nav a .icon {
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
+}
+.app-nav a:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+/* NV-01: current page marked by fill, weight-independent bar and colour. */
+.app-nav a[aria-current="page"] {
+  position: relative;
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: var(--shadow-xs);
+}
+.app-nav a[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  inset-block: var(--space-2);
+  inset-inline-start: 0;
+  inline-size: 3px;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+}
+
+/* Top bar --------------------------------------------------------------- */
+.app-body {
+  min-inline-size: 0;
+}
+.app-topbar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-block-size: 3.5rem;
+  padding-inline: var(--space-gutter);
+  border-block-end: 1px solid var(--border);
+  background: var(--background);
+}
+@media (width >= 60rem) {
+  .app-menu-button {
+    display: none;
+  }
+}
+.app-search {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-2);
+  max-inline-size: 28rem;
+  min-block-size: var(--control-height);
+  padding-inline: var(--space-3);
+  border: 1px solid var(--input);
+  border-radius: var(--radius);
+  background: var(--background);
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: start;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+.app-search:hover {
+  border-color: var(--muted-foreground);
+}
+.app-search span {
+  flex: 1;
+}
+kbd {
+  padding: 0 var(--space-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+@media (width < 36rem) {
+  .app-search kbd {
+    display: none;
+  }
+}
+.app-account {
+  margin-inline-start: auto;
+}
+.app-avatar {
+  display: grid;
+  place-items: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border-radius: 50%;
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+/* Page content ---------------------------------------------------------- */
+.app-main {
+  display: grid;
+  gap: var(--space-8);
+  align-content: start;
+  max-inline-size: var(--content-max);
+  padding: var(--space-6) var(--space-gutter) var(--space-12);
+}
+.app-main > .page-header {
+  margin: 0;
+}
+.app-main h2 {
+  margin: 0;
+  font-size: var(--text-lg);
+}
+
+/* AC-01: first run and KPIs are two states of one page. */
+/* UX-05: one dominant action; on first run the first-run block holds it. */
+.app-main[data-account="new"] .page-header .actions,
+.app-main[data-account="new"] .app-kpis,
+.app-main:not([data-account="new"]) .app-first-run {
+  display: none;
+}
+.app-first-run {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-12) var(--space-6);
+  border: 1px dashed var(--input);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+.app-first-run-icon {
+  inline-size: var(--icon-lg);
+  block-size: var(--icon-lg);
+  box-sizing: content-box;
+  padding: var(--space-3);
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+.app-first-run h2 {
+  font-size: var(--text-xl);
+}
+.app-first-run p {
+  max-inline-size: 28rem;
+  margin: 0;
+  color: var(--muted-foreground);
+}
+.app-first-run-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-block-start: var(--space-3);
+}
+
+/* VH-04: KPI tiles, the value is the loudest thing in the tile. */
+.app-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--space-4);
+}
+.app-kpi {
+  padding: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+.app-kpi h2 {
+  color: var(--muted-foreground);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+.app-kpi-value {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  font-variant-numeric: tabular-nums;
+}
+.app-kpi-delta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: var(--space-2) 0 0;
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+.app-kpi-delta span {
+  font-size: var(--text-xs);
+}
+.app-kpi-delta.up span {
+  color: var(--success);
+}
+.app-kpi-delta.down span {
+  color: var(--info);
+}
+
+/* AC-03: setup checklist ------------------------------------------------ */
+.app-checklist {
+  padding: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+.app-checklist[hidden] {
+  display: none;
+}
+.app-checklist-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+.app-checklist-head p {
+  margin: var(--space-1) 0 0;
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+.app-checklist progress {
+  appearance: none;
+  display: block;
+  inline-size: 100%;
+  block-size: var(--space-2);
+  margin-block: var(--space-4);
+  overflow: clip;
+  border: 0 solid;
+  border-radius: var(--radius-sm);
+  background: var(--muted);
+}
+.app-checklist progress::-webkit-progress-bar {
+  background: transparent;
+}
+.app-checklist progress::-webkit-progress-value {
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  transition: inline-size var(--duration-slow) var(--ease-out);
+}
+.app-checklist progress::-moz-progress-bar {
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+}
+.app-checklist-items {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.app-checklist-items a {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.app-checklist-items a:hover {
+  background: var(--accent);
+}
+.app-checklist-items strong {
+  display: block;
+  color: var(--foreground);
+  font-weight: 500;
+}
+.app-check {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  inline-size: var(--icon-md);
+  block-size: var(--icon-md);
+  border: 2px solid var(--input);
+  border-radius: 50%;
+}
+.app-checklist-items [data-done] .app-check {
+  border-color: var(--success);
+  background: var(--success);
+}
+/* The tick takes its colour from the token pair, so it reads in both themes. */
+.app-checklist-items [data-done] .app-check::after {
+  content: "";
+  inline-size: 70%;
+  block-size: 70%;
+  background: var(--success-foreground);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+.app-checklist-items [data-done] strong {
+  color: var(--muted-foreground);
+  text-decoration: line-through;
+}
+
+/* FM-09: settings sections, two columns from 48rem. */
+.app-settings {
+  display: grid;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+.app-settings-section {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-6);
+}
+.app-settings-section + .app-settings-section {
+  border-block-start: 1px solid var(--border);
+}
+@media (width >= 48rem) {
+  .app-settings-section {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: var(--space-8);
+  }
+}
+.app-settings-intro h3 {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+.app-settings-intro p {
+  margin: var(--space-1) 0 0;
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+.app-settings-fields {
+  display: grid;
+  gap: var(--space-5);
+  max-inline-size: 28rem;
+}
+.app-settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-4) var(--space-6);
+  border-block-start: 1px solid var(--border);
+  background: var(--muted);
+  border-end-start-radius: var(--radius-lg);
+  border-end-end-radius: var(--radius-lg);
+}
+
+/* Drawer (RS-07): a modal dialog pinned to the inline start. ------------- */
+.app-drawer {
+  inline-size: min(18rem, 85dvw);
+  max-inline-size: none;
+  block-size: 100dvh;
+  max-block-size: none;
+  margin: 0;
+  margin-inline-end: auto;
+  padding: var(--space-4) var(--space-3);
+  border: 0;
+  border-inline-end: 1px solid var(--border);
+  background: var(--muted);
+  color: var(--foreground);
+  box-shadow: var(--shadow-lg);
+}
+.app-drawer:modal {
+  overscroll-behavior: contain;
+}
+.app-drawer::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background: var(--overlay);
+}
+.app-drawer-sheet {
+  display: grid;
+  gap: var(--space-4);
+}
+.app-drawer-close {
+  justify-self: end;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .app-drawer,
+  .app-drawer::backdrop {
+    transition-property: translate, opacity, display, overlay;
+    transition-duration: var(--duration-slow);
+    transition-timing-function: var(--ease-out);
+    transition-behavior: allow-discrete;
+  }
+  .app-drawer:not([open]) {
+    translate: -100% 0;
+  }
+  .app-drawer:not([open]):dir(rtl) {
+    translate: 100% 0;
+  }
+  .app-drawer:not([open])::backdrop {
+    opacity: 0;
+  }
+  @starting-style {
+    .app-drawer[open] {
+      translate: -100% 0;
+    }
+    .app-drawer[open]:dir(rtl) {
+      translate: 100% 0;
+    }
+    .app-drawer[open]::backdrop {
+      opacity: 0;
+    }
+  }
+}
+
+/* Command palette ------------------------------------------------------- */
+.app-palette {
+  inline-size: min(36rem, calc(100% - var(--space-8)));
+  margin-block-start: 12dvh;
+  padding: 0;
+  overflow: clip;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: var(--shadow-lg);
+}
+.app-palette:modal {
+  overscroll-behavior: contain;
+}
+.app-palette::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background: var(--overlay);
+}
+.app-palette-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-inline: var(--space-4);
+  border-block-end: 1px solid var(--border);
+  color: var(--muted-foreground);
+}
+.app-palette-search input {
+  flex: 1;
+  min-block-size: 3.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: var(--text-base);
+}
+.app-palette-search input:focus-visible {
+  outline: none;
+}
+.app-palette-search:focus-within {
+  box-shadow: inset 0 -2px 0 var(--ring);
+}
+.app-palette-list,
+.app-palette-list ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.app-palette-list {
+  max-block-size: min(22rem, 50dvh);
+  overflow-y: auto;
+  padding: var(--space-2);
+}
+.app-palette-group[hidden] {
+  display: none;
+}
+.app-palette-group-label {
+  display: block;
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+.app-palette [role="option"] {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--control-height);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+.app-palette [role="option"][hidden] {
+  display: none;
+}
+.app-palette [role="option"][aria-selected="true"] {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+.app-palette-empty {
+  margin: 0;
+  padding: var(--space-8) var(--space-4);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+.app-palette-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  border-block-start: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .app-palette,
+  .app-palette::backdrop {
+    transition-property: opacity, translate, display, overlay;
+    transition-duration: var(--duration-base);
+    transition-timing-function: var(--ease-out);
+    transition-behavior: allow-discrete;
+  }
+  .app-palette:not([open]),
+  .app-palette:not([open])::backdrop {
+    opacity: 0;
+  }
+  @starting-style {
+    .app-palette[open],
+    .app-palette[open]::backdrop {
+      opacity: 0;
+    }
+    .app-palette[open] {
+      translate: 0 calc(-1 * var(--space-2));
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .app-nav a[aria-current="page"],
+  .app-palette [role="option"][aria-selected="true"] {
+    outline: 2px solid CanvasText;
+  }
+  .app-checklist-items [data-done] .app-check {
+    background: CanvasText;
+  }
+}

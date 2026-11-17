@@ -10,6 +10,8 @@ when: Building a marketing site, landing page, homepage, hero, pricing or featur
 
 A landing page has one job: a visitor who has never heard of the product understands what it is, believes it, and takes the next step. Agent-built landing pages look busy and convert badly: a vague headline over a gradient, three icon cards, a testimonial from "Sarah K.", a pricing table with four equal plans and no answer to "is this for me?". These rules apply only to marketing surfaces (BR-06); product screens inside an app follow the activation topic instead. They build on the UX laws (UX-02, UX-05, UX-09) and on the slop rules for heroes and cards (SL-07, SL-08).
 
+
+Ready-made sections that follow these rules are in `recipes/react-tailwind-shadcn/sections/hero.tsx` and the other files beside it, and in the HTML and CSS recipes.
 ## LP-01 · The hero says what, for whom, and what to do
 Severity: error · Check: visual
 

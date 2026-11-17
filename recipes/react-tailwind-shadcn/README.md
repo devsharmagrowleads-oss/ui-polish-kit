@@ -46,6 +46,34 @@ Requires React 19 (components take `ref` as a prop, no `forwardRef`), Tailwind C
 | `components/data-table.tsx` | Semantic, sortable table: caption, column and row headers, sticky header, end-aligned tabular numbers, `aria-sort` plus an announcement, skeleton rows, error row with retry, empty slot. Sort can be controlled to keep it in the URL. |
 | `components/scroll-area.tsx` | Overlay scrollbars for panels where the native bar would shift layout. |
 
+### Marketing sections (`sections/`, for marketing surfaces)
+
+Composable page sections for landing pages and marketing sites. Each takes the content as props, so the copy, screenshots and proof are the project's own (LP, AS).
+
+| File | What it is | Rules |
+| --- | --- | --- |
+| `sections/hero.tsx` | Plain-words headline, one supporting sentence, one primary and one secondary action, the reassurance line, and a real product screenshot as the high-priority image | LP-01, VH-05, SL-07 |
+| `sections/feature-showcase.tsx` | Features as alternating rows of claim and cropped screenshot, instead of three icon cards | LP-04, SL-08 |
+| `sections/social-proof.tsx` | `LogoWall` (one monochrome treatment), `Testimonial` (full name, role, company), `Stat` (value, label and source) | LP-03, AS-04, VH-04 |
+| `sections/pricing.tsx` | Two to four plans, one recommended by label and position, a monthly/yearly toggle with the saving in money, prices with period, trial terms in view | LP-05, UX-05 |
+| `sections/faq.tsx` | `<details>` accordion (optionally exclusive) with an animated open where supported and a contact line | LP-06 |
+| `sections/cta-band.tsx` | The closing call to action, repeating the hero's single goal | LP-02 |
+| `sections/site-footer.tsx` | Brand, grouped link columns, and the required privacy, terms and contact links | LP-07, UX-02 |
+
+### App building blocks (`app/`, for product apps)
+
+| File | What it is | Rules |
+| --- | --- | --- |
+| `app/app-shell.tsx` | Skip link, grouped sidebar with the current page marked and settings apart, top bar, one `<main>`; the navigation opens in a dialog below `lg` | NV-01, NV-02, NV-07, RS-07, UX-02 |
+| `app/page-header.tsx` | The one page-header pattern: breadcrumbs, `<h1>`, a line of description, actions in the same place on every page | NV-03, NV-04, VH-01 |
+| `app/kpi-card.tsx` | `KpiCard` (value louder than label, change with icon, sign, words and period, loading skeleton, optional featured size) and `KpiGrid` | VH-04, AX-12, ST-02, SL-11 |
+| `app/settings-section.tsx` | Title and description beside the fields, one form per section, a save bar that appears only when something changed, a danger tone | FM-08, FM-09, UX-04 |
+| `app/setup-checklist.tsx` | Deferred setup with progress, items that link to the place to do them and tick themselves, permanent dismissal | AC-03, UX-09 |
+| `app/first-run.tsx` | What a new account sees instead of zeros: the first success as the primary action plus import, template or sample-data paths | AC-01, AC-02 |
+| `app/command-palette.tsx` | `CommandPalette` (Dialog + cmdk, grouped results, a specific empty message), `CommandPaletteTrigger` and `useCommandPaletteShortcut` (Ctrl/⌘ K, IME-safe) | UX-08, AX-10 |
+
+The section and app files import the base components as `@/components/ui/*`; copy them into `src/components/sections/` and `src/components/app/` (or anywhere) and keep that alias.
+
 ## Wire the tokens
 
 ```css

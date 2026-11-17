@@ -8,6 +8,9 @@ Each `.html` file is a fragment: copy its markup and script into a page that loa
 <link rel="stylesheet" href="/css/tokens.css">
 <link rel="stylesheet" href="/css/base.css">
 <link rel="stylesheet" href="/css/components.css">
+<!-- Only on pages that use them: -->
+<link rel="stylesheet" href="/css/sections.css"> <!-- marketing-sections.html -->
+<link rel="stylesheet" href="/css/app.css">      <!-- app-shell.html -->
 ```
 
 Replace every value marked `EXAMPLE` in `tokens.css` with the colours and fonts in the project's `design.md`; keep the token names. The names and values match `../react-tailwind-shadcn/tokens/tokens.css`.
@@ -27,6 +30,10 @@ Replace every value marked `EXAMPLE` in `tokens.css` with the colours and fonts 
 | `tooltip.html` | Tooltip replacing `title=""`: `popover="hint"` with `interestfor` | NC-08, AX-07 |
 | `toast.html` | Toast region replacing `alert()`: manual popovers, announced | FD-07, ST-05 |
 | `navigation.html` | Skip link, header navigation with the current page marked, breadcrumbs, page header | NV, RS-07 |
+| `sections.css` | Styles for `marketing-sections.html` | LP, SL |
+| `marketing-sections.html` | **Marketing sites only.** A landing page in reading order: plain-words hero with the product screenshot as the LCP image, attributed proof, alternating feature rows (not three identical cards), three-plan pricing with one recommended and a monthly/yearly toggle, an FAQ of `<details>`, a closing call to action and a footer with privacy, terms and contact | LP-01 to LP-07, SL-07, SL-08, UX-05, AS-05 |
+| `app.css` | Styles for `app-shell.html` | NV, AC, VH |
+| `app-shell.html` | **Product apps only.** A grouped sidebar that becomes a modal drawer on narrow screens, a top bar with a Ctrl/Cmd+K command palette (combobox and grouped listbox, arrow keys, empty state), one page header, KPI tiles with values louder than labels, the first-run state for a new workspace, a dismissible setup checklist with progress, and two-column settings sections | NV-01, NV-03, NV-07, RS-07, UX-02, UX-05, UX-09, VH-04, AC-01, AC-03, FM-09 |
 
 ## Browser support
 
