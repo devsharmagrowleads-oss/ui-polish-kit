@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="48" viewBox="0 0 640 48" role="img" aria-labelledby="t">
+  <title id="t">LATEST VERSION [ 0.3.2 ]. [ 208 ] RULES ACROSS [ 26 ] TOPICS. [ 70 ] STATIC CHECKS IN THE AUDIT. [ 41 ] REACT RECIPES · [ 10 ] HTML/CSS. INSTALL NOW! npx github:devsharmagrowleads-oss/ui-polish-kit install. WORKS WITH Claude Code · Codex · Cursor. AND Windsurf · Copilot · Gemini CLI. [ 0 ] DEPENDENCIES · MIT LICENSED</title>
+  <style>
+    text { font: 500 13px ui-monospace, SFMono-Regular, 'Cascadia Mono', Menlo, Consolas, monospace; letter-spacing: 0.6px; fill: #57656a; text-anchor: middle; }
+    .hi { fill: #0f7a72; }
+    /* Static by default: only the first line shows. Motion is opted into below. */
+    .line:not(:first-of-type) { opacity: 0; }
+    @media (prefers-reduced-motion: no-preference) {
+      .line, .line:not(:first-of-type) {
+        opacity: 0;
+        animation: tick 16s cubic-bezier(0.2, 0.7, 0.2, 1) infinite backwards;
+      }
+    }
+    @keyframes tick {
+      0% { opacity: 0; transform: translateY(24px); }
+      2.188% { opacity: 1; transform: translateY(0); }
+      10.625% { opacity: 1; transform: translateY(0); }
+      12.5% { opacity: 0; transform: translateY(-24px); }
+      100% { opacity: 0; transform: translateY(-24px); }
+    }
+  </style>
+  <g class="line" style="animation-delay:0s"><text x="320" y="29">LATEST VERSION [ <tspan class="hi">0.3.2</tspan> ]</text></g>
+  <g class="line" style="animation-delay:2s"><text x="320" y="29">[ <tspan class="hi">208</tspan> ] RULES ACROSS [ <tspan class="hi">26</tspan> ] TOPICS</text></g>
+  <g class="line" style="animation-delay:4s"><text x="320" y="29">[ <tspan class="hi">70</tspan> ] STATIC CHECKS IN THE AUDIT</text></g>
+  <g class="line" style="animation-delay:6s"><text x="320" y="29">[ <tspan class="hi">41</tspan> ] REACT RECIPES · [ <tspan class="hi">10</tspan> ] HTML/CSS</text></g>
+  <g class="line" style="animation-delay:8s"><text x="320" y="29">INSTALL NOW! <tspan class="hi">npx github:devsharmagrowleads-oss/ui-polish-kit install</tspan></text></g>
+  <g class="line" style="animation-delay:10s"><text x="320" y="29">WORKS WITH <tspan class="hi">Claude Code · Codex · Cursor</tspan></text></g>
+  <g class="line" style="animation-delay:12s"><text x="320" y="29">AND <tspan class="hi">Windsurf · Copilot · Gemini CLI</tspan></text></g>
+  <g class="line" style="animation-delay:14s"><text x="320" y="29">[ <tspan class="hi">0</tspan> ] DEPENDENCIES · MIT LICENSED</text></g>
+</svg>

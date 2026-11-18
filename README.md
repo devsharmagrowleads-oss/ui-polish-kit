@@ -3,6 +3,14 @@
 </p>
 
 <p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/ticker-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="docs/images/ticker-light.svg">
+    <img src="docs/images/ticker-light.svg" alt="Latest version, rule and check counts, recipes, install command and supported agents" width="640">
+  </picture>
+</p>
+
+<p align="center">
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-0a1214?style=flat-square"></a>
   <img alt="208 rules" src="https://img.shields.io/badge/rules-208-5fd0c5?style=flat-square">
   <img alt="26 topics" src="https://img.shields.io/badge/topics-26-5fd0c5?style=flat-square">
