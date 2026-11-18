@@ -26,6 +26,9 @@ const HELP = `Usage: node audit/screenshot.mjs <url|file> [...] [options]
                        save one with: npx playwright codegen --save-storage=auth.json <login url>
   --init <file.js>     A script run in every page before the app loads, e.g. to seed localStorage
                        for a signed-in or brand-new account
+  --states             Also capture interaction feedback: the first control on hover and the first
+                       three keyboard focus stops (viewport images), with each element's transition
+                       and focus-ring styles in report.json. Evidence for the Polish "motion" score.
 
 A screenshot whose final URL differs from the requested one is reported as
 REDIRECTED (usually a sign-in page): the capture shows that page, not yours.
@@ -47,6 +50,7 @@ function parse(argv) {
     else if (a === '--viewport-only') o.fullPage = false;
     else if (a === '--storage-state') o.storageState = val();
     else if (a === '--init') o.init = val();
+    else if (a === '--states') o.states = true;
     else if (a === '-h' || a === '--help') o.help = true;
     else if (a.startsWith('--')) throw new Error(`Unknown option ${a}`);
     else o.targets.push(a);
@@ -83,6 +87,51 @@ async function launch(chromium) {
     try { return await chromium.launch(options); } catch (err) { errors.push(`${options.channel || 'bundled chromium'}: ${String(err.message).split('\n')[0]}`); }
   }
   throw new Error(`Could not start a browser.\n  ${errors.join('\n  ')}\nInstall one with: npx playwright install chromium`);
+}
+
+/** Style facts about an element that tell a reviewer how it gives feedback. */
+function describe(el) {
+  const s = getComputedStyle(el);
+  const outline = s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0;
+  return {
+    tag: el.tagName.toLowerCase(),
+    text: (el.getAttribute('aria-label') || el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 40),
+    transitionProperty: s.transitionProperty,
+    transitionDuration: s.transitionDuration,
+    outline: outline ? `${s.outlineStyle} ${s.outlineWidth}` : 'none',
+    boxShadow: s.boxShadow !== 'none',
+    visibleRing: outline || s.boxShadow !== 'none',
+  };
+}
+
+/** Hover the first control in <main> (or the page), then Tab through three focus stops; one viewport image each. */
+async function captureStates(page, base) {
+  const out = { hover: null, focus: [] };
+  // Prefer a control inside <main> (a skip link or the logo says little about the page's feedback).
+  const target = (await page.$('main button:not([disabled]), main a[href]')) || (await page.$('button:not([disabled]), a[href]'));
+  if (target) {
+    await target.scrollIntoViewIfNeeded().catch(() => {});
+    await target.hover().catch(() => {});
+    await page.waitForTimeout(300);
+    await page.screenshot({ path: `${base}-hover.png` });
+    out.hover = { file: `${path.basename(base)}-hover.png`, ...(await target.evaluate(describe)) };
+  }
+  await page.mouse.move(0, 0);
+  await page.evaluate(() => { window.scrollTo(0, 0); document.activeElement?.blur?.(); });
+  for (let n = 1; n <= 3; n++) {
+    await page.keyboard.press('Tab');
+    await page.waitForTimeout(200);
+    const info = await page.evaluate((fn) => {
+      const el = document.activeElement;
+      if (!el || el === document.body) return null;
+      el.scrollIntoView({ block: 'center' });
+      return new Function(`return (${fn})`)()(el);
+    }, describe.toString());
+    if (!info) break;
+    await page.screenshot({ path: `${base}-focus-${n}.png` });
+    out.focus.push({ file: `${path.basename(base)}-focus-${n}.png`, ...info });
+  }
+  return out;
 }
 
 async function main() {
@@ -134,7 +183,12 @@ async function main() {
           const redirected = strip(metrics.finalUrl) !== strip(url) ? metrics.finalUrl : null;
           if (overflow || consoleErrors.length || redirected) problems++;
           if (redirected) console.log(`REDIRECTED ${url} -> ${redirected}: this capture shows the page it was sent to (often a sign-in). Use --storage-state or --init to reach the real page.`);
-          report.push({ url, finalUrl: metrics.finalUrl, redirected: Boolean(redirected), theme, width, file, title: metrics.title, horizontalOverflow: overflow, scrollWidth: metrics.scrollWidth, loadedFonts: metrics.fonts, consoleErrors });
+          const states = o.states ? await captureStates(page, file.replace(/\.png$/, '')) : undefined;
+          if (states) {
+            const bare = states.focus.filter((x) => !x.visibleRing);
+            if (bare.length) console.log(`NO RING  ${path.basename(file)}: ${bare.map((x) => `<${x.tag}> "${x.text}"`).join(', ')} showed no visible focus indicator (AX-01).`);
+          }
+          report.push({ url, finalUrl: metrics.finalUrl, redirected: Boolean(redirected), theme, width, file, title: metrics.title, horizontalOverflow: overflow, scrollWidth: metrics.scrollWidth, loadedFonts: metrics.fonts, consoleErrors, ...(states ? { states } : {}) });
           console.log(`${overflow ? 'OVERFLOW' : 'ok      '}  ${String(width).padStart(4)}px ${theme.padEnd(5)}  ${file}${overflow ? `  (content is ${metrics.scrollWidth}px wide: RS-03)` : ''}${consoleErrors.length ? `  ${consoleErrors.length} console error(s)${url.startsWith('file:') && consoleErrors.some((e) => /ERR_FILE_NOT_FOUND/.test(e)) ? ' (a root-relative path such as /favicon.svg cannot load from a file: URL; serve the folder to check it)' : ''}` : ''}`);
           await context.close();
         }
