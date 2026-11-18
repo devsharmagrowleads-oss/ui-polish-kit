@@ -54,13 +54,21 @@ function svg({ text, accent }) {
   <style>
     text { font: 500 13px ui-monospace, SFMono-Regular, 'Cascadia Mono', Menlo, Consolas, monospace; letter-spacing: 0.6px; fill: ${text}; text-anchor: middle; }
     .hi { fill: ${accent}; }
-    /* Static by default: only the first line shows. Motion is opted into below. */
-    .line:not(:first-of-type) { opacity: 0; }
-    @media (prefers-reduced-motion: no-preference) {
-      .line, .line:not(:first-of-type) {
-        opacity: 0;
-        animation: tick ${CYCLE}s cubic-bezier(0.2, 0.7, 0.2, 1) infinite backwards;
+    /* Lines take turns for everyone. With reduced motion they cross-fade in place; otherwise they slide up. */
+    .line {
+      opacity: 0;
+      animation: fade ${CYCLE}s ease-in-out infinite backwards;
+      @media (prefers-reduced-motion: no-preference) {
+        animation-name: tick;
+        animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
       }
+    }
+    @keyframes fade {
+      0% { opacity: 0; }
+      ${pct(0.35)} { opacity: 1; }
+      ${pct(STEP - 0.3)} { opacity: 1; }
+      ${pct(STEP)} { opacity: 0; }
+      100% { opacity: 0; }
     }
     @keyframes tick {
       0% { opacity: 0; transform: translateY(${H / 2}px); }
